@@ -134,7 +134,6 @@
 
 <script lang="ts" setup>
 const supabase = useSupabaseClient()
-
 const user = useSupabaseUser()
 
 const login = async () => {
@@ -144,6 +143,16 @@ const login = async () => {
 
     if (error) {
         console.log(error)
+    }
+}
+
+const signup = async () => {
+    try{
+    const {data, error} = await supabase.auth.signUp({email: "email", password: "password"})
+    if(error) throw error
+    }
+    catch(error){
+    console.error("there was an error", error)
     }
 }
 </script>

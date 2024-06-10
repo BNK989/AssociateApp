@@ -50,7 +50,7 @@
                     </button>
                 </div>
                 <div
-                    class="hidden absolute flex-1 md:static md:bg-opacity-0 md:mx-4 z-10 bg-blue-950 top-12 w-dvw -left-4 lg:w-auto lg:order-1"
+                    class="hidden lg:flex absolute flex-1 md:static md:bg-opacity-0 md:mx-4 z-10 bg-blue-950 top-12 w-dvw -left-4 lg:w-auto lg:order-1"
                     id="mobile-menu-2">
                     <ul
                         class="w-full flex flex-col md:items-center mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0 justify-between">
@@ -96,6 +96,7 @@
                                 v-else
                                 class="flex items-center justify-start px-3 bg-blue-200 bg-opacity-20 my-2 py-2 md:bg-opacity-0 md:my-0 gap-3">
                                 <UserAvatar :user="user" />
+                                <button @click="logout" >logout</button>
                             </div>
                         </li>
                     </ul>
@@ -111,6 +112,15 @@ const isDark = computed(() => colorMode.preference === 'dark')
 const { menuData: menu } = useLocalData()
 
 const user = useSupabaseUser()
+const supabase = useSupabaseClient()
 
-// const user = useSupabaseUser()
+const logout = async () => {
+    try{
+        const { error } = await supabase.auth.signOut()
+        if(error) throw error
+    }
+    catch(err){
+        console.error("there was an error", err)
+    }
+}
 </script>
