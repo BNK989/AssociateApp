@@ -19,7 +19,7 @@
               Flowbite    
           </a> -->
           <!-- <p class="my-4 text-gray-500 dark:text-gray-400">Open-source library of over 400+ web components and interactive elements built for better web.</p> -->
-          <ul class="my-4 flex flex-wrap justify-center items-center mb-6 text-gray-900 dark:text-white">
+          <!-- <ul class="my-4 flex flex-wrap justify-center items-center mb-6 text-gray-900 dark:text-white">
               <li>
                   <a href="#" class="mr-4 hover:underline md:mr-6 ">About</a>
               </li>
@@ -35,8 +35,8 @@
               <li>
                   <a href="#" class="mr-4 hover:underline md:mr-6">Contact</a>
               </li>
-          </ul>
-          <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2021-{{new Date().getFullYear()}} <a href="#" class="hover:underline">Flowbite™</a>. All Rights Reserved.</span>
+          </ul> -->
+          <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2021-{{new Date().getFullYear()}} <a href="#" class="hover:underline">BNK™</a>.  All Rights Reserved.</span>
       </div>
     </footer>
     </template>
