@@ -18,7 +18,7 @@
                     <div
                         class="my-4 flex items-center dark:text-gray-50 gap-2 whitespace-nowrap flex-wrap">
                         <button
-                        @click="login"
+                        @click="googleLogin"
                             class="border border-gray-600 rounded px-4 py-2 flex justify-center items-center w-full">
                             <svg
                                 class="w-5 h-5 mr-2 -ml-1"
@@ -127,6 +127,9 @@
 </template>
 
 <script lang="ts" setup>
+const store = useStore()
+const {user: storeUser} = storeToRefs(store)
+
 const isSignup = ref(false)
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
@@ -139,13 +142,16 @@ const switchText = computed(() => {
     return isSignup.value ? 'Already have an account?' : 'Don’t have an account yet?'
 })
 
-const login = async () => {
-    console.log('test:')
-    const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google"})
-
-    if (error) {
-        console.log(error)
+const googleLogin = async () => {
+    try{
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: "google"})
+        if (error) throw error
+        piniaUser()
+    
+    }
+    catch(err){
+        console.error("there was an error", err)
     }
 }
 
@@ -173,9 +179,15 @@ const signin = async () => {
         const {error} = await supabase.auth.signInWithPassword({email: email.value, password: pw.value})
         if(error) throw error
         successMsg.value = 'Check your email to confirm your account'
+        piniaUser()
     } catch(error: any) {
         console.error("there was an error", error)
         errMsg.value = error.message
     }
+}
+
+const piniaUser = () => {
+    // @ts-ignore
+    storeUser.value = user.user_metadata
 }
 </script>

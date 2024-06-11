@@ -94,11 +94,12 @@
                             </div>
                             <div
                                 v-else
-                                class="flex items-center justify-start px-3 bg-blue-200 bg-opacity-20 my-2 py-2 md:bg-opacity-0 md:my-0 gap-3">
+                                class="flex items-center justify-start gap-3 px-3 bg-blue-200 bg-opacity-20 my-2 py-2 md:bg-opacity-0 md:my-0">
                                 <UserAvatar :user="user" />
                                 <button @click="logout" >logout</button>
                             </div>
                             <!-- <pre>{{ user?.email?.split('@')[0]}}</pre> -->
+                             <!-- <pre>{{storeUser}}</pre> -->
                         </li>
                     </ul>
                 </div>
@@ -108,6 +109,9 @@
 </template>
 
 <script lang="ts" setup>
+const store = useStore()
+const {user: storeUser} = storeToRefs(store)
+
 const colorMode = useColorMode()
 const isDark = computed(() => colorMode.preference === 'dark')
 const { menuData: menu } = useLocalData()
@@ -119,6 +123,7 @@ const logout = async () => {
     try{
         const { error } = await supabase.auth.signOut()
         if(error) throw error
+        storeUser.value = null
     }
     catch(err){
         console.error("there was an error", err)

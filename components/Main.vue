@@ -12,7 +12,14 @@
 </template>
 
 <script lang="ts" setup>
-const words = ref([])
+interface Word {
+    word: string
+    guess: boolean
+    len: number
+    cipher: string
+}
+
+const words: Ref<Word[]> = ref([])
 const gameMode = ref('input')
 
 const wordLength = computed(() => words.value.length)
@@ -41,6 +48,7 @@ const handleSubmit = (word: string) => {
             guess: false,
             len: word.length,
             cipher: generateRandomString(word.length),
+            
         })
     } else {
         if (word === nextWordToGuess.value.word) {

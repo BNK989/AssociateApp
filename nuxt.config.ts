@@ -5,9 +5,16 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
     '@nuxtjs/supabase',
+    '@pinia/nuxt',
+    // {
+    //   autoImports: ['defineStore', 'acceptHMRUpdate']
+    // },
   ],
   supabase: {
     // Options
     redirect: false,
+  },
+  imports: {
+    dirs: ['stores'],
   }
 })

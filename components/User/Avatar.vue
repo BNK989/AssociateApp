@@ -1,6 +1,6 @@
 <template>
     <img v-if="user?.user_metadata?.avatar_url" class="w-10 h-10 rounded-full" :src="user?.user_metadata?.avatar_url" alt="Rounded avatar">
-    <h6>Hi, {{ fName}}</h6>
+    <h6>Hi, {{ fName }}</h6>
 </template>
 
 <script lang="ts" setup>
