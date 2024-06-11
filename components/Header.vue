@@ -95,10 +95,10 @@
                             <div
                                 v-else
                                 class="flex items-center justify-start px-3 bg-blue-200 bg-opacity-20 my-2 py-2 md:bg-opacity-0 md:my-0 gap-3">
-                                <!-- <UserAvatar :user="user" /> -->
+                                <UserAvatar :user="user" />
                                 <button @click="logout" >logout</button>
                             </div>
-                            <pre>{{ user }}</pre>
+                            <!-- <pre>{{ user?.email?.split('@')[0]}}</pre> -->
                         </li>
                     </ul>
                 </div>
