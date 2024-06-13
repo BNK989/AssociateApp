@@ -6,21 +6,24 @@
             v-for="(w, i) in words as Word[]"
             :key="w.cipher"
             class="flex items-center ms-2 gap-1">
-            <div v-if="i === nextWordIdx && gameMode === 'guess'" id="lastGuess">
-                <SvgArrowRight />
-            </div>
                 <SvgCheckMark v-if="w.guess" />
-                <p
-                    v-if="i < words!.length - 1"
-                    class="px-3 py-2 bg-blue-300 bg-opacity-10 w-min whitespace-nowrap"
-                    :class="i === nextWordIdx ? 'font-bold' : ''">
-                    {{ w.guess ? w.word : w.cipher }}
-                </p>
-                <p
-                    v-else
-                    class="px-3 py-2 bg-blue-300 bg-opacity-10 w-min">
-                    {{ w.word }}
-                </p>
+                <img :src="w.sender!.img" class="size-8 rounded-full" alt="Rounded avatar">
+                <div class="px-3 pt-1 pb-2 bg-blue-300 bg-opacity-10 w-min whitespace-nowrap">
+                    <small>{{ w.sender!.name }}</small>
+                    
+                    <p
+                        v-if="i < words!.length - 1"
+                        class=" whitespace-nowrap"
+                        :class="i === nextWordIdx ? 'font-bold' : ''">
+                        {{ w.guess ? w.word : w.cipher }}
+                    </p>
+                    <p v-else>
+                        {{ w.word }}
+                        </p>
+                        </div>
+                            <div v-if="i === nextWordIdx && gameMode === 'guess'" id="lastGuess">
+                                <SvgArrowRight class="rotate-180"/>
+                            </div>
             </li>
             <li ref="last" key="last"></li>
         </TransitionGroup>
@@ -28,8 +31,15 @@
 </template>
 
 <script lang="ts" setup>
+
+type Sender = {
+    id: string
+    name: string
+    img: string
+}
 interface Word {
     word: string
+    sender?: Sender
     guess: boolean
     len: number
     cipher: string

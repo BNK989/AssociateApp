@@ -14,10 +14,13 @@
 <script lang="ts" setup>
 interface Word {
     word: string
+    sender?: any 
     guess: boolean
     len: number
     cipher: string
 }
+
+const user = useSupabaseUser()
 
 const words: Ref<Word[]> = ref([])
 const gameMode = ref('input')
@@ -45,6 +48,11 @@ const handleSubmit = (word: string) => {
     if (gameMode.value === 'input') {
         words.value.push({
             word,
+            sender: {
+                id: user.value?.id,
+                name: user.value?.user_metadata?.name,
+                img: user.value?.user_metadata?.avatar_url
+            },
             guess: false,
             len: word.length,
             cipher: generateRandomString(word.length),
