@@ -3,32 +3,62 @@
         class="bg-gray-50 bg-opacity-5 backdrop-blur-lg backdrop-saturate-150 border rounded border-white flex flex-col h-full">
         <ChatHead
             :gameMode="gameMode"
-            :wordLength="wordLength"
-            :temp="temp"
+            :wordLength="messages?.length"
+            :feedback="feedback"
             @changeGameMode="changeGameMode" />
+            <!-- <pre>{{ users }}</pre> -->
         <ChatBody
-            :words="words"
+            :words="messages as any"
+            :users="users as any"
             :guessedCount="guessedCount"
             :gameMode="gameMode" />
+            <!-- <pre>{{ guessedCount }}</pre> -->
         <ChatBottom :gameMode="gameMode" @handleSubmit="handleSubmit" />
     </div>
-</template>
+    </template>
 
 <script lang="ts" setup>
+const route = useRoute()
+const { generateRandomString } = useUtilities()
+const gameId = route.params.gameid
+
 interface Word {
-    word: string
-    sender?: any
-    guess: boolean
-    len: number
+    id: number
+    createdAt: Date
+    content: string
     cipher: string
-}
+    isResolved: boolean
+    senderId: string
+    }
+    
+    const {data: messages, error: messagesError} = await useFetch(`/api/message/${gameId}`)
+    
+    const user = useSupabaseUser()
+    const supabase = useSupabaseClient()
+    
+    const gameMode = ref('input')
+    const feedback = ref('')
+    const guessedCount = computed(() => messages.value?.reduce((acc, w) => (w.isResolved ? acc + 1 : acc), 0))
+    
+    const nextWordToGuess = computed(
+        /* @ts-ignore */
+        () => words.value[words.value.length - guessedCount.value - 2],
+        )
+        
+        // TODO load users in game 
+        const { data: users } = await useFetch(`/api/user/${gameId}`)
+        // TODO GameMode should be in db
 
-const user = useSupabaseUser()
-const supabase = useSupabaseClient()
-
-const words: Ref<Word[] | any> = ref([])
-// LOAD GAME IF IT EXISTS
-const { data } = await useFetch('/api/999/full-game')
+    const changeGameMode = () => {
+        gameMode.value === 'input'
+        ? (gameMode.value = 'guess')
+        : (gameMode.value = 'input')
+        }
+        // const words: Ref<Word[] | any> = ref([])
+        // words.value = messages.value
+        // LOAD GAME IF IT EXISTS
+        // const { data } = await useFetch('/api/999/full-game')
+// words.value = data.value?.messages
 // words.value = data.value?.messages
 
 // subscribe to any change in the game
@@ -69,56 +99,43 @@ const { data } = await useFetch('/api/999/full-game')
 // }
 
 
-const channelA = supabase
-  .channel('update-any')
-  .on(
-    'postgres_changes',
-    {
-      event: 'UPDATE',
-      schema: 'public',
-      table: 'Game',
-    },
-    (payload) => {
-      console.log('43payload:', payload)
-    }
-  )
-  .subscribe((status) => {
-    if (status === 'SUBSCRIBED') {
-      console.log('Subscribed to the channel successfully')
-    } else if (status === 'CHANNEL_ERROR') {
-      console.error('Channel error occurred')
-    } else if (status === 'TIMED_OUT') {
-      console.error('Subscription timed out')
-    }
-  })
+// const channelA = supabase
+//   .channel('update-any')
+//   .on(
+//     'postgres_changes',
+//     {
+//       event: 'UPDATE',
+//       schema: 'public',
+//       table: 'Game',
+//     },
+//     (payload) => {
+//       console.log('43payload:', payload)
+//     }
+//   )
+//   .subscribe((status) => {
+//     if (status === 'SUBSCRIBED') {
+//       console.log('Subscribed to the channel successfully')
+//     } else if (status === 'CHANNEL_ERROR') {
+//       console.error('Channel error occurred')
+//     } else if (status === 'TIMED_OUT') {
+//       console.error('Subscription timed out')
+//     }
+//   })
 
 // console.log('posts:', posts.new.messages)
 
-const gameMode = ref('input')
 
 // const wordLength = computed(() => words.value.length)
 /* @ts-ignore */
-const wordLength = ref(data.value?.total_words)
+// const wordLength = ref(data.value?.total_words)
 // const guessedCount = computed(() =>
 //     words.value.reduce((acc, w) => (w.guess ? acc + 1 : acc), 0),
 // )
 
 /* @ts-ignore */
-const guessedCount = ref(data.value?.total_guesses)
 // console.log('guessedCount.value:', guessedCount.value)
-const nextWordToGuess = computed(
-    /* @ts-ignore */
-    () => words.value[words.value.length - guessedCount.value - 2],
-)
 //TODO: add cipher animation https://vuejs.org/guide/extras/animation.html#animation-techniques
 
-const temp = ref('')
-const changeGameMode = () => {
-    gameMode.value === 'input'
-        ? (gameMode.value = 'guess')
-        : (gameMode.value = 'input')
-}
-const { generateRandomString } = useUtilities()
 const handleSubmit = async (word: string) => {
     if (gameMode.value === 'input') {
         // GO TO API POST
@@ -148,12 +165,11 @@ const handleSubmit = async (word: string) => {
             /* @ts-ignore */
             guessedCount.value++
             nextWordToGuess.value.guess = true
-            temp.value = 'correct'
+            feedback.value = 'correct'
         } else {
-            temp.value = 'guess again'
+            feedback.value = 'guess again'
         }
     }
-    // console.log(JSON.stringify(words.value, null, 2))
 }
 </script>
 <!-- backdrop-blur-lg bg-myBlue md:rounded-xl backdrop-saturate-150 border border-myWhite flex w-dvw h-dvh md:w-[80vw] md:h-[90dvh] -->

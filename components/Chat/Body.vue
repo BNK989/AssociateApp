@@ -1,25 +1,26 @@
 <template>
     <section
         class="relative border border-blue-600 h-full overflow-y-scroll overflow-x-hidden">
+        <pre>pre{{ wordsWithUsers }}</pre>
         <TransitionGroup name="list" tag="ul" class="flex flex-col gap-3 my-2">
             <li
             v-for="(w, i) in words as Word[]"
             :key="w.cipher"
             class="flex items-center ms-2 gap-1">
-                <SvgCheckMark v-if="w.guess" />
-                <img :src="w.sender!.img" class="size-8 rounded-full" alt="Rounded avatar">
+                <SvgCheckMark v-if="w.isResolved" />
+                <img :src="wordsWithUsers[i].avatar" class="size-8 rounded-full" alt="Rounded avatar">
                 <div class="px-3 pt-1 pb-2 bg-blue-300 bg-opacity-10 w-min whitespace-nowrap">
-                    <small>{{ w.sender!.name }}</small>
                     
                     <p
-                        v-if="i < words!.length - 1"
+                    v-if="i < words!.length - 1"
                         class=" whitespace-nowrap"
                         :class="i === nextWordIdx ? 'font-bold' : ''">
-                        {{ w.guess ? w.word : w.cipher }}
-                    </p>
-                    <p v-else>
-                        {{ w.word }}
+                        {{ w.isResolved ? w.content : w.cipher }}
                         </p>
+                        <p v-else>
+                            {{ w.content }}
+                            </p>
+                        <small>{{ wordsWithUsers[i].userName }}</small>
                         </div>
                             <div v-if="i === nextWordIdx && gameMode === 'guess'" id="lastGuess">
                                 <SvgArrowRight class="rotate-180"/>
@@ -32,33 +33,43 @@
 
 <script lang="ts" setup>
 
-type Sender = {
-    id: string
-    name: string
-    img: string
-}
+
 interface Word {
-    word: string
-    sender?: Sender
-    guess: boolean
-    len: number
+    id: number
+    createdAt: Date
+    content: string
     cipher: string
+    isResolved: boolean
+    senderId: string
 }
+
+// const user = useSupabaseUser()
+
 const props = defineProps({
-    words: Array,
+    words: {type: Array as PropType<Word[]>, required: false},
+    users: {type: Array , required: false},
     guessedCount: Number,
     gameMode: String
 })
 
 const last = ref(null)
 const nextWordIdx = computed(() => props.words!.length - props.guessedCount! -2 )
+const wordsWithUsers = computed(() => {
+    return props.words?.map(w => {
+        // TODO fix if --> if the sender is you
+        // if(w.senderId === '') return 'You'
+        return props.users?.find(u => u?.id === w.senderId)
+    })
+})
+console.log('wordsWithUsers:', wordsWithUsers.value)
 
-const transFocus = async() => {
-    await nextTick()
-    last.value?.scrollIntoView({ behavior: 'smooth'})
-    }
+
+// const transFocus = async() => {
+//     await nextTick()
+//     last.value?.scrollIntoView({ behavior: 'smooth'})
+//     }
     
-    watch(props.words, transFocus)
+    // watch(props.words, transFocus)
     watch(()=>props.guessedCount, async () => {
         await nextTick()
         const lastGuessById = document.getElementById('lastGuess')

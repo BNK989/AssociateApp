@@ -9,13 +9,12 @@
             <li>
                 <button class="py-2 px-3 rounded-full bg-blue-700">Join an existing Game</button>
             </li>
-            
         </ul>
         <!-- <pre>{{ activeGames.data }}</pre> -->
         <ul>
 
-            <li v-for="game in activeGames.data.value">
-                <div>
+            <li v-for="game in activeGames.data.value" class="my-4">
+                <div class="flex flex-col gap-4 rounded bg-blue-900 max-w-56 p-2 cursor-pointer hover:bg-opacity-85" @click="navigateTo(`/game/${game.id}`)">
                     <h2>{{ game.title }}</h2>
                     <p>{{ game.status }}</p>
                 </div>
@@ -27,7 +26,7 @@
 <script lang="ts" setup>
 
 const user = useSupabaseUser()
-const email = user?.value?.email 
+const email = user?.value?.email
 
 const dbUserId = await useFetch(`/api/user/id?email=${email}`)
 const activeGames = await useFetch(`/api/all-games?user_id=${dbUserId.data.value?.id}`)
