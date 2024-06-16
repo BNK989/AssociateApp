@@ -3,20 +3,18 @@ const prisma = new PrismaClient()
 
 export default defineEventHandler(async (e) => {
 
-    const {title, user_id} = await readBody(e)
-
-    console.log('creating game', title, user_id)
+    const { user_id } = getQuery(e)
+    console.log('user_id', user_id)
 
     let res
 
     try {
-        res = await prisma.games.create({
-            data: {
-                title,
+        res = await prisma.games.findMany({
+            where: {
                 Users: {
-                    create: [{
-                        user: { connect: { id: user_id } },
-                    }]
+                    some: {
+                        UserId: user_id
+                    }
                 }
             }
         })
