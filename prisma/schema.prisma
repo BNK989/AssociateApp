@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Users {
+  id            String    @id @default(uuid()) @map("id") @db.Uuid
+  createdAt     DateTime  @default(now()) @db.Timestamptz(6)
+  avatar        String
+  userName      String
+  authinticator String?    
+  email         String     @unique
+  Games         UsersGames[]   
+  messages      Messages[]
+}
+
+model Games {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now()) @db.Timestamptz(6)
+  title         String
+  status        Status    @default(ACTIVE) 
+  Users         UsersGames[]   
+  messages      Messages[]
+}
+
+model UsersGames {
+  UserId        String  @db.Uuid
+  user          Users   @relation(fields: [UserId], references: [id])
+
+  GameId        Int
+  game          Games   @relation(fields: [GameId], references: [id])
+
+  @@id([UserId, GameId])
+}
+
+model Messages {
+  id            Int      @id @default(autoincrement())
+  createdAt     DateTime @default(now()) @db.Timestamptz(6)
+  content       String
+  cipher        String
+  isResolved    Boolean  @default(false)
+  gameId        Int     
+  Game          Games    @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  senderId      String   @db.Uuid
+  Sender        Users    @relation(fields: [senderId], references: [id], onDelete: Cascade)
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}

@@ -1,7 +1,10 @@
 <template>
     <section class="bg-gray-50 dark:bg-gray-900">
-        <div class="flex flex-col items-center  px-6 py-8 mx-auto md:h-screen lg:py-0">
-            <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+        <div
+            class="flex flex-col items-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+            <a
+                href="#"
+                class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
                 <img
                     class="w-8 h-8 mr-2"
                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
@@ -18,7 +21,7 @@
                     <div
                         class="my-4 flex items-center dark:text-gray-50 gap-2 whitespace-nowrap flex-wrap">
                         <button
-                        @click="googleLogin"
+                            @click="googleLogin"
                             class="border border-gray-600 rounded px-4 py-2 flex justify-center items-center w-full">
                             <svg
                                 class="w-5 h-5 mr-2 -ml-1"
@@ -41,17 +44,24 @@
                                 </g>
                                 <defs>
                                     <clipPath id="clip0_13183_10121">
-                                        <rect width="20" height="20" fill="white" transform="translate(0.5)"></rect>
+                                        <rect
+                                            width="20"
+                                            height="20"
+                                            fill="white"
+                                            transform="translate(0.5)"></rect>
                                     </clipPath>
                                 </defs>
                             </svg>
                             Log in with Google
                         </button>
-                       
                     </div>
-                    <form class="space-y-4 md:space-y-6" @submit.prevent="signupSignin">
+                    <form
+                        class="space-y-4 md:space-y-6"
+                        @submit.prevent="signupSignin">
                         <div>
-                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            <label
+                                for="email"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                 >Your email</label
                             >
                             <input
@@ -64,7 +74,9 @@
                                 required="true" />
                         </div>
                         <div>
-                            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            <label
+                                for="password"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                 >Password</label
                             >
                             <input
@@ -77,7 +89,9 @@
                                 required="true" />
                         </div>
                         <div v-if="isSignup">
-                            <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            <label
+                                for="confirm_password"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                 >Confirm Password</label
                             >
                             <input
@@ -100,7 +114,11 @@
                                         required="false" />
                                 </div>
                                 <div class="ml-3 text-sm">
-                                    <label for="remember" class="text-gray-500 dark:text-gray-300">Remember me</label>
+                                    <label
+                                        for="remember"
+                                        class="text-gray-500 dark:text-gray-300"
+                                        >Remember me</label
+                                    >
                                 </div>
                             </div>
                             <a
@@ -112,12 +130,22 @@
                         <button
                             type="submit"
                             class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                            Sign {{isSignup ? 'up' : 'in'}}
+                            Sign {{ isSignup ? 'up' : 'in' }}
                         </button>
-                        <p v-if="successMsg" class="font-light text-green-500 capitalize"> {{ successMsg }}</p>
-                        <p v-if="errMsg" class="font-light text-red-500 capitalize"> {{ errMsg }}</p>
-                        <button @click="isSignup = !isSignup" class="text-sm font-light text-gray-500 dark:text-gray-400">
-                            {{switchText}} Sign {{isSignup ? 'in' : 'up'}}
+                        <p
+                            v-if="successMsg"
+                            class="font-light text-green-500 capitalize">
+                            {{ successMsg }}
+                        </p>
+                        <p
+                            v-if="errMsg"
+                            class="font-light text-red-500 capitalize">
+                            {{ errMsg }}
+                        </p>
+                        <button
+                            @click="isSignup = !isSignup"
+                            class="text-sm font-light text-gray-500 dark:text-gray-400">
+                            {{ switchText }} Sign {{ isSignup ? 'in' : 'up' }}
                         </button>
                     </form>
                 </div>
@@ -128,7 +156,7 @@
 
 <script lang="ts" setup>
 const store = useStore()
-const {user: storeUser} = storeToRefs(store)
+const { user: storeUser } = storeToRefs(store)
 
 const isSignup = ref(false)
 const supabase = useSupabaseClient()
@@ -139,49 +167,61 @@ const confirmPw = ref('')
 const successMsg = ref('')
 const errMsg = ref('')
 const switchText = computed(() => {
-    return isSignup.value ? 'Already have an account?' : 'Don’t have an account yet?'
+    return isSignup.value
+        ? 'Already have an account?'
+        : 'Don’t have an account yet?'
 })
 
 const googleLogin = async () => {
-    try{
-        const { error } = await supabase.auth.signInWithOAuth({
-            provider: "google"})
-        if (error) throw error
-        piniaUser()
-    
-    }
-    catch(err){
-        console.error("there was an error", err)
+    console.log('google login')
+    try {
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: `${window.location.origin}/profile/callback`
+            },
+        })
+        if (error) throw new Error(`OAuth sign-in error: ${error.message}`)
+
+    } catch (err) {
+        console.error('there was an error at login', err)
     }
 }
 
-const signupSignin = () =>{ 
+const signupSignin = () => {
     successMsg.value = ''
     errMsg.value = ''
-    isSignup.value ? signup() : signin() 
+    isSignup.value ? signup() : signin()
 }
 
 const signup = async () => {
-    try{
-        if(pw.value !== confirmPw.value) throw new Error('passwords do not match')
-        const {data, error} = await supabase.auth.signUp({email: email.value, password: pw.value})
-        if(error) throw error
+    try {
+        if (pw.value !== confirmPw.value)
+            throw new Error('passwords do not match')
+        const { data, error } = await supabase.auth.signUp({
+            email: email.value,
+            password: pw.value,
+        })
+        if (error) throw error
         successMsg.value = 'Check your email to confirm your account'
-    } catch(error: any) {
-        console.error("there was an error", error)
+    } catch (error: any) {
+        console.error('there was an error', error)
         errMsg.value = error.message
     }
 }
 
 // TODO: NOT CHECKED!!!
 const signin = async () => {
-    try{
-        const {error} = await supabase.auth.signInWithPassword({email: email.value, password: pw.value})
-        if(error) throw error
+    try {
+        const { error } = await supabase.auth.signInWithPassword({
+            email: email.value,
+            password: pw.value,
+        })
+        if (error) throw error
         successMsg.value = 'Check your email to confirm your account'
         piniaUser()
-    } catch(error: any) {
-        console.error("there was an error", error)
+    } catch (error: any) {
+        console.error('there was an error', error)
         errMsg.value = error.message
     }
 }
