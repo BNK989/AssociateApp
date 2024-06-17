@@ -95,11 +95,11 @@
                             <div
                                 v-else
                                 class="flex items-center justify-start gap-3 px-3 bg-blue-200 bg-opacity-20 my-2 py-2 md:bg-opacity-0 md:my-0">
-                                <UserAvatar :user="user" />
+                                <UserAvatar :user="dbUser" />
                                 <button @click="logout" >logout</button>
                             </div>
                             <!-- <pre>{{ user?.email?.split('@')[0]}}</pre> -->
-                             <!-- <pre>{{storeUser}}</pre> -->
+                             <!-- <pre>pre: {{dbUser}}</pre> -->
                         </li>
                     </ul>
                 </div>
@@ -118,6 +118,7 @@ const { menuData: menu } = useLocalData()
 
 const user = useSupabaseUser()
 const supabase = useSupabaseClient()
+const {data: dbUser} = await useFetch(`/api/user/db-user?email=${user?.value?.email}`)
 
 const logout = async () => {
     try{

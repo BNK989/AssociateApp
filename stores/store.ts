@@ -1,17 +1,32 @@
 import { defineStore } from 'pinia'
 
+interface User {
+    id: string;
+    url: string;
+}
+interface State {
+    count: number;
+    user: User | null;
+    userId: string | null;
+}
+
 export const useStore = defineStore('store', {
-    state: () => ({
+    state: (): State => ({
         count: 99,
-        user: null
+        user: null,
+        userId: null
     }),
     actions: {
         increment() {
             this.count++
+        },
+        //UNUSED
+        setUser(user: User | null) {
+            this.user = user;
+        },
+        //UNUSED
+            setUserId(userId: string | null) {
+            this.userId = userId;
         }
     }
 })
-
-// if (import.meta.hot) {
-//     import.meta.hot.accept(acceptHMRUpdate(useStore, import.meta.hot))
-// }

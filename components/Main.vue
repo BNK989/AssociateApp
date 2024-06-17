@@ -21,6 +21,12 @@
 const route = useRoute()
 const { generateRandomString } = useUtilities()
 const gameId = route.params.gameid
+const store = useStore()
+const { user: storeUser } = storeToRefs(store)
+
+    useHead({
+        title: 'Chat' + gameId || ''
+    })
 
 interface Word {
     id: number
@@ -54,105 +60,21 @@ interface Word {
         ? (gameMode.value = 'guess')
         : (gameMode.value = 'input')
         }
-        // const words: Ref<Word[] | any> = ref([])
-        // words.value = messages.value
-        // LOAD GAME IF IT EXISTS
-        // const { data } = await useFetch('/api/999/full-game')
-// words.value = data.value?.messages
-// words.value = data.value?.messages
-
-// subscribe to any change in the game
-// const channelA = supabase
-// .channel('update-any')
-// .on(
-//     'postgres_changes',
-//         {
-//             event: 'UPDATE',
-//             schema: 'public',
-//             table: 'Game',
-//             // filter: 'id=eq.999'
-//         },
-//         (payload) => {
-//             const eventType = payload.eventType
-//             const newRecord = payload.new
-//             const oldRecord = payload.old //retruns id of old record
-//             console.log('43payload:', payload.errors[0])
-
-//             /* @ts-ignore */
-//             // words.value = payload.new.messages
-//         },
-//     )
-//     .subscribe()
-
-// /* @ts-ignore */
-// const { data, error } = await supabase.auth.getSession()
-
-// if (error) {
-//   console.error('Error getting session:', error)
-//   await supabase.auth.signInWithPassword({
-//     email: 'your-email@example.com',
-//     password: 'your-password'
-//   })
-// } else {
-//     /* @ts-ignore */
-//   data.user.value = authenticatedUser
-// }
-
-
-// const channelA = supabase
-//   .channel('update-any')
-//   .on(
-//     'postgres_changes',
-//     {
-//       event: 'UPDATE',
-//       schema: 'public',
-//       table: 'Game',
-//     },
-//     (payload) => {
-//       console.log('43payload:', payload)
-//     }
-//   )
-//   .subscribe((status) => {
-//     if (status === 'SUBSCRIBED') {
-//       console.log('Subscribed to the channel successfully')
-//     } else if (status === 'CHANNEL_ERROR') {
-//       console.error('Channel error occurred')
-//     } else if (status === 'TIMED_OUT') {
-//       console.error('Subscription timed out')
-//     }
-//   })
-
-// console.log('posts:', posts.new.messages)
-
-
-// const wordLength = computed(() => words.value.length)
-/* @ts-ignore */
-// const wordLength = ref(data.value?.total_words)
-// const guessedCount = computed(() =>
-//     words.value.reduce((acc, w) => (w.guess ? acc + 1 : acc), 0),
-// )
-
-/* @ts-ignore */
-// console.log('guessedCount.value:', guessedCount.value)
+      
 //TODO: add cipher animation https://vuejs.org/guide/extras/animation.html#animation-techniques
-
+let realtimeChannel//: RealtimeChannel
 const handleSubmit = async (word: string) => {
     if (gameMode.value === 'input') {
         // GO TO API POST
         const body = {
-            word,
-            sender: {
-                id: user.value?.id,
-                name: user.value?.user_metadata?.name,
-                img: user.value?.user_metadata?.avatar_url,
-            },
-            guess: false,
-            len: word.length,
+            content: word,
             cipher: generateRandomString(word.length),
+            gameId,
+            senderId: storeUser.value.id,
         }
 
         try {
-            const res = await $fetch(`/api/${999}/message`, {
+            const res = await $fetch(`/api/message/send`, {
                 method: 'POST',
                 body,
             })
@@ -160,17 +82,45 @@ const handleSubmit = async (word: string) => {
         } catch (err) {
             console.error('there was an error', err)
         }
-    } else {
-        if (word === nextWordToGuess.value.word) {
-            /* @ts-ignore */
-            guessedCount.value++
-            nextWordToGuess.value.guess = true
-            feedback.value = 'correct'
-        } else {
-            feedback.value = 'guess again'
-        }
-    }
+    } 
+    // else {
+    //     if (word === nextWordToGuess.value.word) {
+    //         /* @ts-ignore */
+    //         guessedCount.value++
+    //         nextWordToGuess.value.guess = true
+    //         feedback.value = 'correct'
+    //     } else {
+    //         feedback.value = 'guess again'
+    //     }
+    // }
 }
+
+const { data: asyncMessages } = await useAsyncData('messages', async () => {
+  const { data } = await supabase.from('messages').select('id, contents, cipher')//.eq('id', 1).order('created_at')
+    console.log('asyncMessages', data)
+  return data
+})
+
+onMounted(() => {
+    realtimeChannel = supabase
+        .channel('public:Messages')
+        .on('postgres_changes', { 
+            event: 'INSERT',
+            schema: 'public',
+            table: 'Messages'
+        },
+        (payload) => {
+            console.log('payload', payload)
+        })
+
+    realtimeChannel.subscribe()
+})
+
+console.log('realtimeChannel:', realtimeChannel)
+
+onUnmounted(() => {
+    supabase.removeChannel(realtimeChannel)
+})
 </script>
 <!-- backdrop-blur-lg bg-myBlue md:rounded-xl backdrop-saturate-150 border border-myWhite flex w-dvw h-dvh md:w-[80vw] md:h-[90dvh] -->
 <style>

@@ -3,7 +3,6 @@ const prisma = new PrismaClient()
 
 export default defineEventHandler(async (e) => {
     const gameId = +e.context.params.game
-    console.log('gameId:', gameId)
 
     let res
 
