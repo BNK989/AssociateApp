@@ -64,15 +64,11 @@ function mapWords() {
     return props.words?.map(w => props.users?.find(u => u?.id === w.senderId))
 }
 
-// const transFocus = async() => {
-//     await nextTick()
-//     last.value?.scrollIntoView({ behavior: 'smooth'})
-//     }
+const transFocus = async () => {
+    await nextTick()
+    last.value?.scrollIntoView({ behavior: 'smooth'})
+}
     
-    // watch(props.words, transFocus)
-    watch(()=>props.guessedCount, async () => {
-        await nextTick()
-        const lastGuessById = document.getElementById('lastGuess')
-        lastGuessById?.scrollIntoView({ behavior: 'smooth'})
-    })
+watch(() => props.words.length, async () => await transFocus())
+
 </script>
