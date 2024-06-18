@@ -32,7 +32,6 @@
 </template>
 
 <script lang="ts" setup>
-/* @ts-nocheck */
 
 
 interface Word {
@@ -44,7 +43,6 @@ interface Word {
     senderId: string
 }
 
-// const user = useSupabaseUser()
 
 const props = defineProps({
     words: {type: Array as PropType<Word[]>, required: false},

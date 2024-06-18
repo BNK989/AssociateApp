@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@nuxtjs/supabase', '@vueuse/nuxt',// {
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@nuxtjs/supabase', '@vueuse/nuxt', // {
   //   autoImports: ['defineStore', 'acceptHMRUpdate']
   // },
   '@pinia/nuxt', "@nuxt/image"],
