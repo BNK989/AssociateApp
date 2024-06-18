@@ -18,6 +18,9 @@
     </template>
 
 <script lang="ts" setup>
+import { createClient } from '@supabase/supabase-js'
+
+
 const route = useRoute()
 const { generateRandomString } = useUtilities()
 const gameId = route.params.gameid
@@ -36,8 +39,23 @@ interface Word {
     isResolved: boolean
     senderId: string
     }
+    const messages = ref<Word[] | null>([])
+
+    const loadMessages = async () => {
+        console.log('loading messages for game', gameId)
+        try{
+            const data = await $fetch(`/api/message/${gameId}`)
+            if(!data) throw new Error('could not load messages')
+
+            //@ts-ignore
+            messages.value = data
+        }
+        catch(err){
+        console.error("there was an error", err)
+        }
+    }
     
-    const {data: messages, error: messagesError} = await useFetch(`/api/message/${gameId}`)
+    // const {data: messages, error: messagesError} = await useFetch(`/api/message/${gameId}`)
     
     const user = useSupabaseUser()
     const supabase = useSupabaseClient()
@@ -101,16 +119,22 @@ const { data: asyncMessages } = await useAsyncData('messages', async () => {
   return data
 })
 
+
+// ****** MY FUNCTION START ******
 onMounted(() => {
+    loadMessages();
     realtimeChannel = supabase
         .channel('public:Messages')
         .on('postgres_changes', { 
             event: 'INSERT',
             schema: 'public',
-            table: 'Messages'
+            table: 'Messages',
+            // filter: `gameId=eq.${gameId}`
+
         },
         (payload) => {
             console.log('payload', payload)
+            loadMessages()
         })
 
     realtimeChannel.subscribe()
@@ -121,6 +145,34 @@ console.log('realtimeChannel:', realtimeChannel)
 onUnmounted(() => {
     supabase.removeChannel(realtimeChannel)
 })
+
+// ****** MY FUNCTION END ******
+
+// ********** GPT FUNCTION START **********
+// onMounted(() => {
+//     const supabase = createClient('https://kyaoiarnnjcubothnkpy.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5YW9pYXJubmpjdWJvdGhua3B5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTgwMTU4MTYsImV4cCI6MjAzMzU5MTgxNn0.SSGhZVQ_adAm01U6VUDl-W-gvfT4WJ8dgvUyY4Fcu0w'); // Ensure you have initialized Supabase client
+
+//     const realtimeChannel = supabase
+//         .channel('public:Messages')
+//         .on('postgres_changes', { 
+//             event: '*',
+//             schema: 'public',
+//             table: 'Messages'
+//         }, 
+//         (payload) => {
+//             console.log('payload', payload);
+//         });
+
+//     realtimeChannel.subscribe()
+//         .on('SUBSCRIBED', () => {
+//             console.log('Subscribed to realtime updates for Messages');
+//         })
+//         .on('ERROR', (error) => {
+//             console.error('Subscription error:', error);
+//         });
+// });
+// ********** GPT FUNCTION START **********
+
 </script>
 <!-- backdrop-blur-lg bg-myBlue md:rounded-xl backdrop-saturate-150 border border-myWhite flex w-dvw h-dvh md:w-[80vw] md:h-[90dvh] -->
 <style>

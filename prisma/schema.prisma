@@ -17,12 +17,15 @@ model Users {
   email         String     @unique
   Games         UsersGames[]   
   messages      Messages[]
+
+  @@index([email])
 }
 
 model Games {
   id            Int       @id @default(autoincrement())
   createdAt     DateTime  @default(now()) @db.Timestamptz(6)
   title         String
+  GameMode      GameMode  @default(INPUT)
   status        Status    @default(ACTIVE) 
   Users         UsersGames[]   
   messages      Messages[]
@@ -53,4 +56,9 @@ model Messages {
 enum Status {
   ACTIVE
   INACTIVE
+}
+
+enum GameMode {
+  INPUT
+  SOLVE
 }
