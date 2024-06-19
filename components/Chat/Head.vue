@@ -14,7 +14,7 @@
             Add Player
         </button>
     </section>
-    <dialog ref="modal" class="w-2/3 bg-transparent backdrop:blur-2xl backdrop:bg-slate-950 backdrop:opacity-80">
+    <dialog ref="modal" class="bg-bkg text-content backdrop:blur-2xl backdrop:bg-slate-950 backdrop:opacity-80">
         <transition>
             <ModalAddUser @closeModal="modal.close()"/>
         </transition>

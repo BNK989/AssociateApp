@@ -1,12 +1,12 @@
 <template>
-    <div class="z-50 justify-center items-center w-full h-modal md:h-full">
+    <div class="min-w-96 z-50 justify-center items-center w-full h-modal md:h-full md:w-[40dvw]">
         <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
             <!-- Modal content -->
             <div
                 class="relative p-4 rounded-lg shadow sm:p-5">
                 <!-- Modal header -->
                 <div
-                    class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5">
+                    class="flex justify-between items-center pb-4 mb-4 rounded-t sm:mb-5">
                     <h3
                         class="text-lg font-semibold">
                         Add Player
@@ -42,17 +42,16 @@
                             type="text"
                             name="name"
                             id="name"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            class="bg-bkg border border-accent-2/40 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                             placeholder="Type player name" />
                 </div>
                 <form action="#">
                     <div
-                        class="grid gap-4 mb-4 bg-blue-950 p-4 rounded min-h-96">
-                        <ul
-                            class="flex flex-col divide-y-2 gap-2 divide-y-blue-900 ">
-                            <li v-for="p in players" class="flex justify-between items-center">
+                        class="grid gap-4 mb-4 border border-accent-2/40 p-4 rounded min-h-96">
+                        <ul class="flex flex-col gap-4 divide-y divide-accent-2/40 ">
+                            <li v-for="p in players" class="flex justify-between items-center box-border pt-4">
                                 <span>{{p.userName}}</span
-                                ><span><button @click="addPlayerToGame(p.id)" class="px-3 py-2 bg-blue-800 rounded-full">Add</button></span>
+                                ><span><button @click="addPlayerToGame(p.id)" class="px-6 py-2 bg-blue-800 rounded-full">Add</button></span>
                             </li>
                         </ul>
 

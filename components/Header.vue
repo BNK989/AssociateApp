@@ -69,7 +69,7 @@
                         </li>
                         <li class="flex flex-col md:flex-row">
                             <button
-                                class="m-4 md: my-0"
+                                class="m-4 md: my-0 hover:bg-content/10 p-2 rounded"
                                 @click="toggleTheme">
                                 <SvgDarkMode :isDark="isDark" />
                             </button>
@@ -79,12 +79,12 @@
                                 class="flex items-center justify-evenly bg-blue-200 bg-opacity-20 my-2 md:bg-opacity-0 md:my-0">
                                 <NuxtLink
                                     to="/profile/login"
-                                    class="hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+                                    class="hover:bg-content/10 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
                                     >Log in</NuxtLink
                                 >
                                 <NuxtLink
                                     to="/profile/login"
-                                    class="bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+                                    class="hover:bg-content/10 bg-primary-700 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
                                     >Get started</NuxtLink
                                 >
                             </div>
