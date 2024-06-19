@@ -48,7 +48,6 @@ const createNewGame = async () => {
             user_id: dbUserId.data.value.id
          }
       })
-
 }
 
 </script>

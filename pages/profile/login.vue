@@ -166,7 +166,6 @@ const switchText = computed(() => {
 })
 
 const googleLogin = async () => {
-    console.log('google login')
     try {
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'google',

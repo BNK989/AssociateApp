@@ -3,7 +3,6 @@ const prisma = new PrismaClient()
 
 export default defineEventHandler(async (e) => {
     const { email } = getQuery(e)
-    console.log('email:', email)
 
     let res
 
@@ -12,6 +11,12 @@ export default defineEventHandler(async (e) => {
             where: {
                 email,
             },
+            select: {
+                id: true,
+                avatar: true,
+                userName: true,
+                email: true,
+            }
         })
 
         if (!res) throw new Error(`game id: ${gameId} not found`)

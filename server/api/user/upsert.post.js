@@ -21,19 +21,4 @@ export default defineEventHandler(async (e) => {
         return {success: false, error: error.message}
     }
 
-    // let res
-
-    // try {
-    //     res = await prisma.users.create({
-    //         data: body
-    //     })
-
-    //     if (!res) throw new Error(`game id: ${gameId} not found`)
-
-    // } catch (err) {
-    //     console.error('there was an error', err)
-    // }
-
-    // return res
-
 })

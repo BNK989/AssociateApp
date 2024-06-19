@@ -4,7 +4,6 @@ const prisma = new PrismaClient()
 export default defineEventHandler(async (e) => {
 
     const { user_id } = getQuery(e)
-    console.log('user_id', user_id)
 
     let res
 

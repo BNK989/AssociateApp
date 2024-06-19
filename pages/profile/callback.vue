@@ -22,10 +22,12 @@
       console.log('User data:', userEmail, full_name, avatar_url)
   
       // Upsert user into your database
-      await $fetch('/api/user/upsert', {
+      const {user: newUser} = await $fetch('/api/user/upsert', {
         method: 'POST',
         body: { email: userEmail, name: full_name, avatar: avatar_url }
       })
+
+      store.setUser(newUser)
   
       // Redirect to the desired page after successful login
       router.push('/')

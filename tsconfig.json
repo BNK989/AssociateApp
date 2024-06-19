@@ -4,6 +4,10 @@
   "compilerOptions": {
     "strict": false, // Turn off all strict type-checking options
     "noImplicitAny": false, // Allow expressions and declarations with an implied 'any' type
-    "strictNullChecks": false // Allow null and undefined to be assigned to any type
+    "strictNullChecks": false, // Allow null and undefined to be assigned to any type
+    // "paths": {
+    //   "@/*": ["./*"],
+    //   "@types/*": ["./types/*"]
+    // }
   }
 }
