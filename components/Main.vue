@@ -65,7 +65,7 @@ const guessedCount = computed(() => messages.value?.reduce((acc, w) => (w.isReso
 
 const nextWordToGuess = computed(
     /* @ts-ignore */
-    () => words.value[words.value.length - guessedCount.value - 2],
+    () => messages.value[messages.value.length - guessedCount.value - 2],
 )
     
 // TODO load users in game 
@@ -81,10 +81,24 @@ const changeGameMode = () => {
 //TODO: add cipher animation https://vuejs.org/guide/extras/animation.html#animation-techniques
 let realtimeChannel //: RealtimeChannel
 
-const handleSubmit = async (word: string) => {
-    if (gameMode.value === 'input') {
-        // GO TO API POST
-        const body = {
+const handleSubmit = (word: string) => {
+    if (gameMode.value === 'input') addWord(word)
+    else guessWord(word)
+
+    // else {
+    //     if (word === nextWordToGuess.value.word) {
+    //         /* @ts-ignore */
+    //         guessedCount.value++
+    //         nextWordToGuess.value.guess = true
+    //         feedback.value = 'correct'
+    //     } else {
+    //         feedback.value = 'guess again'
+    //     }
+    // }
+}
+
+async function addWord(word: string) {
+    const body = {
             content: word,
             cipher: generateRandomString(word.length),
             gameId,
@@ -101,18 +115,28 @@ const handleSubmit = async (word: string) => {
             console.error('there was an error', err)
         }
     } 
-    // else {
-    //     if (word === nextWordToGuess.value.word) {
-    //         /* @ts-ignore */
-    //         guessedCount.value++
-    //         nextWordToGuess.value.guess = true
-    //         feedback.value = 'correct'
-    //     } else {
-    //         feedback.value = 'guess again'
-    //     }
-    // }
-}
 
+async function guessWord(word: string) {
+
+    const body = {
+        guess: word,
+        wordId: nextWordToGuess.value.id
+    }
+
+    try{
+        const res = await $fetch(`/api/message/guess`, {
+            method: 'PUT',
+            body,
+        })
+        if (!res) throw new Error('could not guess word')
+        else feedback.value = 'Correct'
+    
+    }
+    catch(err){
+        console.error("there was an error", err)
+        feedback.value = 'Guess Again'
+    }
+}
 // const { data: asyncMessages } = await useAsyncData('messages', async () => {
 //   const { data } = await supabase.from('messages').select('id, contents, cipher')//.eq('id', 1).order('created_at')
 //     console.log('asyncMessages', data)
@@ -126,7 +150,7 @@ onMounted(() => {
     realtimeChannel = supabase
         .channel('public:Messages')
         .on('postgres_changes', { 
-            event: 'INSERT',
+            event: '*',
             schema: 'public',
             table: 'Messages',
             filter: `gameId=eq.${gameId}`
@@ -134,8 +158,8 @@ onMounted(() => {
         (payload) => {
             console.log('payload', payload)
             // loadMessages()
-            
-            messages.value.push(payload?.new as Word)
+            if (payload.eventType === 'INSERT') messages.value.push(payload?.new as Word)
+            else loadMessages()
         })
 
     realtimeChannel.subscribe()
