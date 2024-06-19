@@ -5,7 +5,7 @@
         <TransitionGroup name="list" tag="ul" class="flex flex-col gap-3 my-2">
             <li
             v-for="(w, i) in words as Word[]"
-            :key="w.cipher"
+            :key="w.id"
             class="flex items-center ms-2 gap-1">
                 <SvgCheckMark v-if="w.isResolved" />
                 <NuxtImg :src="wordsWithUsers[i].avatar" class="size-8 rounded-full" alt="Rounded avatar"/>
@@ -20,7 +20,7 @@
                         <p v-else>
                             {{ w.content }}
                             </p>
-                        <small>{{ wordsWithUsers[i].id === storeUser.id ? 'You' : wordsWithUsers[i].name }}</small>
+                        <small>{{ wordsWithUsers[i].id === storeUser.id ? 'You' : wordsWithUsers[i].userName }}</small>
                         </div>
                             <div v-if="i === nextWordIdx && gameMode === 'guess'" id="lastGuess">
                                 <SvgArrowRight class="rotate-180"/>
@@ -32,16 +32,8 @@
 </template>
 
 <script lang="ts" setup>
-
-
-interface Word {
-    id: number
-    createdAt: Date
-    content: string
-    cipher: string
-    isResolved: boolean
-    senderId: string
-}
+// import type { WordAndUser } from '@/types/user'
+import type { Word } from '@/types/word'
 
 
 const props = defineProps({
@@ -54,7 +46,8 @@ const store = useStore()
 const { user: storeUser } = storeToRefs(store)
 const last = ref(null)
 const nextWordIdx = computed(() => props.words!.length - props.guessedCount! -2 )
-const wordsWithUsers = computed(mapWords)
+//@ts-ignore
+const wordsWithUsers: WordAndUser[] = computed(mapWords)
 watch(()=>storeUser.value, mapWords)
 
 function mapWords() {

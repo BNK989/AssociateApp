@@ -1,5 +1,5 @@
 <template>
-    <pre>2{{ gameMode }}</pre>
+    <!-- <pre>2{{ messages }}</pre> -->
     <div
         class="backdrop-blur-lg backdrop-saturate-150 border rounded border-white flex flex-col h-full">
         <ChatHead
@@ -19,8 +19,8 @@
 </template>
 
 <script lang="ts" setup>
+import type { Word } from '@/types/word'
 import { createClient } from '@supabase/supabase-js'
-// import { logger } from 'nuxt/kit'
 
 const route = useRoute()
 const { generateRandomString } = useUtilities()
@@ -31,19 +31,10 @@ const feedback = ref('')
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
 
-interface Word {
-    id: number
-    createdAt: Date
-    content: string
-    cipher: string
-    isResolved: boolean
-    senderId: string
-}
 
 const messages = ref<Word[] | null>([])
 
 const loadMessages = async () => {
-    console.log('loading messages for game', gameId)
     try {
         const data = await $fetch(`/api/message/${gameId}`)
         if (!data) throw new Error('could not load messages')
@@ -55,7 +46,6 @@ const loadMessages = async () => {
     }
 }
 const loadGame = async () => {
-    console.log('loading game...', gameId)
     try {
         const data = await $fetch(`/api/${gameId}/full-game`)
         if (!data) throw new Error('could not load messages')
