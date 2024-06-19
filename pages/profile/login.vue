@@ -9,7 +9,7 @@
                     alt="logo" />
                 Associate
             </a>
-            <div class="w-full rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
+            <div class="w-full rounded-lg shadow-xl shadow-accent-2/10 md:mt-0 sm:max-w-md xl:p-0 border border-accent-2/60 ">
                 <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                     <h1
                         class="text-xl font-bold leading-tight tracking-tight md:text-2xl">
@@ -66,7 +66,7 @@
                                 name="email"
                                 v-model="email"
                                 id="email"
-                                class="bg-gray-50 border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                class="bg-bkg border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                                 placeholder="name@company.com"
                                 required="true" />
                         </div>
@@ -82,7 +82,7 @@
                                 v-model="pw"
                                 id="password"
                                 placeholder="••••••••"
-                                class="border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                class="border bg-bkg border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                                 required="true" />
                         </div>
                         <div v-if="isSignup">
@@ -122,7 +122,7 @@
                         </div>
                         <button
                             type="submit"
-                            class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                            class="w-full text-white bg-accent-2/50 hover:bg-accent-2/75 duration-300 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                             Sign {{ isSignup ? 'up' : 'in' }}
                         </button>
                         <p
