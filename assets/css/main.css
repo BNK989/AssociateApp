@@ -6,15 +6,21 @@
     :root {
         --color-bkg: 210deg 40% 98%;
         --color-content: 217deg 32% 17%;
-        --color-accent1: 288deg 96% 91%; 
+        --color-accent1: 288deg 96% 91%;
         --color-accent2: 168deg 84% 78%;
     }
     @media (prefers-color-scheme: dark) {
         :root {
             --color-bkg: 217deg 32% 17%;
             --color-content: 210deg 40% 98%;
-            --color-accent1: 288deg 96% 60%; 
+            --color-accent1: 288deg 96% 60%;
             --color-accent2: 168deg 84% 48%;
         }
+    }
+    :root[data-theme='dark'] {
+        --color-bkg: 217deg 32% 17%;
+        --color-content: 210deg 40% 98%;
+        --color-accent1: 288deg 96% 60%;
+        --color-accent2: 168deg 84% 48%;
     }
 }

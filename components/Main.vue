@@ -18,8 +18,8 @@
     </template>
 
 <script lang="ts" setup>
-import { createClient } from '@supabase/supabase-js'
 
+import { createClient } from '@supabase/supabase-js'
 
 const route = useRoute()
 const { generateRandomString } = useUtilities()
@@ -27,9 +27,9 @@ const gameId = route.params.gameid
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
 
-    useHead({
-        title: 'Chat' + gameId || ''
-    })
+useHead({
+    title: 'Chat' + gameId || ''
+})
 
 interface Word {
     id: number
@@ -38,49 +38,49 @@ interface Word {
     cipher: string
     isResolved: boolean
     senderId: string
-    }
-    const messages = ref<Word[] | null>([])
+}
 
-    const loadMessages = async () => {
-        console.log('loading messages for game', gameId)
-        try{
-            const data = await $fetch(`/api/message/${gameId}`)
-            if(!data) throw new Error('could not load messages')
+const messages = ref<Word[] | null>([])
 
-            //@ts-ignore
-            messages.value = data
-        }
-        catch(err){
-        console.error("there was an error", err)
-        }
+const loadMessages = async () => {
+    console.log('loading messages for game', gameId)
+    try{
+        const data = await $fetch(`/api/message/${gameId}`)
+        if(!data) throw new Error('could not load messages')
+
+        //@ts-ignore
+        messages.value = data
     }
-    
-    // const {data: messages, error: messagesError} = await useFetch(`/api/message/${gameId}`)
-    
-    const user = useSupabaseUser()
-    const supabase = useSupabaseClient()
-    
-    const gameMode = ref('input')
-    const feedback = ref('')
-    const guessedCount = computed(() => messages.value?.reduce((acc, w) => (w.isResolved ? acc + 1 : acc), 0))
-    
-    const nextWordToGuess = computed(
-        /* @ts-ignore */
-        () => words.value[words.value.length - guessedCount.value - 2],
-        )
+    catch(err){
+    console.error("there was an error", err)
+    }
+}
         
-        // TODO load users in game 
-        const { data: users } = await useFetch(`/api/user/${gameId}`)
-        // TODO GameMode should be in db
+const user = useSupabaseUser()
+const supabase = useSupabaseClient()
 
-    const changeGameMode = () => {
-        gameMode.value === 'input'
-        ? (gameMode.value = 'guess')
-        : (gameMode.value = 'input')
-        }
+const gameMode = ref('input')
+const feedback = ref('')
+const guessedCount = computed(() => messages.value?.reduce((acc, w) => (w.isResolved ? acc + 1 : acc), 0))
+
+const nextWordToGuess = computed(
+    /* @ts-ignore */
+    () => words.value[words.value.length - guessedCount.value - 2],
+)
+    
+// TODO load users in game 
+const { data: users } = await useFetch(`/api/user/${gameId}`)
+// TODO GameMode should be in db
+
+const changeGameMode = () => {
+    gameMode.value === 'input'
+    ? (gameMode.value = 'guess')
+    : (gameMode.value = 'input')
+}
       
 //TODO: add cipher animation https://vuejs.org/guide/extras/animation.html#animation-techniques
-let realtimeChannel//: RealtimeChannel
+let realtimeChannel //: RealtimeChannel
+
 const handleSubmit = async (word: string) => {
     if (gameMode.value === 'input') {
         // GO TO API POST
@@ -113,11 +113,11 @@ const handleSubmit = async (word: string) => {
     // }
 }
 
-const { data: asyncMessages } = await useAsyncData('messages', async () => {
-  const { data } = await supabase.from('messages').select('id, contents, cipher')//.eq('id', 1).order('created_at')
-    console.log('asyncMessages', data)
-  return data
-})
+// const { data: asyncMessages } = await useAsyncData('messages', async () => {
+//   const { data } = await supabase.from('messages').select('id, contents, cipher')//.eq('id', 1).order('created_at')
+//     console.log('asyncMessages', data)
+//   return data
+// })
 
 
 // ****** MY FUNCTION START ******
@@ -129,12 +129,13 @@ onMounted(() => {
             event: 'INSERT',
             schema: 'public',
             table: 'Messages',
-            // filter: `gameId=eq.${gameId}`
-
+            filter: `gameId=eq.${gameId}`
         },
         (payload) => {
             console.log('payload', payload)
-            loadMessages()
+            // loadMessages()
+            
+            messages.value.push(payload?.new as Word)
         })
 
     realtimeChannel.subscribe()

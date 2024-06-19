@@ -70,11 +70,7 @@
                         <li class="flex flex-col md:flex-row">
                             <button
                                 class="m-4 md: my-0"
-                                @click="
-                                    colorMode.preference === 'light'
-                                        ? (colorMode.preference = 'dark')
-                                        : (colorMode.preference = 'light')
-                                ">
+                                @click="toggleTheme">
                                 <SvgDarkMode :isDark="isDark" />
                             </button>
 
@@ -119,6 +115,11 @@ const { menuData: menu } = useLocalData()
 const user = useSupabaseUser()
 const supabase = useSupabaseClient()
 const {data: dbUser} = await useFetch(`/api/user/db-user?email=${user?.value?.email}`)
+
+const toggleTheme = () => {
+    colorMode.preference = colorMode.preference === 'light' ? 'dark' : 'light'
+    useHead({htmlAttrs: {'data-theme': colorMode.preference}})
+}
 
 const logout = async () => {
     try{

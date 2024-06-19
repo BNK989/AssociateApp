@@ -7,13 +7,12 @@ export default defineEventHandler(async (e) => {
     let res
 
     try {
-
         res = await prisma.messages.findMany({
             where: {
                 gameId,
             },
             orderBy: {
-                createdAt: 'asc'
+                createdAt: 'asc',
             },
             select: {
                 id: true,
@@ -21,17 +20,14 @@ export default defineEventHandler(async (e) => {
                 content: true,
                 cipher: true,
                 isResolved: true,
-                senderId: true
+                senderId: true,
             },
         })
 
         if (!res) throw new Error(`game id: ${gameId} not found`)
-
-
     } catch (err) {
         console.error('there was an error', err)
     }
 
     return res
-
 })

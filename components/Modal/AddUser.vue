@@ -8,7 +8,7 @@
                 <div
                     class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5">
                     <h3
-                        class="text-lg font-semibold text-gray-900">
+                        class="text-lg font-semibold">
                         Add Player
                     </h3>
                     <button
@@ -83,7 +83,7 @@ onMounted(() => {
 const getPlayers = async () => {    
     const qPlayers = await $fetch(`/api/user/all-users${q.value ? `?userName=${q.value}` : ''}`, {method: 'GET'})
     players.value = qPlayers
-    }
+}
 
 const addPlayerToGame = async (id) => {
     await $fetch(`/api/${1}/add-user`, {
