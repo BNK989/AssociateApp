@@ -16,6 +16,18 @@ export default defineEventHandler(async (e) => {
                         UserId: user_id
                     }
                 }
+            },
+            include: {
+                Users: {
+                    select: {
+                        user: {
+                            select: {
+                                email: true,                                
+                                userName: true
+                            }
+                        }
+                    }
+                }
             }
         })
 

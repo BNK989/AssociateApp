@@ -1,23 +1,24 @@
 <template>
     <div>
-        <h1 class="text-3xl font-bold">Welcome to the home page</h1>
-        <pre>{{ email }} {{ userId }}</pre>
+        <h1 class="text-3xl font-bold">Welcome</h1>
         <ul class="my-4 flex gap-4">
             <li>
-                <button @click="createNewGame" class="py-2 px-3 rounded-full bg-blue-700">Start a new Game</button>
+                <button @click="createNewGame" class="py-2 px-3 rounded-full bg-accent-3">Start a new Game</button>
             </li>
             <li>
-                <button class="py-2 px-3 rounded-full bg-blue-700">Join an existing Game</button>
+                <button class="py-2 px-3 rounded-full bg-accent-3">Join an existing Game</button>
             </li>
         </ul>
-        <!-- <pre>{{ activeGames.data }}</pre> -->
         <ul>
 
             <li v-for="game in activeGames.data.value" class="my-4">
                 <nuxt-link :to="`/game/${game.id}`">
-                    <div class="flex flex-col gap-4 rounded bg-blue-900 max-w-56 p-2 cursor-pointer hover:bg-opacity-85">
+                    <div class="flex flex-col gap-4 rounded bg-accent-3/80 max-w-56 p-3 cursor-pointer hover:bg-accent-3/50 duration-300">
                         <h2>{{ game.title }}</h2>
                         <p>{{ game.status }}</p>
+                        <ul class="flex gap-2 flex-wrap">
+                            <li v-for="p in game.Users" class="bg-accent-2/30 px-2 rounded-full ">{{ p.user.email === email ? 'You' : p.user.userName }}</li>
+                        </ul>
                     </div>
                 </nuxt-link>
             </li>
