@@ -4,17 +4,17 @@
         <p>Words to recall : {{ wordLength - 1 }}</p>
         <p>{{ feedback }}</p>
         <button
-            class="px-3 py-2 bg-blue-600 my-2 rounded-full"
+            class="px-3 py-2 bg-accent-3 my-2 rounded-full"
             @click="$emit('changeGameMode')">
             Switch to {{ gameMode === 'INPUT' ? 'guess' : 'input' }}
         </button>
         <button
-            class="px-3 py-2 bg-blue-600 my-2 rounded-full"
+            class="px-3 py-2 bg-accent-3 my-2 rounded-full"
             @click="showModal">
             Add Player
         </button>
     </section>
-    <dialog ref="modal" class="bg-bkg text-content backdrop:blur-2xl backdrop:bg-slate-950 backdrop:opacity-80">
+    <dialog ref="modal" class="bg-bkg text-content backdrop:blur-2xl backdrop:bg-black/50 rounded">
         <transition>
             <ModalAddUser @closeModal="modal.close()"/>
         </transition>

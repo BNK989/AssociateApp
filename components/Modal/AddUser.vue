@@ -1,5 +1,5 @@
 <template>
-    <div class="min-w-96 z-50 justify-center items-center w-full h-modal md:h-full md:w-[40dvw]">
+    <div class="min-w-96 z-50 justify-center items-center rounded w-full h-modal md:h-full md:w-[40dvw]">
         <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
             <!-- Modal content -->
             <div
@@ -42,7 +42,7 @@
                             type="text"
                             name="name"
                             id="name"
-                            class="bg-bkg border border-accent-2/40 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            class="bg-bkg border border-accent-2/40 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 placeholder:text-content/65"
                             placeholder="Type player name" />
                 </div>
                 <form action="#">
@@ -51,7 +51,7 @@
                         <ul class="flex flex-col gap-4 divide-y divide-accent-2/40 ">
                             <li v-for="p in players" class="flex justify-between items-center box-border pt-4">
                                 <span>{{p.userName}}</span
-                                ><span><button @click="addPlayerToGame(p.id)" class="px-6 py-2 bg-blue-800 rounded-full">Add</button></span>
+                                ><span><button @click="addPlayerToGame(p.id)" class="px-6 py-2 bg-accent-2/40 rounded-full">Add</button></span>
                             </li>
                         </ul>
 
