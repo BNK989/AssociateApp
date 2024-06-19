@@ -34,7 +34,7 @@ const email = user?.value?.email
 
 const dbUserId: any = await useFetch(`/api/user/id?email=${email}`)
 storeUser.value = dbUserId.data.value
-const activeGames = await useFetch(`/api/all-games?user_id=${dbUserId.data.value?.id}`)
+const activeGames =  await useFetch(`/api/all-games?user_id=${dbUserId.data.value?.id}`)
 
 const createNewGame = async () => {
     if (!dbUserId.data.value) return

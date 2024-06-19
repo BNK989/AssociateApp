@@ -170,8 +170,8 @@ const googleLogin = async () => {
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                // redirectTo: `${window.location.origin}/profile/callback`,
-                redirectTo: `https://associate-app-5sli.vercel.app/profile/callback`,
+                redirectTo: `${window.location.origin}/profile/callback`,
+                // redirectTo: `https://associate-app-5sli.vercel.app/profile/callback111`,
             },
         })
         if (error) throw new Error(`OAuth sign-in error: ${error.message}`)
