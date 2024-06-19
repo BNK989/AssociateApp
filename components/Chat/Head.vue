@@ -6,7 +6,7 @@
         <button
             class="px-3 py-2 bg-blue-600 my-2 rounded-full"
             @click="$emit('changeGameMode')">
-            Switch to {{ gameMode === 'input' ? 'guess' : 'input' }}
+            Switch to {{ gameMode === 'INPUT' ? 'guess' : 'input' }}
         </button>
         <button
             class="px-3 py-2 bg-blue-600 my-2 rounded-full"

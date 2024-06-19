@@ -23,8 +23,8 @@ const props = defineProps({
 })
 const word = ref('')
 const emit = defineEmits(['handleSubmit'])
-const placeholder = computed(() => props.gameMode === 'input' ? 'Type the next word...' : 'Guess the previous word...')
-const btnTxt = computed(() => props.gameMode === 'input' ? 'Add' : 'Guess')
+const placeholder = computed(() => props.gameMode === 'INPUT' ? 'Type the next word...' : 'Guess the previous word...')
+const btnTxt = computed(() => props.gameMode === 'INPUT' ? 'Add' : 'Guess')
 
 const onHandleSubmit = () => {
     emit('handleSubmit', word.value)
