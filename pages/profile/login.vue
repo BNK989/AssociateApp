@@ -2,14 +2,18 @@
     <section>
         <div
             class="flex flex-col items-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-            <a href="#" class="flex items-center mb-6 text-2xl font-semibold">
+            <div class="flex w-full justify-center items-center mb-2">
                 <img
-                    class="w-8 h-8 mr-2"
-                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
+                    class="size-12 mr-2"
+                    src="../../assets/img/Associate-logo.png"
                     alt="logo" />
-                Associate
-            </a>
-            <div class="w-full rounded-lg shadow-xl shadow-accent-2/10 md:mt-0 sm:max-w-md xl:p-0 border border-accent-2/60 ">
+                <h4
+                    class="flex items-center text-4xl font-semibold bg-gradient-to-l from-accent-1/80 to-accent-2/80 bg-clip-text text-transparent">
+                    Associate
+                </h4>
+            </div>
+            <div
+                class="w-full rounded-lg shadow-xl shadow-accent-2/10 md:mt-0 sm:max-w-md xl:p-0 border border-accent-2/60">
                 <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                     <h1
                         class="text-xl font-bold leading-tight tracking-tight md:text-2xl">
@@ -97,7 +101,7 @@
                                 v-model="confirmPw"
                                 id="confirm_password"
                                 placeholder="••••••••"
-                                class="border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                class="border bg-bkg border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                                 :required="isSignup" />
                         </div>
                         <div class="flex items-center justify-between">
