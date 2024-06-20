@@ -4,7 +4,7 @@
             <div class="relative">
                 <input
                     type="text"
-                    class="block w-full p-4 ps-4 text-sm bg-bkg border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                    class="block w-full p-4 ps-4 text-sm bg-bkg md:border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                     :placeholder="placeholder"
                     v-model="word" />
                 <button

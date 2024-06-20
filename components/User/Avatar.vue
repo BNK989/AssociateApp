@@ -1,5 +1,5 @@
 <template>
-    <NuxtImg v-if="user?.avatar" :class="`w-10 h-10 rounded-full ${errLoadingImg ? 'hidden' : ''}`" :src="user?.avatar" alt="Rounded avatar"  @error="handleErr"/>
+    <NuxtImg v-if="user?.avatar" :class="`w-10 h-10 me-2 rounded-full ${errLoadingImg ? 'hidden' : ''}`" :src="user?.avatar" alt="Rounded avatar"  @error="handleErr"/>
     <!-- <span v-if="errLoadingImg"><SvgPlaceHolder/></span> -->
     <!-- <span v-if="errLoadingImg">{{user?.full_name}}</span> -->
     <h6>Hi, {{ fName }}</h6>

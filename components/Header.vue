@@ -5,8 +5,8 @@
             <div
                 class="relative flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
                 <NuxtLink to="/" class="flex items-center">
-                    <img
-                        src="https://flowbite.com/docs/images/logo.svg"
+                    <img    
+                        src="../assets/img/Associate-logo.png"
                         class="mr-3 h-6 sm:h-9"
                         alt="Associate Logo" />
                     <span
@@ -92,7 +92,7 @@
                                 v-else
                                 class="flex items-center justify-start gap-3 px-3 bg-blue-200 bg-opacity-20 my-2 py-2 md:bg-opacity-0 md:my-0">
                                 <UserAvatar :user="dbUser" />
-                                <button @click="logout" >logout</button>
+                                <button class="mx-2" @click="logout" >logout</button>
                             </div>
                             <!-- <pre>{{ user?.email?.split('@')[0]}}</pre> -->
                              <!-- <pre>pre: {{dbUser}}</pre> -->

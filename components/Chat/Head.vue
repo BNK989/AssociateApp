@@ -1,6 +1,6 @@
 <template>
     <section
-        class="border border-white min-h-8 flex items-center justify-around">
+        class="min-h-8 flex items-center justify-around">
         <p>Words to recall : {{ wordLength - 1 }}</p>
         <p>{{ feedback }}</p>
         <button
