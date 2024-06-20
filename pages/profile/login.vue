@@ -59,6 +59,21 @@
                     <form
                         class="space-y-4 md:space-y-6"
                         @submit.prevent="signupSignin">
+                        <div v-if="isSignup">
+                            <label
+                                for="userName"
+                                class="block mb-2 text-sm font-medium"
+                                >User name</label
+                            >
+                            <input
+                                type="text"
+                                name="userName"
+                                v-model="userName"
+                                id="userName"
+                                placeholder="John Wick"
+                                class="border bg-bkg border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                :required="isSignup" />
+                        </div>
                         <div>
                             <label
                                 for="email"
@@ -155,9 +170,11 @@
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
 
+const router = useRouter()
 const isSignup = ref(false)
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
+const userName = ref('')
 const email = ref('')
 const pw = ref('')
 const confirmPw = ref('')
@@ -182,7 +199,7 @@ const googleLogin = async () => {
     } catch (err) {
         console.error('there was an error at login', err)
     }
-}
+    }
 
 const signupSignin = () => {
     successMsg.value = ''
@@ -197,13 +214,21 @@ const signup = async () => {
         const { data, error } = await supabase.auth.signUp({
             email: email.value,
             password: pw.value,
+            options: {
+                data: {
+                    full_name: userName.value,
+                    avatar_url: 'https://i.pravatar.cc/300',
+                },
+            },
         })
         if (error) throw error
         successMsg.value = 'Check your email to confirm your account'
     } catch (error: any) {
-        console.error('there was an error', error)
+        console.error('there was an error at signup', error)
         errMsg.value = error.message
     }
+    //TODO: IF SUCESSFUL --> ADD CONFIRMATION request
+    // got to home page
 }
 
 // TODO: NOT CHECKED!!!
@@ -214,16 +239,20 @@ const signin = async () => {
             password: pw.value,
         })
         if (error) throw error
-        successMsg.value = 'Check your email to confirm your account'
-        piniaUser()
+        successMsg.value = 'You are logged in'
+        await piniaUser()
+        router.push('/profile/callback')
     } catch (error: any) {
-        console.error('there was an error', error)
+        console.error('there was an error while sign in', error)
         errMsg.value = error.message
     }
 }
 
-const piniaUser = () => {
-    // @ts-ignore
-    storeUser.value = user.user_metadata
+async function piniaUser() {
+    const user = useSupabaseUser()
+    if (!user.value) return //no user to load
+    //@ts-ignore
+    const dbUser: User = await $fetch(`/api/user/db-user?email=${user.value.email}`)
+    store.setUser(dbUser)
 }
 </script>

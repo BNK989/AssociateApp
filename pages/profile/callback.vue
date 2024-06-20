@@ -16,6 +16,7 @@
       if (!userData || !userData.user) throw new Error('No user data found after login.')
   
       const user = userData.user
+      console.log('user:', user)
       const userEmail = user.email
       const { full_name, avatar_url } = user.user_metadata
   
