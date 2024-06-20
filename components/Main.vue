@@ -34,6 +34,13 @@ const { user: storeUser } = storeToRefs(store)
 
 const messages = ref<Word[] | null>([])
 
+const playSound = async (fileName: string) => {
+        //@ts-ignore
+        const audioPath = await import(`../assets/audio/${fileName}.mp3`)
+        const audio = new Audio(audioPath.default)
+        audio.play();
+    }
+
 const loadMessages = async () => {
     try {
         const data = await $fetch(`/api/message/${gameId}`)
@@ -146,9 +153,13 @@ onMounted(() => {
             filter: `gameId=eq.${gameId}`,
         },
         (payload) => {
-            if (payload.eventType === 'INSERT')
+            if (payload.eventType === 'INSERT') {
                 messages.value.push(payload?.new as Word)
-            else loadMessages()
+                playSound('sent')
+                } else {
+                loadMessages()
+                playSound('correct')
+            }
         },
         )
         .on(

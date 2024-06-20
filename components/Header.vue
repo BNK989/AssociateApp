@@ -50,7 +50,7 @@
                 </div>
                 <div
                     @click="closeBurgerMenu"
-                    class="hidden lg:flex fixed left-0 shadow-lg shadow-accent-2/10 flex-1 md:static md:bg-opacity-0 md:mx-4 z-10 bg-bkg border-t border-content/10 top-14 w-full lg:w-auto lg:order-1"
+                    class="hidden lg:flex fixed left-0 shadow-lg md:shadow-none shadow-accent-2/10 flex-1 md:static md:bg-opacity-0 md:mx-4 z-10 bg-bkg border-t md:border-none border-content/10 top-14 w-full lg:w-auto lg:order-1"
                     id="mobile-menu-2">
                     <ul
                         class="w-full flex flex-col md:items-center mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0 justify-between">

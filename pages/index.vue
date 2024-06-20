@@ -43,12 +43,12 @@ onMounted(async () => {
 watch(() => storeUser.value?.id, getActiveGames)
 
 async function getActiveGames() {
-    console.log('storeUser.value?.id:', storeUser.value?.id)
+    // console.log('storeUser.value?.id:', storeUser.value?.id)
     if(!storeUser.value?.id){
-        console.log('no user')
+        // console.log('no user')
         activeGames.value = []
         } else {
-        console.log('user', storeUser.value)
+        // console.log('user', storeUser.value)
         //@ts-ignore
         activeGames.value = await useFetch(`/api/all-games?user_id=${storeUser.value?.id}`).data
     }
