@@ -36,7 +36,16 @@
                   <a href="#" class="mr-4 hover:underline md:mr-6">Contact</a>
               </li>
           </ul> -->
+          <!-- <button class="mx-4" @click="fireToast">Fire Toast</button> -->
           <span class="text-sm sm:text-center">© 2021-{{new Date().getFullYear()}} <a href="#" class="hover:underline">BNK™</a>.  All Rights Reserved.</span>
       </div>
+      <!-- <Toast/> -->
     </footer>
     </template>
+
+<script setup>
+const store = useStore()
+// const fireToast = () => {
+//     store.setToast({msg: 'Hello World', type: 'info', duration: 6000})
+// }
+</script>

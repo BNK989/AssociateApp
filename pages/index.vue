@@ -55,7 +55,7 @@ async function getActiveGames() {
 }
 
 const createNewGame = async () => {
-    if (!dbUserId) return alert('Please login first')
+    if (!dbUserId) return store.setToast({ msg: 'Please login first', type: 'warn' })
     const title = prompt('Enter game title', 'Untitled Game')
     if (!title) return
 
