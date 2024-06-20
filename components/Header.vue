@@ -1,11 +1,10 @@
 <template>
     <header>
-        <nav
-            class=" border-gray-200 px-4 lg:px-6 py-2.5 shadow">
+        <nav class="border-gray-200 px-4 lg:px-6 py-2.5 shadow">
             <div
                 class="relative flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
                 <NuxtLink to="/" class="flex items-center">
-                    <img    
+                    <img
                         src="../assets/img/Associate-logo.png"
                         class="mr-3 h-6 sm:h-9"
                         alt="Associate Logo" />
@@ -92,10 +91,12 @@
                                 v-else
                                 class="flex items-center justify-start gap-3 px-3 bg-blue-200 bg-opacity-20 my-2 py-2 md:bg-opacity-0 md:my-0">
                                 <UserAvatar :user="dbUser" />
-                                <button class="mx-2" @click="logout" >logout</button>
+                                <button class="mx-2" @click="logout">
+                                    logout
+                                </button>
                             </div>
                             <!-- <pre>{{ user?.email?.split('@')[0]}}</pre> -->
-                             <!-- <pre>pre: {{dbUser}}</pre> -->
+                            <!-- <pre>pre: {{dbUser}}</pre> -->
                         </li>
                     </ul>
                 </div>
@@ -105,8 +106,9 @@
 </template>
 
 <script lang="ts" setup>
+import type { User } from '~/types/user'
 const store = useStore()
-const {user: storeUser} = storeToRefs(store)
+const { user: storeUser } = storeToRefs(store)
 
 const colorMode = useColorMode()
 const isDark = computed(() => colorMode.preference === 'dark')
@@ -114,21 +116,46 @@ const { menuData: menu } = useLocalData()
 
 const user = useSupabaseUser()
 const supabase = useSupabaseClient()
-const {data: dbUser} = await useFetch(`/api/user/db-user?email=${user?.value?.email}`)
+const { data: dbUser } = await useFetch(
+    `/api/user/db-user?email=${user?.value?.email}`,
+)
 
 const toggleTheme = () => {
     colorMode.preference = colorMode.preference === 'light' ? 'dark' : 'light'
-    useHead({htmlAttrs: {'data-theme': colorMode.preference}})
+    useHead({ htmlAttrs: { 'data-theme': colorMode.preference } })
 }
 
 const logout = async () => {
-    try{
+    try {
         const { error } = await supabase.auth.signOut()
-        if(error) throw error
+        if (error) throw error
         storeUser.value = null
+    } catch (err) {
+        console.error('there was an error', err)
     }
-    catch(err){
-        console.error("there was an error", err)
-    }
+}
+
+onMounted(() => {
+    if (storeUser.value) return
+    setTimeout(loadUser, 1000)
+})
+
+watch(
+    () => storeUser.value,
+    () => {
+        if (storeUser.value) return
+        setTimeout(loadUser, 1000)
+    },
+)
+
+async function loadUser() {
+    // console.log('loading user10')
+    const user = useSupabaseUser()
+    if (!user.value) return //no user to load
+    // console.log('11supa-user:', user.value)
+    //@ts-ignore
+    const dbUser: User = await $fetch(`/api/user/db-user?email=${user.value.email}`)
+    // console.log('dbUser:', dbUser)
+    store.setUser(dbUser)
 }
 </script>
