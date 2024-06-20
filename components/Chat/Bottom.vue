@@ -1,10 +1,10 @@
 <template>
-    <section class="border border-white min-h-8">
+    <section class=" border-accent-3/40 min-h-8 shadow-2xl shadow-white">
         <form @submit.prevent="onHandleSubmit">
             <div class="relative">
                 <input
                     type="text"
-                    class="block w-full p-4 ps-4 text-sm bg-bkg md:border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                    class="block w-full p-4 ps-4 text-sm bg-bkg md:border border-accent-3/40 rounded-lg focus:ring-accent-3/10 focus:border-accent-3/10 focus:outline-none"
                     :placeholder="placeholder"
                     v-model="word" />
                 <button

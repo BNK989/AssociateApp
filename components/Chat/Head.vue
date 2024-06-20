@@ -1,15 +1,15 @@
 <template>
     <section
         class="min-h-8 flex items-center justify-around">
-        <p>Words to recall : {{ wordLength - 1 }}</p>
+        <p>Words: {{ wordLength - 1 }}</p>
         <p>{{ feedback }}</p>
         <button
-            class="px-3 py-2 bg-accent-3 my-2 rounded-full"
+            class="p-2 bg-accent-3/80 my-2 rounded-full text-sm  md:px-4"
             @click="$emit('changeGameMode')">
             Switch to {{ gameMode === 'INPUT' ? 'guess' : 'input' }}
         </button>
         <button
-            class="px-3 py-2 bg-accent-3 my-2 rounded-full"
+            class="p-2 bg-accent-3/80 my-2 rounded-full  text-sm md:px-4"
             @click="showModal">
             Add Player
         </button>

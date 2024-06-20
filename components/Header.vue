@@ -22,12 +22,12 @@
                     <button
                         data-collapse-toggle="mobile-menu-2"
                         type="button"
-                        class="inline-flex items-center p-2 ml-1 text-sm rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                        class="inline-flex items-center p-2 ml-1 text-sm rounded-lg lg:hidden hover:bg-content/5 focus:outline-none focus:ring-2 focus:ring-content/5"
                         aria-controls="mobile-menu-2"
                         aria-expanded="false">
                         <span class="sr-only">Open main menu</span>
                         <svg
-                            class="w-6 h-6"
+                            class="size-6"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
@@ -37,7 +37,7 @@
                                 clip-rule="evenodd"></path>
                         </svg>
                         <svg
-                            class="hidden w-6 h-6"
+                            class="hidden size-6"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
@@ -49,7 +49,8 @@
                     </button>
                 </div>
                 <div
-                    class="hidden lg:flex absolute flex-1 md:static md:bg-opacity-0 md:mx-4 z-10 bg-blue-950 top-12 w-dvw -left-4 lg:w-auto lg:order-1"
+                    @click="closeBurgerMenu"
+                    class="hidden lg:flex fixed left-0 shadow-lg shadow-accent-2/10 flex-1 md:static md:bg-opacity-0 md:mx-4 z-10 bg-bkg border-t border-content/10 top-14 w-full lg:w-auto lg:order-1"
                     id="mobile-menu-2">
                     <ul
                         class="w-full flex flex-col md:items-center mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0 justify-between">
@@ -123,6 +124,12 @@ const { data: dbUser } = await useFetch(
 const toggleTheme = () => {
     colorMode.preference = colorMode.preference === 'light' ? 'dark' : 'light'
     useHead({ htmlAttrs: { 'data-theme': colorMode.preference } })
+}
+
+const closeBurgerMenu = () => {
+    const menu = document.getElementById('mobile-menu-2')
+    menu?.classList.remove('block')
+    menu?.classList.add('hidden')
 }
 
 const logout = async () => {

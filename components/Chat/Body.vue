@@ -1,6 +1,6 @@
 <template>
     <section
-        class="relative border border-blue-600 h-full overflow-y-scroll overflow-x-hidden">
+        class="relative border-y border-accent-3/40 h-full overflow-y-scroll overflow-x-hidden">
         <!-- <pre>pre{{ wordsWithUsers }}</pre> -->
         <TransitionGroup name="list" tag="ul" class="flex flex-col gap-3 my-2">
             <li
