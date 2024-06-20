@@ -3,7 +3,7 @@
         <div
             v-if="content"
             @click="showToast"
-            class="z-20 fixed top-8 right-0 md:top-16 md:right-7 flex items-center w-full p-4 bg-accent-3 text-content rounded-lg shadow md:max-w-96"
+            class="z-20 fixed top-8 mx-auto md:top-16 md:right-7 flex items-center w-full px-4 py-2 bg-accent-3 text-content rounded-lg shadow md:max-w-96"
             :class="toastClass"
             role="alert">
             <div
@@ -49,7 +49,7 @@
 
 <script setup lang="ts">
 const store = useStore()
-const content = ref('Fiestr df sf ')
+const content = ref('')
 const toastClass = ref({})
 let timeoutId : number
 
@@ -79,18 +79,31 @@ const hideToast = () => {
 
 <style scoped>
 
-.v-enter-from,
+/* .v-enter-from, */
 .v-leave-to {
-    transform: translateY(-100px);
+    transform: translateY(-120px);
 }
 
-.v-enter-to,
+/* .v-enter-to, */
 .v-leave-from {
     transform: translateY(-1px);
 }
 
-.v-enter-active,
+.v-enter-active{
+    animation: wobble .75s cubic-bezier(0.25, 0.1, 0.29, 1.82);
+}
+
 .v-leave-active {
-    transition: transform .5s cubic-bezier(0.25, 0.1, 0.29, 1.82);
+    transition: transform .5s ease;
+}
+
+@keyframes wobble {
+    0% { transform: translateY(-100px); }
+    50% { transform: translateY(0); }
+    60% { transform: translateX(8px); }
+    70% { transform: translateX(-8px); }
+    80% { transform: translateX(4px); }
+    90% { transform: translateX(-4px); }
+    100% { transform: translateX(0); }
 }
 </style>
