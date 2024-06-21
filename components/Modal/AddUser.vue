@@ -50,8 +50,19 @@
                         class="grid gap-4 mb-4 md:border border-accent-2/40 py-4 rounded min-h-96">
                         <ul class="flex flex-col gap-4 md:divide-y divide-accent-2/40">
                             <li v-for="p in players" class="flex justify-between items-center p-2 box-border odd:bg-accent-2/10 odd:md:bg-accent-2/0 even:bg-accent-2/5 even:md:bg-accent-2/0 md:mx-3 rounded">
-                                <span>{{p.userName}}</span
-                                ><span><button @click="addPlayerToGame(p.id)" class="px-3 py-1 text-sm bg-accent-2/40 rounded-full">Add</button></span>
+                                <span>{{p.userName}}</span>
+                                <!-- <pre>{{ storeGame.Users }}</pre> -->
+                                <span>
+                                    <!-- <span>{{ inGamePlayersByEmail }}</span> -->
+                                    <button 
+                                        @click="addPlayerToGame(p.id)" 
+                                        class="px-3 py-1 text-sm bg-accent-2/40 rounded-full"
+                                        :class="{ 'bg-accent-2/15': inGamePlayersByEmail.includes(p.email) }"
+                                        :disabled="inGamePlayersByEmail.includes(p.email)">
+                                        {{ inGamePlayersByEmail.includes(p.email) ? 'Added' : 'Add' }}
+                                          
+                                    </button>
+                                </span>
                             </li>
                         </ul>
 
@@ -63,11 +74,14 @@
 </template>
 
 <script lang="ts" setup>
+const store = useStore()
+const { user: storeUser, game: storeGame } = storeToRefs(store)
 // const { debounce } = useUtilities()
 defineEmits(['closeModal'])
 
 const players = ref([])
 const q = ref('')
+const inGamePlayersByEmail = ref(storeGame.value.Users.map(u => u.user.email))
 
 onMounted(() => {
     getPlayers()
@@ -81,11 +95,12 @@ onMounted(() => {
 
 const getPlayers = async () => {    
     const qPlayers = await $fetch(`/api/user/all-users${q.value ? `?userName=${q.value}` : ''}`, {method: 'GET'})
-    players.value = qPlayers
+    qPlayers.filter(p => p.email !== storeUser.value?.email)
+    players.value = qPlayers.filter(p => p.email !== storeUser.value?.email)
 }
 
 const addPlayerToGame = async (id) => {
-    await $fetch(`/api/${1}/add-user`, {
+    await $fetch(`/api/${id}/add-user`, {
         method: 'PUT',
         body: {
             user_id: id

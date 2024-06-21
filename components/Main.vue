@@ -62,6 +62,7 @@ const loadGame = async () => {
         useHead({
             title: 'Chat' + ' ' + game.value.title || '',
         })
+        store.setGame(data)
     } catch (err) {
         console.error('there was an error', err)
     }

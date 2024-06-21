@@ -13,6 +13,18 @@ export default defineEventHandler(async (e) => {
             where: {
                 id: gameId,
             },
+            include: {
+                Users: {
+                    select: {
+                        user: {
+                            select: {
+                                email: true,
+                                userName: true
+                            }
+                        }
+                    }
+                }
+            }
         })
 
         if (!res) throw new Error(`game id: ${gameId} not found`)

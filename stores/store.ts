@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia'
 import type { User } from '@/types/user'
+import type { Game } from '@/types/game'
 
 interface State {
     count: number
     user: User | null
     toast: Toast | null
+    game: Game | null
 }
 
 type Toast = {
@@ -18,6 +20,7 @@ export const useStore = defineStore('store', {
         count: 99,
         user: null,
         toast: null,
+        game: null,
     }),
     actions: {
         increment() {
@@ -29,5 +32,8 @@ export const useStore = defineStore('store', {
         setToast(toast: Toast) {
             this.toast = toast
         },
+        setGame(game: Game) {
+            this.game = game
+        }
     },
 })
