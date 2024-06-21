@@ -12,7 +12,8 @@
             :words="messages as any"
             :users="users as any"
             :guessedCount="guessedCount"
-            :gameMode="gameMode" />
+            :gameMode="gameMode"
+            :scrollTo="scrollTo" />
         <!-- <pre>{{ guessedCount }}</pre> -->
         <ChatBottom :gameMode="gameMode" @handleSubmit="handleSubmit" />
     </div>
@@ -28,6 +29,7 @@ const gameId = route.params.gameid
 const game = ref({})
 const gameMode = computed(() => game.value.GameMode)
 const feedback = ref('')
+const scrollTo = ref(0)
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
 
@@ -134,8 +136,9 @@ async function guessWord(word: string) {
         if (!res) throw new Error('could not guess word')
         else feedback.value = 'Correct'
     } catch (err) {
-        console.error('there was an error', err)
+        console.warn('No match found', err)
         feedback.value = 'Guess Again'
+        store.setToast({ msg: 'Guess Again', type: 'oops', duration: 2000 })
     }
 }
 
@@ -153,12 +156,21 @@ onMounted(() => {
             filter: `gameId=eq.${gameId}`,
         },
         (payload) => {
+            console.log('payload:', payload)
             if (payload.eventType === 'INSERT') {
                 messages.value.push(payload?.new as Word)
                 playSound('sent')
                 } else {
-                loadMessages()
-                playSound('correct')
+                    if(payload.new.isResolved) {
+                        playSound('correct')
+                        scrollTo.value = payload.new.id
+                        loadMessages()
+                    }else if(!payload.new.isResolved){
+                        playSound('wrong')
+                        // store.setT
+                    }else{
+                        console.log('payload:', payload)
+                    }
             }
         },
         )

@@ -65,7 +65,7 @@ const showToast = ({ msg, type = 'info', duration = 3000 }) => {
         toastClass.value = {
             'bg-accent-1': type === 'success',
             'bg-accent-2': type === 'info',
-            'bg-accent-2': type === 'oops',
+            'bg-amber-700': type === 'oops',
             'bg-red-600': type === 'warn',
             'bg-red-800': type === 'error',
         }
