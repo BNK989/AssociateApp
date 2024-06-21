@@ -21,27 +21,27 @@
 
 <script lang="ts" setup>
 import type { Word } from '@/types/word'
+import type { Game } from '@/types/game'
 import { createClient } from '@supabase/supabase-js'
 
 const route = useRoute()
 const { generateRandomString } = useUtilities()
 const gameId = route.params.gameid
-const game = ref({})
+const game : Game | any = ref({})
 const gameMode = computed(() => game.value.GameMode)
 const feedback = ref('')
 const scrollTo = ref(0)
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
 
-
 const messages = ref<Word[] | null>([])
 
 const playSound = async (fileName: string) => {
-        //@ts-ignore
-        const audioPath = await import(`../assets/audio/${fileName}.mp3`)
-        const audio = new Audio(audioPath.default)
-        audio.play();
-    }
+    //@ts-ignore
+    const audioPath = await import(`../assets/audio/${fileName}.mp3`)
+    const audio = new Audio(audioPath.default)
+    audio.play()
+}
 
 const loadMessages = async () => {
     try {
@@ -56,7 +56,8 @@ const loadMessages = async () => {
 }
 const loadGame = async () => {
     try {
-        const data = await $fetch(`/api/${gameId}/full-game`)
+        // @ts-ignore
+        const data = await $fetch(`/api/${gameId}/full-game`) as Game
         if (!data) throw new Error('could not load messages')
         game.value = data
         useHead({
@@ -70,7 +71,6 @@ const loadGame = async () => {
 
 const user = useSupabaseUser()
 const supabase = useSupabaseClient()
-
 
 const guessedCount = computed(() =>
     messages.value?.reduce((acc, w) => (w.isResolved ? acc + 1 : acc), 0),
@@ -91,7 +91,7 @@ const changeGameMode = async () => {
     $fetch(`/api/${gameId}/toggle-mode`, {
         method: 'PUT',
         body: {
-            gameMode: changeTo
+            gameMode: changeTo,
         },
     })
 }
@@ -147,45 +147,46 @@ onMounted(() => {
     loadMessages()
     loadGame()
     realtimeChannel = supabase
-    .channel('public:Messages')
+        .channel('public:Messages')
         .on(
-        'postgres_changes',
-        {
-            event: '*',
-            schema: 'public',
-            table: 'Messages',
-            filter: `gameId=eq.${gameId}`,
-        },
-        (payload) => {
-            console.log('payload:', payload)
-            if (payload.eventType === 'INSERT') {
-                messages.value.push(payload?.new as Word)
-                playSound('sent')
+            'postgres_changes',
+            {
+                event: '*',
+                schema: 'public',
+                table: 'Messages',
+                filter: `gameId=eq.${gameId}`,
+            },
+            (payload) => {
+                console.log('payload:', payload)
+                if (payload.eventType === 'INSERT') {
+                    messages.value.push(payload?.new as Word)
+                    playSound('sent')
                 } else {
-                    if(payload.new.isResolved) {
+                    if (payload.new.isResolved) {
                         playSound('correct')
                         scrollTo.value = payload.new.id
                         loadMessages()
-                    }else if(!payload.new.isResolved){
+                    } else if (!payload.new.isResolved) {
                         playSound('wrong')
                         // store.setT
-                    }else{
+                    } else {
                         console.log('payload:', payload)
                     }
-            }
-        },
+                }
+            },
         )
         .on(
-        'postgres_changes',
-        {
-            event: 'UPDATE',
-            schema: 'public',
-            table: 'Games',
-            filter: `id=eq.${gameId}`,
-        },(payload) => {
-            loadGame()
-        }
-    )
+            'postgres_changes',
+            {
+                event: 'UPDATE',
+                schema: 'public',
+                table: 'Games',
+                filter: `id=eq.${gameId}`,
+            },
+            (payload) => {
+                loadGame()
+            },
+        )
 
     realtimeChannel.subscribe()
 })
@@ -194,9 +195,8 @@ console.log('realtimeChannel:', realtimeChannel)
 
 onUnmounted(() => {
     supabase.removeChannel(realtimeChannel)
+    store.setGame(null)
 })
-
-
 </script>
 <!-- backdrop-blur-lg bg-myBlue md:rounded-xl backdrop-saturate-150 border border-myWhite flex w-dvw h-dvh md:w-[80vw] md:h-[90dvh] -->
 <style>

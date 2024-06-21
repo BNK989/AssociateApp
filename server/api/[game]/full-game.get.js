@@ -6,6 +6,7 @@ export default defineEventHandler(async (e) => {
     const gameId = +e.context.params.game
 
     let res
+    let cleanRes
 
     try {
 
@@ -29,11 +30,13 @@ export default defineEventHandler(async (e) => {
 
         if (!res) throw new Error(`game id: ${gameId} not found`)
 
+        cleanRes = { ...res, players: res.Users.map(u => u.user) }
+        delete cleanRes.Users       
 
     } catch (err) {
         console.error('there was an error', err)
     }
 
-    return res
+    return cleanRes
 
 })

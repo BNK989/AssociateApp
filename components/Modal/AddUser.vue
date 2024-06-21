@@ -1,16 +1,13 @@
 <template>
-    <div class="min-w-80 z-50 justify-center items-center rounded w-full h-modal md:h-full md:w-[40dvw]">
+    <div
+        class="min-w-80 z-50 justify-center items-center rounded w-full h-modal md:h-full md:w-[40dvw]">
         <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
             <!-- Modal content -->
-            <div
-                class="relative p-4 rounded-lg shadow sm:p-5">
+            <div class="relative p-4 rounded-lg shadow sm:p-5">
                 <!-- Modal header -->
                 <div
                     class="flex justify-between items-center pb-4 mb-4 rounded-t sm:mb-5">
-                    <h3
-                        class="text-lg font-semibold">
-                        Add Player
-                    </h3>
+                    <h3 class="text-lg font-semibold">Add Player</h3>
                     <button
                         @click="$emit('closeModal')"
                         type="button"
@@ -31,41 +28,59 @@
                 </div>
                 <!-- Modal body -->
                 <div class="my-2">
-                        <label
-                            for="name"
-                            class="block mb-2 text-sm font-medium"
-                            >Name</label
-                        >
-                        <input
-                            @input="getPlayers()"
-                            v-model="q"
-                            type="text"
-                            name="name"
-                            id="name"
-                            class="bg-bkg border border-accent-2/40 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 placeholder:text-content/65"
-                            placeholder="Type player name" />
+                    <label for="name" class="block mb-2 text-sm font-medium"
+                        >Name</label
+                    >
+                    <input
+                        @input="getPlayers()"
+                        v-model="q"
+                        type="text"
+                        name="name"
+                        id="name"
+                        class="bg-bkg border border-accent-2/40 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 placeholder:text-content/65"
+                        placeholder="Type player name" />
                 </div>
                 <form action="#">
                     <div
                         class="grid gap-4 mb-4 md:border border-accent-2/40 py-4 rounded min-h-96">
-                        <ul class="flex flex-col gap-4 md:divide-y divide-accent-2/40">
-                            <li v-for="p in players" class="flex justify-between items-center p-2 box-border odd:bg-accent-2/10 odd:md:bg-accent-2/0 even:bg-accent-2/5 even:md:bg-accent-2/0 md:mx-3 rounded">
-                                <span>{{p.userName}}</span>
+                        <ul
+                            class="flex flex-col gap-4 md:divide-y divide-accent-2/40">
+                            <!-- <pre>{{ players }}</pre> -->
+                            <li
+                                v-for="p in players"
+                                class="flex justify-between items-center p-2 box-border odd:bg-accent-2/10 odd:md:bg-accent-2/0 even:bg-accent-2/5 even:md:bg-accent-2/0 md:mx-3 rounded">
+                                <span>{{ p.userName }}</span>
                                 <!-- <pre>{{ storeGame.Users }}</pre> -->
                                 <span>
                                     <!-- <span>{{ inGamePlayersByEmail }}</span> -->
-                                    <button 
-                                        @click="addPlayerToGame(p.id)" 
+                                    <button
+                                        @click="addPlayerToGame(p.id)"
                                         class="px-3 py-1 text-sm bg-accent-2/40 rounded-full"
-                                        :class="{ 'bg-accent-2/15': inGamePlayersByEmail.includes(p.email) }"
-                                        :disabled="inGamePlayersByEmail.includes(p.email)">
-                                        {{ inGamePlayersByEmail.includes(p.email) ? 'Added' : 'Add' }}
-                                          
+                                            >
+                                        <!-- :class="{
+                                            'bg-accent-2/15':
+                                                inGamePlayersByEmail.includes(
+                                                    p.email,
+                                                ),
+                                        }" -->
+                                        <!-- :disabled="
+                                            inGamePlayersByEmail.includes(
+                                                p.email,
+                                            )" -->
+                                            
+                                            Add
+                                            <!-- {{
+                                            inGamePlayersByEmail.includes(
+                                                p?.email,
+                                            )
+                                                ? 'Added'
+                                                : 'Add'
+                                        }} -->
                                     </button>
+                                
                                 </span>
                             </li>
                         </ul>
-
                     </div>
                 </form>
             </div>
@@ -81,10 +96,13 @@ defineEmits(['closeModal'])
 
 const players = ref([])
 const q = ref('')
-const inGamePlayersByEmail = ref(storeGame.value.Users.map(u => u.user.email))
+const inGamePlayersByEmail = ref([])
 
 onMounted(() => {
-    getPlayers()
+    getPlayers();
+    // TODO: fix HERE! 
+    inGamePlayersByEmail.value = storeGame.value?.players.map(p => p.email)
+    console.log('inGamePlayersByEmail.value:', inGamePlayersByEmail.value)
 })
 
 // const debounceGetPlayers = (q = '') => {
@@ -93,18 +111,28 @@ onMounted(() => {
 //     debounce(() => getPlayers(q), 3)
 // }
 
-const getPlayers = async () => {    
-    const qPlayers = await $fetch(`/api/user/all-users${q.value ? `?userName=${q.value}` : ''}`, {method: 'GET'})
-    qPlayers.filter(p => p.email !== storeUser.value?.email)
-    players.value = qPlayers.filter(p => p.email !== storeUser.value?.email)
+const getPlayers = async () => {
+    const qPlayers = await $fetch(
+        `/api/user/all-users${q.value ? `?userName=${q.value}` : ''}`,
+        { method: 'GET' },
+    )
+    if (storeUser.value){
+        //@ts-ignore
+        qPlayers.filter(p => p.email !== storeUser.value?.email)
+        //@ts-ignore
+        players.value = qPlayers.filter((p) => p.email !== storeUser.value?.email)
+    } else {
+        console.error('storeUser not loaded')
+        players.value = qPlayers
+    }
 }
 
 const addPlayerToGame = async (id) => {
     await $fetch(`/api/${id}/add-user`, {
         method: 'PUT',
         body: {
-            user_id: id
-        }
+            user_id: id,
+        },
     })
 }
 </script>
