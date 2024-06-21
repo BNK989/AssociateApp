@@ -33,8 +33,6 @@ const user = useSupabaseUser()
 const email = user?.value?.email
 const activeGames = ref([])
 
-const dbUserId = storeUser.value?.id
-
 onMounted(async () => {
     // console.log('supa-user:', user)
     if (!storeUser.value) return
@@ -55,7 +53,8 @@ async function getActiveGames() {
 }
 
 const createNewGame = async () => {
-    if (!dbUserId) return store.setToast({ msg: 'Please login first', type: 'warn' })
+    
+    if (!storeUser.value?.id) return store.setToast({ msg: 'Please login first', type: 'warn' })
     const title = prompt('Enter game title', 'Untitled Game')
     if (!title) return
 
@@ -63,7 +62,7 @@ const createNewGame = async () => {
         method: 'POST',
         body: {
             title,
-            user_id: dbUserId
+            user_id: storeUser.value?.id
          }
       })
 }

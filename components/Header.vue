@@ -9,7 +9,7 @@
                         class="mr-3 h-6 sm:h-9"
                         alt="Associate Logo" />
                     <span
-                        class="self-center text-xl font-semibold whitespace-nowrap text-content"
+                        class="self-center text-xl font-semibold whitespace-nowrap bg-gradient-to-l from-accent-1/70 to-accent-2/70 bg-clip-text text-transparent"
                         >Associate</span
                     >
                 </NuxtLink>
@@ -83,7 +83,7 @@
                                     >Log in</NuxtLink
                                 >
                                 <NuxtLink
-                                    to="/profile/login"
+                                    to="/profile/login?signup=true"
                                     class="hover:bg-content/10 bg-primary-700 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
                                     >Get started</NuxtLink
                                 >
@@ -91,7 +91,7 @@
                             <div
                                 v-else
                                 class="flex items-center justify-start gap-3 px-3 bg-blue-200 bg-opacity-20 my-2 py-2 md:bg-opacity-0 md:my-0">
-                                <UserAvatar :user="dbUser" />
+                                <UserAvatar :user="storeUser" />
                                 <button class="mx-2" @click="logout">
                                     logout
                                 </button>

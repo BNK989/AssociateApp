@@ -127,6 +127,7 @@
                                         aria-describedby="remember"
                                         type="checkbox"
                                         class="w-4 h-4 border border-gray-300 rounded focus:ring-3 focus:ring-primary-300"
+                                        checked
                                         required="false" />
                                 </div>
                                 <div class="ml-3 text-sm">
@@ -171,7 +172,8 @@ const store = useStore()
 const { user: storeUser } = storeToRefs(store)
 
 const router = useRouter()
-const isSignup = ref(false)
+const route = useRoute()
+const isSignup = ref(route.query.signup)
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 const userName = ref('')
