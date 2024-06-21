@@ -33,7 +33,7 @@ onMounted(() => {
     initDismisses()
     initDrawers()
     initDropdowns()
-    initModals()
+    // initModals()
     initPopovers()
     initTabs()
     initTooltips()

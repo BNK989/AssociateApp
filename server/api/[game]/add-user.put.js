@@ -5,13 +5,14 @@ export default defineEventHandler(async (e) => {
 
     const {user_id} = await readBody(e)
     const game_id = +e.context.params.game
+    // console.log('user_id:', user_id, game_id)
 
     let res
 
     try {
         res = await prisma.games.update({
             where: {
-                id: +e.context.params.game,
+                id: game_id,
             },
             data: {
                 Users: {
@@ -26,8 +27,9 @@ export default defineEventHandler(async (e) => {
 
     } catch (err) {
         console.error('there was an error', err)
+        return {success: false, error: error.message}
     }
 
-    return res
+    return {success: true, addedUser: res}
 
 })

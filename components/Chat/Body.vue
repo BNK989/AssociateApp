@@ -10,7 +10,7 @@
                 class="flex items-center ms-2 gap-1">
                 <SvgCheckMark v-if="w.isResolved" />
                 <NuxtImg
-                    :src="wordsWithUsers[i].avatar"
+                    :src="wordsWithUsers[i]?.avatar"
                     class="size-8 rounded-full me-1"
                     alt="Rounded avatar" />
                 <div
@@ -25,9 +25,9 @@
                         {{ w.content }}
                     </p>
                     <small>{{
-                        wordsWithUsers[i].id === storeUser.id
+                        wordsWithUsers[i]?.id === storeUser.id
                             ? 'You'
-                            : wordsWithUsers[i].userName
+                            : wordsWithUsers[i]?.userName
                     }}</small>
                 </div>
                 <div

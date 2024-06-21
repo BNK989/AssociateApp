@@ -32,7 +32,7 @@ const gameMode = computed(() => game.value.GameMode)
 const feedback = ref('')
 const scrollTo = ref(0)
 const store = useStore()
-const { user: storeUser } = storeToRefs(store)
+const { user: storeUser, game: storeGame } = storeToRefs(store)
 
 const messages = ref<Word[] | null>([])
 
@@ -184,7 +184,7 @@ onMounted(() => {
                 filter: `id=eq.${gameId}`,
             },
             (payload) => {
-                loadGame()
+                game.value.GameMode = payload.new.GameMode 
             },
         )
 
@@ -194,7 +194,7 @@ onMounted(() => {
 console.log('realtimeChannel:', realtimeChannel)
 
 onUnmounted(() => {
-    supabase.removeChannel(realtimeChannel)
+    if (realtimeChannel) supabase.removeChannel(realtimeChannel)
     store.setGame(null)
 })
 </script>

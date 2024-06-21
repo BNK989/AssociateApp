@@ -52,31 +52,30 @@
                                 <span>{{ p.userName }}</span>
                                 <!-- <pre>{{ storeGame.Users }}</pre> -->
                                 <span>
-                                    <!-- <span>{{ inGamePlayersByEmail }}</span> -->
                                     <button
                                         @click="addPlayerToGame(p.id)"
                                         class="px-3 py-1 text-sm bg-accent-2/40 rounded-full"
-                                            >
+                                        >                        
                                         <!-- :class="{
                                             'bg-accent-2/15':
-                                                inGamePlayersByEmail.includes(
-                                                    p.email,
-                                                ),
-                                        }" -->
-                                        <!-- :disabled="
+                                            inGamePlayersByEmail.includes(
+                                                p.email,
+                                            ),
+                                        }"
+                                        :disabled="
                                             inGamePlayersByEmail.includes(
                                                 p.email,
                                             )" -->
                                             
-                                            Add
-                                            <!-- {{
-                                            inGamePlayersByEmail.includes(
+                                            {{ !inGamePlayersByEmail ? 'Add' :
+                                            inGamePlayersByEmail?.includes(
                                                 p?.email,
                                             )
                                                 ? 'Added'
                                                 : 'Add'
-                                        }} -->
+                                        }}
                                     </button>
+                                    <!-- <pre>{{ inGamePlayersByEmail.length}}</pre> -->
                                 
                                 </span>
                             </li>
@@ -98,12 +97,17 @@ const players = ref([])
 const q = ref('')
 const inGamePlayersByEmail = ref([])
 
-onMounted(() => {
+onBeforeMount(() => {
     getPlayers();
-    // TODO: fix HERE! 
     inGamePlayersByEmail.value = storeGame.value?.players.map(p => p.email)
     console.log('inGamePlayersByEmail.value:', inGamePlayersByEmail.value)
+    
 })
+
+// onMounted(async () => {
+//     // TODO: fix HERE! 
+//     await nextTick()
+// })
 
 // const debounceGetPlayers = (q = '') => {
 //     console.log('debouncing...')
@@ -128,11 +132,14 @@ const getPlayers = async () => {
 }
 
 const addPlayerToGame = async (id) => {
-    await $fetch(`/api/${id}/add-user`, {
+    //@ts-ignore
+    const {success, error} = await $fetch(`/api/${storeGame.value.id}/add-user`, {
         method: 'PUT',
         body: {
             user_id: id,
         },
     })
+    if (success) store.setToast({msg: 'User added', type: 'success', duration: 2500})
+    else store.setToast({msg: 'Issue adding user', type: 'error', duration: 2500})
 }
 </script>
