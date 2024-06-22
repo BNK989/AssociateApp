@@ -52,30 +52,29 @@
                                 <span>{{ p.userName }}</span>
                                 <!-- <pre>{{ storeGame.Users }}</pre> -->
                                 <span>
-                                    <button
+                                    <button v-if="!store?.playersEmails" >Add</button>
+                                    <button v-else
                                         @click="addPlayerToGame(p.id)"
                                         class="px-3 py-1 text-sm bg-accent-2/40 rounded-full"
-                                        >                        
-                                        <!-- :class="{
+                                        :class="{
                                             'bg-accent-2/15':
-                                            inGamePlayersByEmail.includes(
+                                            store?.playersEmails.includes(
                                                 p.email,
                                             ),
                                         }"
                                         :disabled="
-                                            inGamePlayersByEmail.includes(
+                                            store?.playersEmails.includes(
                                                 p.email,
-                                            )" -->
+                                            )"
+                                            >                        
                                             
-                                            {{ !inGamePlayersByEmail ? 'Add' :
-                                            inGamePlayersByEmail?.includes(
+                                            {{ store?.playersEmails?.includes(
                                                 p?.email,
                                             )
                                                 ? 'Added'
                                                 : 'Add'
                                         }}
                                     </button>
-                                    <!-- <pre>{{ inGamePlayersByEmail.length}}</pre> -->
                                 
                                 </span>
                             </li>
@@ -95,19 +94,11 @@ defineEmits(['closeModal'])
 
 const players = ref([])
 const q = ref('')
-const inGamePlayersByEmail = ref([])
 
-onBeforeMount(() => {
+onMounted(() => {
     getPlayers();
-    inGamePlayersByEmail.value = storeGame.value?.players.map(p => p.email)
-    console.log('inGamePlayersByEmail.value:', inGamePlayersByEmail.value)
     
 })
-
-// onMounted(async () => {
-//     // TODO: fix HERE! 
-//     await nextTick()
-// })
 
 // const debounceGetPlayers = (q = '') => {
 //     console.log('debouncing...')

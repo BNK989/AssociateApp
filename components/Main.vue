@@ -157,20 +157,18 @@ onMounted(() => {
                 filter: `gameId=eq.${gameId}`,
             },
             (payload) => {
-                console.log('payload:', payload)
                 if (payload.eventType === 'INSERT') {
                     messages.value.push(payload?.new as Word)
                     playSound('sent')
                 } else {
+                    // @ts-ignore
                     if (payload.new.isResolved) {
                         playSound('correct')
                         scrollTo.value = payload.new.id
-                        loadMessages()
-                    } else if (!payload.new.isResolved) {
-                        playSound('wrong')
-                        // store.setT
+                        loadMessages()// todo : improve to not have to load all the messages
                     } else {
-                        console.log('payload:', payload)
+                        playSound('wrong')
+                        console.log('170payload:', payload)
                     }
                 }
             },

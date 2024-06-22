@@ -22,6 +22,9 @@ export const useStore = defineStore('store', {
         toast: null,
         game: null,
     }),
+    getters: {
+        playersEmails: (state) => state.game?.players.map(p => p.email)
+    },
     actions: {
         increment() {
             this.count++
