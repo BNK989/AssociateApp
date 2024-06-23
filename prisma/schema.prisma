@@ -15,6 +15,7 @@ model Users {
   userName      String
   authinticator String?    
   email         String     @unique
+  // preferences   Json
   Games         UsersGames[]   
   messages      Messages[]
 
@@ -25,6 +26,8 @@ model Games {
   id            Int       @id @default(autoincrement())
   createdAt     DateTime  @default(now()) @db.Timestamptz(6)
   title         String
+  // score         Int
+  // updatedAt     DateTime? @db.Timestamptz(6) @updatedAt
   GameMode      GameMode  @default(INPUT)
   status        Status    @default(ACTIVE) 
   Users         UsersGames[]   
