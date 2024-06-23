@@ -1,7 +1,7 @@
 <template>
     <!-- <pre>2{{ messages }}</pre> -->
     <div
-        class="backdrop-blur-lg backdrop-saturate-150 md:border rounded md:border-white flex flex-col h-full">
+        class="backdrop-blur-lg backdrop-saturate-150 md:border rounded md:border-accent-3/25 flex flex-col h-full">
         <ChatHead
             :gameMode="gameMode"
             :wordLength="messages?.length || 0"

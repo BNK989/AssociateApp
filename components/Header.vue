@@ -9,7 +9,7 @@
                         class="mr-3 h-6 sm:h-9"
                         alt="Associate Logo" />
                     <span
-                        class="self-center text-xl font-semibold whitespace-nowrap bg-gradient-to-l from-accent-1/70 to-accent-2/70 bg-clip-text text-transparent"
+                        class="self-center text-xl font-semibold whitespace-nowrap bg-gradient-to-l from-accent-1 to-accent-2 bg-clip-text text-transparent"
                         >Associate</span
                     >
                 </NuxtLink>

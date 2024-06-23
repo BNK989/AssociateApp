@@ -1,22 +1,22 @@
 <template>
-    <div>
+    <div class="p-4">
         <h1 class="text-3xl font-bold">Welcome</h1>
-        <ul class="my-4 flex gap-4">
+        <button @click="createNewGame" class="py-2 px-3 my-4 rounded-full w-full md:w-2/5 bg-accent-3">Start a new Game</button>
+        <!-- <ul class="my-4 flex gap-4">
             <li>
-                <button @click="createNewGame" class="py-2 px-3 rounded-full bg-accent-3">Start a new Game</button>
-            </li>
-            <li>
+            </li> -->
+            <!-- <li>
                 <button class="py-2 px-3 rounded-full bg-accent-3">Join an existing Game</button>
-            </li>
-        </ul>
-        <ul>
+            </li> -->
+        <!-- </ul> -->
+        <ul class="grid gap-4 grid-cols-2 md:grid-cols-4">
 
-            <li v-for="game in activeGames" class="my-4">
+            <li v-for="game in activeGames">
                 <nuxt-link :to="`/game/${game.id}`">
-                    <div class="flex flex-col gap-4 rounded bg-accent-3/80 max-w-56 p-3 cursor-pointer hover:bg-accent-3/50 duration-300">
-                        <h2>{{ game.title }}</h2>
-                        <p>{{ game.status }}</p>
-                        <ul class="flex gap-2 flex-wrap">
+                    <div class="grid grid-cols-[minmax(min-content,1fr)_min-content] gap-3 rounded bg-accent-3/80 md:max-w-56 p-3 cursor-pointer hover:bg-accent-3/50 duration-300">
+                        <h2 class="text-2xl" >{{ game.title }}</h2>
+                        <h6 class="text-sm lowercase self-start">{{ game.GameMode }}</h6>
+                        <ul class="col-span-full flex gap-2 flex-wrap">
                             <li v-for="p in game.Users" class="bg-accent-2/30 px-2 rounded-full ">{{ p.user.email === email ? 'You' : p.user.userName }}</li>
                         </ul>
                     </div>

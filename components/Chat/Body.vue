@@ -1,6 +1,9 @@
 <template>
     <section
-        class="relative border-y border-accent-3/40 h-full overflow-y-scroll overflow-x-hidden">
+        class="relative border-y border-accent-3/40 h-full overflow-y-scroll overflow-x-hidden 
+        before:size-48 before:fixed before:inset-16 before:bg-accent-3 before:z-[-1] before:rounded-full before:blur-3xl
+        after:size-24 after:fixed after:bottom-16 after:right-8 md:after:right-48 after:bg-accent-1 after:z-[-1] after:rounded-full after:blur-3xl "
+        >
         <TransitionGroup name="list" tag="ul" class="flex flex-col gap-3 my-2">
             <li
                 v-for="(w, i) in words as Word[]"

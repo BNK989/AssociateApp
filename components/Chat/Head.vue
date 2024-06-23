@@ -1,6 +1,6 @@
 <template>
     <section
-        class="min-h-8 flex items-center justify-around">
+        class="min-h-12 flex items-center justify-around">
         <p class="text-sm" >Words: {{ wordLength || 0 }}</p>
         <button
             class="p-2 bg-accent-3/80 my-2 rounded-full text-sm  md:px-4"

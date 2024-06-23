@@ -11,6 +11,7 @@ export default {
 
         },
         bkg: 'hsl(var(--color-bkg) / <alpha-value>)',
+        bkg_dark: 'hsl(var(--color-bkg-dark) / <alpha-value>)',
         content: 'hsl(var(--color-content) / <alpha-value>)',
       },
     },
