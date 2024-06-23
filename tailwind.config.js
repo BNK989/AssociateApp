@@ -15,6 +15,10 @@ export default {
         content: 'hsl(var(--color-content) / <alpha-value>)',
       },
     },
+    animation: {
+      'pulse-slow': 'pulse 11s linear infinite',
+      'pulse-slow-offset': 'pulse 13s linear infinite',
+    }
   },
   plugins: [],
 }
