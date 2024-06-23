@@ -11,7 +11,7 @@
         </ul>
         <ul>
 
-            <li v-for="game in activeGames.value" class="my-4">
+            <li v-for="game in activeGames" class="my-4">
                 <nuxt-link :to="`/game/${game.id}`">
                     <div class="flex flex-col gap-4 rounded bg-accent-3/80 max-w-56 p-3 cursor-pointer hover:bg-accent-3/50 duration-300">
                         <h2>{{ game.title }}</h2>
@@ -42,14 +42,8 @@ watch(() => storeUser.value?.id, getActiveGames)
 
 async function getActiveGames() {
     // console.log('storeUser.value?.id:', storeUser.value?.id)
-    if(!storeUser.value?.id){
-        // console.log('no user')
-        activeGames.value = []
-        } else {
-        // console.log('user', storeUser.value)
-        //@ts-ignore
-        activeGames.value = await useFetch(`/api/all-games?user_id=${storeUser.value?.id}`).data
-    }
+    if(!storeUser.value?.id) activeGames.value = [] 
+    else activeGames.value = await $fetch(`/api/all-games?user_id=${storeUser.value?.id}`)
 }
 
 const createNewGame = async () => {

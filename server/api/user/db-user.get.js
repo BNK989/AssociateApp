@@ -19,7 +19,7 @@ export default defineEventHandler(async (e) => {
             }
         })
 
-        if (!res) throw new Error(`game id: ${gameId} not found`)
+        if (!res) throw new Error(`user with email ${email} not found`)
     } catch (err) {
         console.error('there was an error', err)
     }

@@ -1,7 +1,7 @@
 <template>
     <section
         class="min-h-8 flex items-center justify-around">
-        <p class="text-sm" >Words: {{ wordLength }}</p>
+        <p class="text-sm" >Words: {{ wordLength || 0 }}</p>
         <button
             class="p-2 bg-accent-3/80 my-2 rounded-full text-sm  md:px-4"
             @click="$emit('changeGameMode')">
@@ -14,10 +14,8 @@
         </button>
     </section>
     <dialog ref="modal" class="bg-bkg text-content backdrop:blur-2xl backdrop:bg-black/50 rounded">
-        <transition>
             <ModalAddUser @closeModal="modal.close()"/>
-        </transition>
-        </dialog>
+    </dialog>
 </template>
 
 <script lang="ts" setup>
@@ -31,18 +29,5 @@ const modal = ref(null)
 
 const showModal = () => {
     modal.value.showModal()
-    
 }
 </script>
-
-<style>
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
-</style>

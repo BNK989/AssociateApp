@@ -1,7 +1,6 @@
 <template>
     <section
         class="relative border-y border-accent-3/40 h-full overflow-y-scroll overflow-x-hidden">
-        <!-- <pre>pre{{ wordsWithUsers }}</pre> -->
         <TransitionGroup name="list" tag="ul" class="flex flex-col gap-3 my-2">
             <li
                 v-for="(w, i) in words as Word[]"
@@ -52,6 +51,7 @@ const props = defineProps({
     gameMode: String,
     scrollTo: Number,
 })
+
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
 const last = ref(null)
@@ -60,7 +60,6 @@ const nextWordIdx = computed(
 )
 //@ts-ignore
 const wordsWithUsers: WordAndUser[] = computed(mapWords)
-watch(() => storeUser.value, mapWords)
 
 function mapWords() {
     // @ts-ignore
@@ -69,7 +68,6 @@ function mapWords() {
     )
 }
 // ******* SCROLL TO GUESS *******
-watch(()=> props.scrollTo, () => scrollToId(props.scrollTo))
 const wordRefs = ref({})
 const setWordRef = (el, id) => {
     if (el) {
@@ -90,9 +88,7 @@ const transFocus = async () => {
     await nextTick()
     last.value?.scrollIntoView({ behavior: 'smooth' })
 }
-
-watch(
-    () => props.words.length,
-    async () => await transFocus(),
-)
+watch(() => storeUser.value, mapWords)
+watch(()=> props.scrollTo, () => scrollToId(props.scrollTo))
+watch(() => props.words.length, async () => await transFocus())
 </script>

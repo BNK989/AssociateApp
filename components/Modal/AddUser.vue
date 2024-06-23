@@ -51,7 +51,7 @@
                                 class="flex justify-between items-center p-2 box-border odd:bg-accent-2/10 odd:md:bg-accent-2/0 even:bg-accent-2/5 even:md:bg-accent-2/0 md:mx-3 rounded">
                                 <span>{{ p.userName }}</span>
                                 <!-- <pre>{{ storeGame.Users }}</pre> -->
-                                <span>
+                                
                                     <button v-if="!store?.playersEmails" >Add</button>
                                     <button v-else
                                         @click="addPlayerToGame(p.id)"
@@ -76,7 +76,7 @@
                                         }}
                                     </button>
                                 
-                                </span>
+                                
                             </li>
                         </ul>
                     </div>
@@ -96,15 +96,10 @@ const players = ref([])
 const q = ref('')
 
 onMounted(() => {
-    getPlayers();
-    
+    getPlayers()    
 })
 
-// const debounceGetPlayers = (q = '') => {
-//     console.log('debouncing...')
-//     // @ts-ignore
-//     debounce(() => getPlayers(q), 3)
-// }
+// TODO: ADD DEBOUNCE TO GET PLAYERS
 
 const getPlayers = async () => {
     const qPlayers = await $fetch(
@@ -122,15 +117,24 @@ const getPlayers = async () => {
     }
 }
 
-const addPlayerToGame = async (id) => {
-    //@ts-ignore
-    const {success, error} = await $fetch(`/api/${storeGame.value.id}/add-user`, {
-        method: 'PUT',
-        body: {
-            user_id: id,
-        },
-    })
-    if (success) store.setToast({msg: 'User added', type: 'success', duration: 2500})
-    else store.setToast({msg: 'Issue adding user', type: 'error', duration: 2500})
+const addPlayerToGame = async (id: number) => {
+
+    try{
+        //@ts-ignore
+        const { error, success } = await $fetch(`/api/${storeGame.value.id}/add-user`, {
+            method: 'PUT',
+            body: {
+                user_id: id,
+            },
+        })
+        
+        if (error) console.error('133there was an error', error)
+        if (success) store.setToast({msg: 'User added', type: 'success', duration: 2500})
+        else store.setToast({msg: 'Issue adding user', type: 'error', duration: 2500})
+    
+    }
+    catch(err){
+    console.error("137there was an error", err)
+    }
 }
 </script>

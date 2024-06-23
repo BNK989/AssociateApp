@@ -4,7 +4,7 @@
         class="backdrop-blur-lg backdrop-saturate-150 md:border rounded md:border-white flex flex-col h-full">
         <ChatHead
             :gameMode="gameMode"
-            :wordLength="messages?.length"
+            :wordLength="messages?.length || 0"
             :feedback="feedback"
             @changeGameMode="changeGameMode" />
         <!-- <pre>{{ users }}</pre> -->
@@ -33,6 +33,8 @@ const feedback = ref('')
 const scrollTo = ref(0)
 const store = useStore()
 const { user: storeUser, game: storeGame } = storeToRefs(store)
+const user = useSupabaseUser()
+const supabase = useSupabaseClient()
 
 const messages = ref<Word[] | null>([])
 
@@ -60,17 +62,14 @@ const loadGame = async () => {
         const data = await $fetch(`/api/${gameId}/full-game`) as Game
         if (!data) throw new Error('could not load messages')
         game.value = data
-        useHead({
-            title: 'Chat' + ' ' + game.value.title || '',
-        })
+        document.title = 'Chat' + ' ' + game.value.title || ''
         store.setGame(data)
     } catch (err) {
         console.error('there was an error', err)
     }
 }
 
-const user = useSupabaseUser()
-const supabase = useSupabaseClient()
+
 
 const guessedCount = computed(() =>
     messages.value?.reduce((acc, w) => (w.isResolved ? acc + 1 : acc), 0),
@@ -82,7 +81,14 @@ const nextWordToGuess = computed(
 )
 
 // TODO load users in game
-const { data: users } = await useFetch(`/api/user/${gameId}`)
+const loadUsers = async () => {
+    if(!gameId) return console.warn('no gameId at loadUsers')
+    const { data } = await useFetch(`/api/user/by/${gameId}`, {
+        method: 'GET',
+    })
+return data    
+}
+const users = await loadUsers()
 // TODO GameMode should be in db
 
 const changeGameMode = async () => {
@@ -165,7 +171,8 @@ onMounted(() => {
                     if (payload.new.isResolved) {
                         playSound('correct')
                         scrollTo.value = payload.new.id
-                        loadMessages()// todo : improve to not have to load all the messages
+                        const idx = messages.value.findIndex(w => w.id === payload.new.id)
+                        messages.value[idx].isResolved = true
                     } else {
                         playSound('wrong')
                         console.log('170payload:', payload)
@@ -194,6 +201,7 @@ console.log('realtimeChannel:', realtimeChannel)
 onUnmounted(() => {
     if (realtimeChannel) supabase.removeChannel(realtimeChannel)
     store.setGame(null)
+    document.title = 'Associate Game'
 })
 </script>
 <!-- backdrop-blur-lg bg-myBlue md:rounded-xl backdrop-saturate-150 border border-myWhite flex w-dvw h-dvh md:w-[80vw] md:h-[90dvh] -->

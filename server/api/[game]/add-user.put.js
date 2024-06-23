@@ -22,6 +22,7 @@ export default defineEventHandler(async (e) => {
                 }
             }
         })
+        console.log('25res:', res)
 
         if (!res) throw new Error(`game id: ${gameId} not found`)
 
