@@ -14,20 +14,13 @@
                     >
                 </NuxtLink>
                 <div class="flex items-center lg:order-2">
-                    <!-- <div v-if="!user" class="flex items-center lg:order-2"> -->
-                    <!-- <div v-else>
-                        <UserAvatarMenu />
-                    </div> -->
-                    <!-- <pre>{{ user?.user_metadata.name }}</pre> -->
                     <button
-                        data-collapse-toggle="mobile-menu-2"
                         type="button"
-                        class="inline-flex items-center p-2 ml-1 text-sm rounded-lg lg:hidden hover:bg-content/5 focus:outline-none focus:ring-2 focus:ring-content/5"
-                        aria-controls="mobile-menu-2"
-                        aria-expanded="false">
+                        class="burger-menu inline-flex items-center p-2 ml-1 text-sm rounded-lg lg:hidden hover:bg-content/5 focus:outline-none focus:ring-2 focus:ring-content/5"
+                        popovertarget="mobile-menu-2">
                         <span class="sr-only">Open main menu</span>
                         <svg
-                            class="size-6"
+                            class="btn-open size-6"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
@@ -37,7 +30,7 @@
                                 clip-rule="evenodd"></path>
                         </svg>
                         <svg
-                            class="hidden size-6"
+                            class="btn-close size-6 hidden"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
@@ -49,8 +42,8 @@
                     </button>
                 </div>
                 <div
-                    @click="closeBurgerMenu"
-                    class="hidden lg:flex fixed left-0 shadow-lg md:shadow-none shadow-accent-2/10 flex-1 md:static md:bg-opacity-0 md:mx-4 z-10 bg-bkg border-t md:border-none border-content/10 top-14 w-full lg:w-auto lg:order-1"
+                    popover
+                    class="md:flex md:flex-1 fixed m-0 top-14 shadow-lg text-content md:shadow-none shadow-accent-2/10 md:static md:bg-opacity-0 md:mx-4 z-10 bg-bkg border-t md:border-none border-content/10 w-full lg:w-auto lg:order-1"
                     id="mobile-menu-2">
                     <ul
                         class="w-full flex flex-col md:items-center mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0 justify-between">
@@ -96,8 +89,6 @@
                                     logout
                                 </button>
                             </div>
-                            <!-- <pre>{{ user?.email?.split('@')[0]}}</pre> -->
-                            <!-- <pre>pre: {{dbUser}}</pre> -->
                         </li>
                     </ul>
                 </div>
@@ -124,12 +115,6 @@ const { data: dbUser } = await useFetch(
 const toggleTheme = () => {
     colorMode.preference = colorMode.preference === 'light' ? 'dark' : 'light'
     useHead({ htmlAttrs: { 'data-theme': colorMode.preference } })
-}
-
-const closeBurgerMenu = () => {
-    const menu = document.getElementById('mobile-menu-2')
-    menu?.classList.remove('block')
-    menu?.classList.add('hidden')
 }
 
 const logout = async () => {
@@ -161,8 +146,42 @@ async function loadUser() {
     if (!user.value) return //no user to load
     // console.log('11supa-user:', user.value)
     //@ts-ignore
-    const dbUser: User = await $fetch(`/api/user/db-user?email=${user.value.email}`)
+    const dbUser: User = await $fetch(
+        `/api/user/db-user?email=${user.value.email}`,
+    )
     // console.log('dbUser:', dbUser)
     store.setUser(dbUser)
 }
 </script>
+
+<style>
+:has(:popover-open) .burger-menu svg:first-of-type {
+    display: none;
+}
+
+:has(:popover-open) .burger-menu svg:last-of-type {
+    display: block;
+}
+
+[popover] {
+    animation: slide-in 0.6s ease;
+}
+
+@keyframes slide-in {
+    0% {
+        transform: translateY(-400px);
+        opacity: 0;
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(20px);
+    }
+    90% {
+        opacity: 1;
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+</style>
