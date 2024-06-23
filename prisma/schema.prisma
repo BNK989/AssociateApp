@@ -15,6 +15,7 @@ model Users {
   userName      String
   authinticator String?    
   email         String     @unique
+  // lastLoginAt     DateTime?  @db.Timestamptz(6) @updatedAt
   // preferences   Json
   Games         UsersGames[]   
   messages      Messages[]
@@ -58,7 +59,9 @@ model Messages {
 
 enum Status {
   ACTIVE
-  INACTIVE
+  ARCHIVED
+  DELETED
+  FINISHED
 }
 
 enum GameMode {

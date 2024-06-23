@@ -52,6 +52,7 @@
                                 class="flex flex-col md:items-center mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0 justify-between">
                                 <li v-for="link in menu">
                                     <NuxtLink
+                                        @click="hideThePopover"
                                         :to="link.url"
                                         class="block py-2 pr-4 pl-3 rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0"
                                         aria-current="page"
@@ -111,6 +112,11 @@ const supabase = useSupabaseClient()
 const { data: dbUser } = await useFetch(
     `/api/user/db-user?email=${user?.value?.email}`,
 )
+
+const hideThePopover = () => {
+    const popover = document.getElementById('mobile-menu-2')
+    popover.hidePopover()
+}
 
 const toggleTheme = () => {
     colorMode.preference = colorMode.preference === 'light' ? 'dark' : 'light'
