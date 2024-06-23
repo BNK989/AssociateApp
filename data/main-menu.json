@@ -8,6 +8,10 @@
         "url": "/about"
     },
     {
+        "name": "How to play",
+        "url": "/how-to-play"
+    },
+    {
         "name": "Contact",
         "url": "/contact"
     }
