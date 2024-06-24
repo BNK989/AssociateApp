@@ -19,13 +19,14 @@
 </template>
 
 <script lang="ts" setup>
+const { t } = useI18n()
 const props = defineProps({
     gameMode: String,
 })
 const word = ref('')
 const emit = defineEmits(['handleSubmit'])
-const placeholder = computed(() => props.gameMode === 'INPUT' ? 'Type the next word...' : 'Guess the previous word...')
-const btnTxt = computed(() => props.gameMode === 'INPUT' ? 'Add' : 'Guess')
+const placeholder = computed(() => props.gameMode === 'INPUT' ? t('Game_Text_Placeholder_guess') : t('Game_Text_Placeholder_input'))
+const btnTxt = computed(() => props.gameMode === 'INPUT' ? t('Game_Send_Btn') : t('Game_Guess_Btn'))
 
 const onHandleSubmit = () => {
     emit('handleSubmit', word.value)

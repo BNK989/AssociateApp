@@ -1,7 +1,7 @@
 <template>
     <div class="p-4">
-        <h1 class="text-3xl font-bold">Welcome</h1>
-        <button @click="createNewGame" class="py-2 px-3 my-4 rounded-full w-full md:w-2/5 bg-accent-3">Start a new Game</button>
+        <h1 class="text-3xl font-bold text-right ltr:text-left">{{ $t('Welcome')}}</h1>
+        <button @click="createNewGame" class="py-2 px-3 my-4 rounded-full w-full md:w-2/5 bg-accent-3">{{ $t('Start_New_Game_Btn') }}</button>
         <!-- <ul class="my-4 flex gap-4">
             <li>
             </li> -->
@@ -12,7 +12,7 @@
         <ul class="grid gap-4 grid-cols-2 md:grid-cols-4">
 
             <li v-for="game in activeGames">
-                <nuxt-link :to="`/game/${game.id}`">
+                <nuxt-link :to="localPath(`/game/${game.id}`)">
                     <div class="grid grid-cols-[minmax(min-content,1fr)_min-content] gap-3 rounded bg-accent-3/80 md:max-w-56 p-3 cursor-pointer hover:bg-accent-3/50 duration-300">
                         <h2 class="text-2xl" >{{ game.title }}</h2>
                         <h6 class="text-sm lowercase self-start">{{ game.GameMode }}</h6>
@@ -29,7 +29,11 @@
 <script lang="ts" setup>
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
+
+const localPath = useLocalePath()
+
 const user = useSupabaseUser()
+
 const email = user?.value?.email
 const activeGames = ref([])
 

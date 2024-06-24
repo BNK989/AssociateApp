@@ -28,7 +28,7 @@
                     </p>
                     <small>{{
                         wordsWithUsers[i]?.id === storeUser.id
-                            ? 'You'
+                            ? $t('You')
                             : wordsWithUsers[i]?.userName
                     }}</small>
                 </div>
