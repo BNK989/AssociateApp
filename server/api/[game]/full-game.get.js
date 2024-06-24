@@ -9,7 +9,6 @@ export default defineEventHandler(async (e) => {
     let cleanRes
 
     try {
-
         res = await prisma.games.findUnique({
             where: {
                 id: gameId,
@@ -19,24 +18,23 @@ export default defineEventHandler(async (e) => {
                     select: {
                         user: {
                             select: {
+                                id: true,
                                 email: true,
-                                userName: true
-                            }
-                        }
-                    }
-                }
-            }
+                                userName: true,
+                            },
+                        },
+                    },
+                },
+            },
         })
 
         if (!res) throw new Error(`game id: ${gameId} not found`)
 
-        cleanRes = { ...res, players: res.Users.map(u => u.user) }
-        delete cleanRes.Users       
-
+        cleanRes = { ...res, players: res.Users.map((u) => u.user) }
+        delete cleanRes.Users
     } catch (err) {
         console.error('there was an error', err)
     }
 
     return cleanRes
-
 })

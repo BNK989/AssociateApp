@@ -7,7 +7,7 @@
             :wordLength="messages?.length || 0"
             :feedback="feedback"
             @changeGameMode="changeGameMode" />
-        <!-- <pre>{{ users }}</pre> -->
+        <pre>{{ TurnOrderByIds }}</pre>
         <ChatBody
             :words="messages as any"
             :users="users as any"
@@ -27,7 +27,7 @@ import { createClient } from '@supabase/supabase-js'
 const route = useRoute()
 const { generateRandomString } = useUtilities()
 const gameId = route.params.gameid
-const game : Game | any = ref({})
+const game: Game | any = ref({})
 const gameMode = computed(() => game.value.GameMode)
 const feedback = ref('')
 const scrollTo = ref(0)
@@ -45,6 +45,24 @@ const playSound = async (fileName: string) => {
     audio.play()
 }
 
+const TurnOrderByIds = computed(() => {
+    const msgsBySender = messages.value.map((m) => m.senderId)
+    const unique = [...new Set(msgsBySender)]
+    if (unique.length < game.value.players?.length) {
+        const newMap = game.value.players?.map((p) => p.id)
+        const played = newMap.filter((p) => unique.includes(p))
+        const didNotPlayed = newMap.filter((p) => !unique.includes(p))
+        return [...played, ...didNotPlayed]
+    }
+    return unique
+})
+
+const nextTurnId = computed(() => {
+    if (!game.value) return ''
+    const PlayersCount = game.value.players?.length - 1
+    return TurnOrderByIds.value[PlayersCount]
+})
+
 const loadMessages = async () => {
     try {
         const data = await $fetch(`/api/message/${gameId}`)
@@ -59,7 +77,7 @@ const loadMessages = async () => {
 const loadGame = async () => {
     try {
         // @ts-ignore
-        const data = await $fetch(`/api/${gameId}/full-game`) as Game
+        const data = (await $fetch(`/api/${gameId}/full-game`)) as Game
         if (!data) throw new Error('could not load messages')
         game.value = data
         document.title = 'Chat' + ' ' + game.value.title || ''
@@ -68,8 +86,6 @@ const loadGame = async () => {
         console.error('there was an error', err)
     }
 }
-
-
 
 const guessedCount = computed(() =>
     messages.value?.reduce((acc, w) => (w.isResolved ? acc + 1 : acc), 0),
@@ -82,11 +98,11 @@ const nextWordToGuess = computed(
 
 // TODO load users in game
 const loadUsers = async () => {
-    if(!gameId) return console.warn('no gameId at loadUsers')
+    if (!gameId) return console.warn('no gameId at loadUsers')
     const { data } = await useFetch(`/api/user/by/${gameId}`, {
         method: 'GET',
     })
-return data    
+    return data
 }
 const users = await loadUsers()
 // TODO GameMode should be in db
@@ -164,6 +180,7 @@ onMounted(() => {
             },
             (payload) => {
                 if (payload.eventType === 'INSERT') {
+                    console.log('167payload:', payload)
                     messages.value.push(payload?.new as Word)
                     playSound('sent')
                 } else {
@@ -171,7 +188,9 @@ onMounted(() => {
                     if (payload.new.isResolved) {
                         playSound('correct')
                         scrollTo.value = payload.new.id
-                        const idx = messages.value.findIndex(w => w.id === payload.new.id)
+                        const idx = messages.value.findIndex(
+                            (w) => w.id === payload.new.id,
+                        )
                         messages.value[idx].isResolved = true
                     } else {
                         playSound('wrong')
@@ -189,7 +208,7 @@ onMounted(() => {
                 filter: `id=eq.${gameId}`,
             },
             (payload) => {
-                game.value.GameMode = payload.new.GameMode 
+                game.value.GameMode = payload.new.GameMode
             },
         )
 

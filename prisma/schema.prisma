@@ -15,8 +15,8 @@ model Users {
   userName      String
   authinticator String?    
   email         String     @unique
-  // lastLoginAt     DateTime?  @db.Timestamptz(6) @updatedAt
-  // preferences   Json
+  lastLoginAt   DateTime?  @db.Timestamptz(6) @updatedAt
+  preferences   Json?      
   Games         UsersGames[]   
   messages      Messages[]
 
@@ -26,9 +26,10 @@ model Users {
 model Games {
   id            Int       @id @default(autoincrement())
   createdAt     DateTime  @default(now()) @db.Timestamptz(6)
-  title         String
-  // score         Int
-  // updatedAt     DateTime? @db.Timestamptz(6) @updatedAt
+  title         String    @default("Untitled Game")
+  score         Int       @default(0)
+  updatedAt     DateTime? @db.Timestamptz(6) @updatedAt
+  nextTurn      String?
   GameMode      GameMode  @default(INPUT)
   status        Status    @default(ACTIVE) 
   Users         UsersGames[]   
@@ -48,6 +49,7 @@ model UsersGames {
 model Messages {
   id            Int      @id @default(autoincrement())
   createdAt     DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime? @db.Timestamptz(6) @updatedAt
   content       String
   cipher        String
   isResolved    Boolean  @default(false)

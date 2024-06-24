@@ -1,22 +1,59 @@
 <template>
-    <NuxtImg v-if="user?.avatar" :class="`w-10 h-10 me-2 rounded-full ${errLoadingImg ? 'hidden' : ''}`" :src="user?.avatar" alt="Rounded avatar"  @error="handleErr"/>
-    <!-- <span v-if="errLoadingImg"><SvgPlaceHolder/></span> -->
-    <!-- <span v-if="errLoadingImg">{{user?.full_name}}</span> -->
-    <h6>{{ $t('Menu_Hi')}}, {{ fName }}</h6>
-    <!-- <pre>6{{ user }}</pre> -->
+    <NuxtImg
+        v-if="user?.avatar"
+        :class="`w-10 h-10 me-2 rounded-full ${errLoadingImg ? 'hidden' : ''}`"
+        :src="user?.avatar"
+        alt="Rounded avatar"
+        @error="handleErr" />
+    <span v-if="errLoadingImg" class="rounded-full text-bkg_dark/30">
+        <svg height="40" width="40" xmlns="http://www.w3.org/2000/svg">
+            <circle
+                cx="20"
+                cy="20"
+                r="18"
+                fill="currentColor"
+                stroke="currentColor" />
+            <text
+                x="20"
+                y="20"
+                fill="white"
+                :font-size="initials.length * 0.3 + 'em'"
+                text-anchor="middle"
+                dominant-baseline="middle"
+                dy="0.1em">
+                {{ initials }}
+            </text>
+        </svg>
+    </span>
+
+    <h6>{{ $t('Menu_Hi') }}, {{ fName }}</h6>
 </template>
 
 <script lang="ts" setup>
 const props = defineProps({
-    user: Object
+    user: Object,
 })
-const errLoadingImg= ref(false)
+const errLoadingImg = ref(false)
 
 const handleErr = () => {
     errLoadingImg.value = true
 }
 
-const fName = computed (() => props.user?.userName.split(' ')[0] || props.user?.email?.split('@')[0])
+const fName = computed(
+    () =>
+        props.user?.userName.split(' ')[0] || props.user?.email?.split('@')[0],
+)
 
-//placeholder placeholder-class="hidden"
+const initials = computed(() => {
+    return getInitials(props.user?.userName)
+})
+
+const getInitials = (name: string) => {
+    const words = name.split(' ')
+    const initials = words
+        .map((word) => word[0])
+        .slice(0, 3)
+        .join('')
+    return initials.toUpperCase()
+}
 </script>
