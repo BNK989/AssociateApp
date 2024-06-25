@@ -1,9 +1,11 @@
 <template>
     <NuxtImg
         v-if="user?.avatar"
-        :class="`w-10 h-10 me-2 rounded-full ${errLoadingImg ? 'hidden' : ''}`"
+        :class="`w-10 h-10 me-2 rounded-full ${errLoadingImg ? 'hidden' : ''} ${
+            props.class ? props.class : ''
+        }`"
         :src="user?.avatar"
-        alt="Rounded avatar"
+        :alt="user.userName"
         @error="handleErr" />
     <span v-if="errLoadingImg" class="rounded-full text-bkg_dark/30">
         <svg height="40" width="40" xmlns="http://www.w3.org/2000/svg">
@@ -25,24 +27,18 @@
             </text>
         </svg>
     </span>
-
-    <h6>{{ $t('Menu_Hi') }}, {{ fName }}</h6>
 </template>
 
 <script lang="ts" setup>
 const props = defineProps({
     user: Object,
+    class: String,
 })
 const errLoadingImg = ref(false)
 
 const handleErr = () => {
     errLoadingImg.value = true
 }
-
-const fName = computed(
-    () =>
-        props.user?.userName.split(' ')[0] || props.user?.email?.split('@')[0],
-)
 
 const initials = computed(() => {
     return getInitials(props.user?.userName)

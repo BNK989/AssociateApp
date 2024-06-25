@@ -112,6 +112,10 @@
                                 v-else
                                 class="flex items-center justify-start min-h-14 md:min-h-10 gap-3 px-3 bg-blue-200 bg-opacity-20 my-2 py-2 md:bg-opacity-0 md:my-0">
                                 <UserAvatar :user="storeUser" />
+                                <h6>
+                                    {{ $t('Menu_Hi') }},
+                                    {{ storeUser?.userName.split(' ')[0] }}
+                                </h6>
                                 <button class="mx-2" @click="logout">
                                     <!-- hideThePopover -->
                                     {{ $t('Logout') }}

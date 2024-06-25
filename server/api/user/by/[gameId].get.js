@@ -6,7 +6,6 @@ export default defineEventHandler(async (e) => {
     const { gameId } = await e.context.params
 
     try {
-        console.log('09gameId:', gameId)
         if (!gameId) return console.log('10no game id', gameId)
         res = await prisma.users.findMany({
             where: {
@@ -15,7 +14,7 @@ export default defineEventHandler(async (e) => {
                         // GameId: +gameId,
                         GameId: {
                             equals: +gameId || 999,
-                        }
+                        },
                     },
                 },
             },

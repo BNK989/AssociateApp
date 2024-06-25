@@ -1,5 +1,6 @@
 <template>
-    <section class="border-accent-3/40 min-h-8 shadow-2xl shadow-white sm:shadow-none">
+    <section
+        class="border-accent-3/40 min-h-8 shadow-2xl shadow-white sm:shadow-none">
         <form @submit.prevent="onHandleSubmit">
             <div class="relative">
                 <input
@@ -9,9 +10,13 @@
                     v-model="word" />
                 <button
                     type="submit"
-                    :class="gameMode === 'SOLVE' ? 'bg-accent-1' : 'bg-accent-3'"
+                    :class="
+                        gameMode === 'SOLVE'
+                            ? `bg-accent-1 ${!isMyTurn ? 'bg-opacity-40' : ''}`
+                            : `bg-accent-3 ${!isMyTurn ? 'bg-opacity-40' : ''}`
+                    "
                     class="min-w-32 absolute end-2.5 bottom-2.5 hover:bg-accent-3/75 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">
-                    {{btnTxt}}
+                    {{ btnTxt }} {{ isMyTurn }}
                 </button>
             </div>
         </form>
@@ -22,15 +27,39 @@
 const { t } = useI18n()
 const props = defineProps({
     gameMode: String,
+    nextPlayerId: String,
 })
+const store = useStore()
+const { user } = storeToRefs(store)
 const word = ref('')
 const emit = defineEmits(['handleSubmit'])
-const placeholder = computed(() => props.gameMode === 'INPUT' ? t('Game_Text_Placeholder_guess') : t('Game_Text_Placeholder_input'))
-const btnTxt = computed(() => props.gameMode === 'INPUT' ? t('Game_Send_Btn') : t('Game_Guess_Btn'))
+
+const isMyTurn = computed(() => {
+    return user.value?.id === props.nextPlayerId
+})
+
+const placeholder = computed(() => {
+    if (isMyTurn)
+        return `It's ${
+            store.game?.players.find((p) => p.id === props.nextPlayerId)
+                ?.userName
+        }'s turn...`
+    return props.gameMode === 'INPUT'
+        ? t('Game_Text_Placeholder_input')
+        : t('Game_Text_Placeholder_guess')
+})
+const btnTxt = computed(() =>
+    props.gameMode === 'INPUT' ? t('Game_Send_Btn') : t('Game_Guess_Btn'),
+)
 
 const onHandleSubmit = () => {
+    if (!isMyTurn.value)
+        return store.setToast({
+            msg: 'Not your turn',
+            type: 'oops',
+            duration: 2000,
+        })
     emit('handleSubmit', word.value)
     word.value = ''
 }
-
 </script>

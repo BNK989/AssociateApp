@@ -13,9 +13,13 @@
             :users="users as any"
             :guessedCount="guessedCount"
             :gameMode="gameMode"
+            :nextPlayerId="nextTurnId"
             :scrollTo="scrollTo" />
         <!-- <pre>{{ guessedCount }}</pre> -->
-        <ChatBottom :gameMode="gameMode" @handleSubmit="handleSubmit" />
+        <ChatBottom
+            :gameMode="gameMode"
+            :nextPlayerId="nextTurnId"
+            @handleSubmit="handleSubmit" />
     </div>
 </template>
 
