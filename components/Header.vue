@@ -43,13 +43,13 @@
                 </div>
                 <div
                     popover
-                    class="md:flex md:flex-1 fixed m-0 top-14 shadow-lg text-content md:shadow-none shadow-accent-2/10 md:static md:bg-opacity-0 md:mx-4 z-10 bg-bkg border-t md:border-none border-content/10 w-full lg:w-auto lg:order-1"
+                    class="md:flex md:flex-1 fixed m-0 top-12 shadow-lg text-content md:shadow-none shadow-accent-2/10 md:static md:bg-opacity-0 md:mx-4 z-10 bg-bkg border-t md:border-none border-content/10 w-full lg:w-auto lg:order-1"
                     id="mobile-menu-2">
                     <ul
-                        class="w-full flex flex-col md:items-center mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0 justify-between">
+                        class="w-full flex flex-col md:items-center mt-4 font-medium lg:flex-row lg:mt-0 justify-between">
                         <li>
                             <ul
-                                class="flex flex-col md:items-center mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0 justify-between">
+                                class="flex flex-col gap-4 md:items-center my-4 font-medium lg:flex-row lg:mt-0 justify-between">
                                 <li v-for="link in menu">
                                     <NuxtLink
                                         @click="hideThePopover"

@@ -23,5 +23,7 @@
     "Game_Send_Btn": "שלח",
     "Game_Guess_Btn": "נחש",
     "Welcome": "ברוך הבא",
-    "Start_New_Game_Btn": "התחל משחק חדש"
+    "Start_New_Game_Btn": "התחל משחק חדש",
+    "Placeholder_Not_your_turnA": "תור",
+    "Placeholder_Not_your_turnB": ""
 }

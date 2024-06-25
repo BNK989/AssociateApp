@@ -5,6 +5,7 @@
             <div class="relative">
                 <input
                     type="text"
+                    :class="true ? '' : ''"
                     class="block w-full p-4 ps-4 text-sm bg-bkg md:border border-accent-3/40 rounded-lg focus:ring-accent-3/10 focus:border-accent-3/10 focus:outline-none"
                     :placeholder="placeholder"
                     v-model="word" />
@@ -16,7 +17,7 @@
                             : `bg-accent-3 ${!isMyTurn ? 'bg-opacity-40' : ''}`
                     "
                     class="min-w-32 absolute end-2.5 bottom-2.5 hover:bg-accent-3/75 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">
-                    {{ btnTxt }} {{ isMyTurn }}
+                    {{ btnTxt }}
                 </button>
             </div>
         </form>
@@ -24,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const props = defineProps({
     gameMode: String,
     nextPlayerId: String,
@@ -40,10 +41,10 @@ const isMyTurn = computed(() => {
 
 const placeholder = computed(() => {
     if (isMyTurn)
-        return `It's ${
+        return `${t('Placeholder_Not_your_turnA')} ${
             store.game?.players.find((p) => p.id === props.nextPlayerId)
                 ?.userName
-        }'s turn...`
+        }${t('Placeholder_Not_your_turnB')}...`
     return props.gameMode === 'INPUT'
         ? t('Game_Text_Placeholder_input')
         : t('Game_Text_Placeholder_guess')

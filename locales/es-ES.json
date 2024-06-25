@@ -21,5 +21,7 @@
     "Game_Send_Btn": "Enviar",
     "Game_Guess_Btn": "Adivinar",
     "Welcome": "Welcome",
-    "Start_New_Game_Btn": "Start a New Game"
+    "Start_New_Game_Btn": "Start a New Game",
+    "Placeholder_Not_your_turnA": "It's",
+    "Placeholder_Not_your_turnB": "'s turn"
 }
