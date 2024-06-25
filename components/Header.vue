@@ -56,7 +56,14 @@
                                         :to="localPath(link.url)"
                                         class="block py-2 pr-4 pl-3 rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0"
                                         aria-current="page"
-                                        >{{ $t(`Menu_${link.name.replaceAll(' ', '_')}`) }}</NuxtLink
+                                        >{{
+                                            $t(
+                                                `Menu_${link.name.replaceAll(
+                                                    ' ',
+                                                    '_',
+                                                )}`,
+                                            )
+                                        }}</NuxtLink
                                     >
                                 </li>
                             </ul>
@@ -64,8 +71,15 @@
                         <li class="flex flex-col md:flex-row">
                             <ul class="flex items-center justify-start">
                                 <li>
-                                    <select v-model="selectedLocale" class="bg-bkg ms-2 me-4 min-w-24 focus-visible:outline focus-visible:outline-bkg_dark">
-                                <option v-for="l in locales" :key="l.code" :value="l.code">{{ l.name }}</option>
+                                    <select
+                                        v-model="selectedLocale"
+                                        class="bg-bkg ms-2 me-4 min-w-24 focus-visible:outline focus-visible:outline-bkg_dark">
+                                        <option
+                                            v-for="l in locales"
+                                            :key="l.code"
+                                            :value="l.code">
+                                            {{ l.name }}
+                                        </option>
                                     </select>
                                 </li>
                                 <li>
@@ -76,8 +90,6 @@
                                     </button>
                                 </li>
                             </ul>
-                            
-                            
 
                             <div
                                 @click="hideThePopover"
@@ -86,19 +98,22 @@
                                 <NuxtLink
                                     :to="localPath('/profile/login')"
                                     class="hover:bg-content/10 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
-                                    >{{$t('Login')}}</NuxtLink
+                                    >{{ $t('Login') }}</NuxtLink
                                 >
                                 <NuxtLink
-                                    :to="localPath('/profile/login?signup=true')"
+                                    :to="
+                                        localPath('/profile/login?signup=true')
+                                    "
                                     class="hover:bg-content/10 bg-primary-700 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
-                                    >{{ $t('Signup')}}</NuxtLink
+                                    >{{ $t('Signup') }}</NuxtLink
                                 >
                             </div>
                             <div
                                 v-else
                                 class="flex items-center justify-start min-h-14 md:min-h-10 gap-3 px-3 bg-blue-200 bg-opacity-20 my-2 py-2 md:bg-opacity-0 md:my-0">
                                 <UserAvatar :user="storeUser" />
-                                <button class="mx-2" @click="logout; hideThePopover">
+                                <button class="mx-2" @click="logout">
+                                    <!-- hideThePopover -->
                                     {{ $t('Logout') }}
                                 </button>
                             </div>
@@ -115,17 +130,20 @@ import type { User } from '~/types/user'
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
 
-const {locale, setLocale, locales} = useI18n()
+const { locale, setLocale, locales } = useI18n()
 const localPath = useLocalePath()
 const selectedLocale = computed({
     get: () => locale.value,
-    set: (v) => setLocale(v)
+    set: (v) => setLocale(v),
 })
-watch(() => locale.value, () => {
-    const dir = locale.value === 'he' ? 'rtl' : 'ltr'
-    // useHead({ htmlAttrs: { dir } })
-    document.documentElement.setAttribute('dir', dir)
-})
+watch(
+    () => locale.value,
+    () => {
+        const dir = locale.value === 'he' ? 'rtl' : 'ltr'
+        // useHead({ htmlAttrs: { dir } })
+        document.documentElement.setAttribute('dir', dir)
+    },
+)
 
 const colorMode = useColorMode()
 const isDark = computed(() => colorMode.preference === 'dark')
@@ -148,6 +166,7 @@ const toggleTheme = () => {
 }
 
 const logout = async () => {
+    if (!user.value) return
     try {
         const { error } = await supabase.auth.signOut()
         if (error) throw error
@@ -159,14 +178,14 @@ const logout = async () => {
 
 onMounted(() => {
     if (storeUser.value) return
-    setTimeout(loadUser, 1000)
+    setTimeout(loadUser, 1)
 })
 
 watch(
     () => storeUser.value,
     () => {
         if (storeUser.value) return
-        setTimeout(loadUser, 1000)
+        setTimeout(loadUser, 1)
     },
 )
 

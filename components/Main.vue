@@ -6,8 +6,8 @@
             :gameMode="gameMode"
             :wordLength="messages?.length || 0"
             :feedback="feedback"
+            :TurnOrderByIds="TurnOrderByIds"
             @changeGameMode="changeGameMode" />
-        <pre>{{ TurnOrderByIds }}</pre>
         <ChatBody
             :words="messages as any"
             :users="users as any"
@@ -46,7 +46,7 @@ const playSound = async (fileName: string) => {
 }
 
 const TurnOrderByIds = computed(() => {
-    const msgsBySender = messages.value.map((m) => m.senderId)
+    const msgsBySender = messages.value.map((m) => m.senderId).reverse()
     const unique = [...new Set(msgsBySender)]
     if (unique.length < game.value.players?.length) {
         const newMap = game.value.players?.map((p) => p.id)
@@ -180,7 +180,6 @@ onMounted(() => {
             },
             (payload) => {
                 if (payload.eventType === 'INSERT') {
-                    console.log('167payload:', payload)
                     messages.value.push(payload?.new as Word)
                     playSound('sent')
                 } else {
