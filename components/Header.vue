@@ -49,7 +49,7 @@
                         class="w-full flex flex-col md:items-center mt-4 font-medium lg:flex-row lg:mt-0 justify-between">
                         <li>
                             <ul
-                                class="flex flex-col gap-4 md:items-center my-4 font-medium lg:flex-row lg:mt-0 justify-between">
+                                class="flex flex-col gap-4 md:items-center my-4 md:my-0 font-medium lg:flex-row lg:mt-0 justify-between">
                                 <li v-for="link in menu">
                                     <NuxtLink
                                         @click="hideThePopover"
