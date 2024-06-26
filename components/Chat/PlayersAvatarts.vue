@@ -1,14 +1,23 @@
 <template>
     <TransitionGroup
         name="list"
-        tag="div"
+        tag="ul"
         class="relative flex -space-x-4 rtl:space-x-reverse">
-        <UserAvatar
+        <!-- <UserAvatar
             v-for="avatar in avatars"
             :user="avatar"
+            :key="avatar.id"
+            :class="
+            avatar.id === store.user?.id ? `border-2 border-accent-3` : ''"
+            /> -->
+        <img
+            class="w-10 h-10 me-2 rounded-full"
+            v-for="avatar in avatars"
+            :key="avatar.id"
             :class="
                 avatar.id === store.user?.id ? `border-2 border-accent-3` : ''
-            " />
+            "
+            :src="avatar.avatar" />
     </TransitionGroup>
 </template>
 <script lang="ts" setup>
@@ -38,7 +47,7 @@ const avatars = computed(() => {
 .list-enter-from,
 .list-leave-to {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateX(30px);
 }
 
 /* ensure leaving items are taken out of layout flow so that moving

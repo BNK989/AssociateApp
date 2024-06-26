@@ -15,6 +15,7 @@
                 </NuxtLink>
                 <div class="flex items-center lg:order-2">
                     <button
+                        @click="showUserMenu = false"
                         type="button"
                         class="burger-menu inline-flex items-center p-2 ml-1 text-sm rounded-lg lg:hidden hover:bg-content/5 focus:outline-none focus:ring-2 focus:ring-content/5"
                         popovertarget="mobile-menu-2">
@@ -43,7 +44,7 @@
                 </div>
                 <div
                     popover
-                    class="md:flex md:flex-1 fixed m-0 top-12 shadow-lg text-content md:shadow-none shadow-accent-2/10 md:static md:bg-opacity-0 md:mx-4 z-10 bg-bkg border-t md:border-none border-content/10 w-full lg:w-auto lg:order-1"
+                    class="md:flex md:flex-1 fixed m-0 top-12 md:top-0 shadow-lg text-content md:shadow-none shadow-accent-2/10 md:relative md:bg-opacity-0 md:mx-4 z-10 bg-bkg border-t md:border-none border-content/10 w-full lg:w-auto lg:order-1"
                     id="mobile-menu-2">
                     <ul
                         class="w-full flex flex-col md:items-center mt-4 font-medium lg:flex-row lg:mt-0 justify-between">
@@ -110,8 +111,54 @@
                             </div>
                             <div
                                 v-else
-                                class="flex items-center justify-start min-h-14 md:min-h-10 gap-3 px-3 bg-blue-200 bg-opacity-20 my-2 py-2 md:bg-opacity-0 md:my-0">
-                                <UserAvatar :user="storeUser" />
+                                class="relative flex items-center justify-start min-h-14 md:min-h-10 gap-3 px-3 bg-blue-200 bg-opacity-20 my-2 py-2 md:bg-opacity-0 md:my-0">
+                                <button @click="showUserMenu = !showUserMenu">
+                                    <UserAvatar :user="storeUser" />
+                                </button>
+
+                                <!-- Popover menu Start -->
+
+                                <transition name="pop">
+                                    <div
+                                        v-if="showUserMenu"
+                                        @click="hideThePopover"
+                                        class="fixed w-fit end-20 m-auto md:top-16 md:end-48 z-20 bg-bkg divide-y divide-accent-3/50 rounded-lg shadow-xl shadow-content/10 md:w-44">
+                                        <div class="px-4 py-3 text-sm">
+                                            <div>{{ storeUser?.userName }}</div>
+                                            <div
+                                                class="font-medium truncate text-content/50">
+                                                {{ storeUser?.email }}
+                                            </div>
+                                        </div>
+                                        <ul
+                                            class="py-2 text-sm"
+                                            aria-labelledby="avatarButton">
+                                            <li>
+                                                <NuxtLink
+                                                    to="/profile/Scoreboard"
+                                                    class="block px-4 py-2 hover:bg-bkg_dark/50"
+                                                    >Scoreboard
+                                                </NuxtLink>
+                                            </li>
+                                            <li>
+                                                <a
+                                                    href="#"
+                                                    class="block px-4 py-2 hover:bg-bkg_dark/50"
+                                                    >Settings</a
+                                                >
+                                            </li>
+                                        </ul>
+                                        <div class="py-1">
+                                            <button
+                                                @click="logout"
+                                                class="block px-4 py-2 text-sm hover:bg-bkg_dark/50">
+                                                Log out
+                                            </button>
+                                        </div>
+                                    </div>
+                                </transition>
+
+                                <!-- Popover menu end -->
                                 <h6>
                                     {{ $t('Menu_Hi') }},
                                     {{ storeUser?.userName.split(' ')[0] }}
@@ -162,7 +209,10 @@ const { data: dbUser } = await useFetch(
 const hideThePopover = () => {
     const popover = document.getElementById('mobile-menu-2')
     popover.hidePopover()
+    showUserMenu.value = false
 }
+
+const showUserMenu = ref(false)
 
 const toggleTheme = () => {
     colorMode.preference = colorMode.preference === 'light' ? 'dark' : 'light'
@@ -218,6 +268,24 @@ async function loadUser() {
 
 [popover] {
     animation: slide-in 0.6s ease;
+}
+
+.pop-enter-active {
+    animation: pop-in 0.5s;
+}
+.pop-leave-active {
+    animation: pop-in 0.5s reverse;
+}
+@keyframes pop-in {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.25);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 @keyframes slide-in {
