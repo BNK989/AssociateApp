@@ -141,11 +141,11 @@
                                                 </NuxtLink>
                                             </li>
                                             <li>
-                                                <a
-                                                    href="#"
+                                                <NuxtLink
+                                                    to="/profile/Preferences"
                                                     class="block px-4 py-2 hover:bg-bkg_dark/50"
-                                                    >Settings</a
-                                                >
+                                                    >Preferences
+                                                </NuxtLink>
                                             </li>
                                         </ul>
                                         <div class="py-1">
