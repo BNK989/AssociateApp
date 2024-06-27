@@ -7,6 +7,7 @@ export default defineEventHandler(async (e) => {
     let res
 
     try {
+        if(!email) throw new Error('No email provided at db-user.get')
         res = await prisma.users.findUnique({
             where: {
                 email,

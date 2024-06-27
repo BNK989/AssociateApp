@@ -3,17 +3,21 @@ const prisma = new PrismaClient()
 
 export default defineEventHandler(async (e) => {
 
-    console.log('upserting user')
+    const basePref = {
+        theme: "light",
+        soundOn: true,
+        language: "he-IL",
+        AllowNotifications: true
+      }
 
     const body = await readBody(e)
     const {email, name, avatar} = body
-    console.log('user:', email, name, avatar)
 
     try{
         const user = await prisma.users.upsert({
             where: { email: email}, 
-            update: {userName: name, avatar: avatar},
-            create: {email: email, userName: name, avatar: avatar}
+            update: {lastLoginAt},
+            create: {email: email, userName: name, avatar: avatar, preferences: basePref}
         })
         return {success: true, user}
     }
