@@ -13,6 +13,7 @@ model Users {
   createdAt     DateTime  @default(now()) @db.Timestamptz(6)
   avatar        String
   userName      String
+  // score         BigInt     @default(100)
   authinticator String?    
   email         String     @unique
   lastLoginAt   DateTime?  @db.Timestamptz(6) @updatedAt

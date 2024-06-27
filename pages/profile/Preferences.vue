@@ -59,9 +59,9 @@
             </div>
             <div class="flex justify-start gap-6 items-center">
                 <NuxtImg
-                :src="newAvatar.preview || user.avatar"
-                alt=""
-                class="size-10 rounded-full" />
+                    :src="newAvatar.preview || user.avatar"
+                    alt=""
+                    class="size-10 rounded-full" />
                 <ImageUpload />
             </div>
 
@@ -80,55 +80,63 @@ definePageMeta({
 })
 
 import { updateImage } from '@/services/updateImage'
+import type { User } from '~/types/user'
 
 const supabase = useSupabaseClient()
 
 const store = useStore()
 const { user, userPref } = storeToRefs(store)
-const pref = { ...userPref.value }
+const pref = ref({ ...userPref.value })
 const newUserName = ref(user.value?.userName || '')
 
 const newAvatar = ref({ preview: null, image: null })
 
 const handleSubmit = async () => {
-    if (newAvatar.value.image) {
-        console.log('got image')
-        const { data, error } = await supabase.storage
-            .from('avatar')
-            .upload(`public/avatar_${user.value.id}`, newAvatar.value.image, {
-                cacheControl: '3600',
-                upsert: true,
-            })
-        if (error) {
-            console.error(error)
-        }
-        if (data) {
-            console.log(data)
-            const config = useRuntimeConfig()
-            const SUPABASE_URL = config.public.SUPABASE_URL
-            //@ts-ignore
-            const newAvatarLink = `${SUPABASE_URL}/storage/v1/object/public/${data?.fullPath}`
-            console.log('newAvatarLink:', newAvatarLink)
-        }
+    if (!newUserName.value)
+        return store.setToast({
+            msg: 'User name is required',
+            type: 'oops',
+            duration: 2000,
+        })
+
+    const updateUser = await $fetch('/api/user/preferences/update', {
+        method: 'PUT',
+        body: {
+            id: user.value.id,
+            userName: newUserName.value,
+            pref: pref.value,
+        },
+    })
+    if (updateUser) {
+        //@ts-ignore
+        const dbUser: User = await $fetch(
+            `/api/user/db-user?email=${user.value.email}`,
+        )
+        store.setUser(dbUser)
+        store.setToast({
+            msg: 'Profile updated',
+            type: 'success',
+            duration: 2000,
+        })
     }
 }
 
-const uploadMedia = (event) => {
-    const input = event.target
-    if (input.files[0]) {
-        const reader = new FileReader()
-        reader.onload = (e) => {
-            newAvatar.value.preview = e.target.result
-        }
-        newAvatar.value.image = input.files[0]
-        reader.readAsDataURL(input.files[0])
-    }
-    // const fileName = `${info.value.make}_${info.value.model}_${Date.now()}`
-    // const { data, error } = await supabase
-    // .from('avatar')
-    // .upload(`public/avatar_${fileName}`, 'avatarFile(NOTINQUOATS)', {
-    //     cacheControl: '3600',
-    //     upsert: true,
-    // })
-}
+// const uploadMedia = (event) => {
+//     const input = event.target
+//     if (input.files[0]) {
+//         const reader = new FileReader()
+//         reader.onload = (e) => {
+//             newAvatar.value.preview = e.target.result
+//         }
+//         newAvatar.value.image = input.files[0]
+//         reader.readAsDataURL(input.files[0])
+//     }
+// const fileName = `${info.value.make}_${info.value.model}_${Date.now()}`
+// const { data, error } = await supabase
+// .from('avatar')
+// .upload(`public/avatar_${fileName}`, 'avatarFile(NOTINQUOATS)', {
+//     cacheControl: '3600',
+//     upsert: true,
+// })
+// }
 </script>
