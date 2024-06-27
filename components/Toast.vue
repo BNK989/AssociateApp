@@ -1,11 +1,10 @@
 <template>
-    <Transition>
+    <Transition :name="isWobble ? 'wobble' : 'v'">
         <div
             v-if="content"
             @click="showToast"
             class="z-20 fixed top-8 mx-auto md:top-16 md:right-7 flex items-center w-full px-4 py-2 bg-accent-3 text-content rounded-lg shadow md:max-w-96"
-            :class="toastClass"
-            role="alert">
+            :class="toastClass">
             <div
                 class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg bg-accent-3/40">
                 <svg
@@ -23,7 +22,9 @@
                 </svg>
                 <span class="sr-only">Fire icon</span>
             </div>
-            <div class="ms-3 text-sm font-normal">{{ content }}</div>
+            <div class="ms-3 text-sm font-normal">
+                {{ content }} {{ isWobble }}
+            </div>
             <button
                 type="button"
                 @click="hideToast"
@@ -51,7 +52,11 @@
 const store = useStore()
 const content = ref('')
 const toastClass = ref({})
-let timeoutId : number
+let timeoutId: number
+
+const isWobble = computed(() =>
+    ['oops', 'warn', 'error'].includes(store.toast.type),
+)
 
 watch(
     () => store.toast,
@@ -60,16 +65,17 @@ watch(
     },
 )
 const showToast = ({ msg, type = 'info', duration = 3000 }) => {
-    clearTimeout(timeoutId)
+    if (timeoutId) clearTimeout(timeoutId)
     content.value = msg
-        toastClass.value = {
-            'bg-accent-1': type === 'success',
-            'bg-accent-2': type === 'info',
-            'bg-amber-700': type === 'oops',
-            'bg-red-600': type === 'warn',
-            'bg-red-800': type === 'error',
-        }
-        timeoutId = setTimeout(hideToast, duration)
+    toastClass.value = {
+        'bg-accent-1': type === 'success',
+        'bg-accent-2': type === 'info',
+        'bg-amber-700': type === 'oops',
+        'bg-red-600': type === 'warn',
+        'bg-red-800': type === 'error',
+    }
+    // @ts-ignore
+    timeoutId = setTimeout(hideToast, duration)
 }
 
 const hideToast = () => {
@@ -78,32 +84,48 @@ const hideToast = () => {
 </script>
 
 <style scoped>
-
-/* .v-enter-from, */
+.v-enter-from,
 .v-leave-to {
     transform: translateY(-120px);
 }
 
-/* .v-enter-to, */
+.v-enter-to,
 .v-leave-from {
     transform: translateY(-1px);
 }
 
-.v-enter-active{
-    animation: wobble .75s cubic-bezier(0.25, 0.1, 0.29, 1.82);
+.v-enter-active {
+    transition: transform 0.5s ease;
+}
+.wobble-enter-active {
+    animation: wobble 0.75s cubic-bezier(0.25, 0.1, 0.29, 1.82);
 }
 
 .v-leave-active {
-    transition: transform .5s ease;
+    transition: transform 0.5s ease;
 }
 
 @keyframes wobble {
-    0% { transform: translateY(-100px); }
-    50% { transform: translateY(0); }
-    60% { transform: translateX(8px); }
-    70% { transform: translateX(-8px); }
-    80% { transform: translateX(4px); }
-    90% { transform: translateX(-4px); }
-    100% { transform: translateX(0); }
+    0% {
+        transform: translateY(-100px);
+    }
+    50% {
+        transform: translateY(0);
+    }
+    60% {
+        transform: translateX(8px);
+    }
+    70% {
+        transform: translateX(-8px);
+    }
+    80% {
+        transform: translateX(4px);
+    }
+    90% {
+        transform: translateX(-4px);
+    }
+    100% {
+        transform: translateX(0);
+    }
 }
 </style>

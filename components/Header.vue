@@ -91,8 +91,6 @@
                                     </button>
                                 </li>
                             </ul>
-                            <button @click="updateUserPreferences">test</button>
-
                             <div
                                 @click="hideThePopover"
                                 v-if="!user"
