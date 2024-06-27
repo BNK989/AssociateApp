@@ -91,6 +91,7 @@
                                     </button>
                                 </li>
                             </ul>
+                            <button @click="updateUserPreferences">test</button>
 
                             <div
                                 @click="hideThePopover"
@@ -181,18 +182,30 @@ import type { User } from '~/types/user'
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
 
+import { loadUser, updateUserPreferences } from '@/services/loadUser'
+
 const { locale, setLocale, locales } = useI18n()
 const localPath = useLocalePath()
 const selectedLocale = computed({
     get: () => locale.value,
     set: (v) => setLocale(v),
 })
+
 watch(
     () => locale.value,
     () => {
         const dir = locale.value === 'he' ? 'rtl' : 'ltr'
+        document.documentElement.setAttribute('dir', dir)
+        setLocale(locale.value)
+    },
+)
+watch(
+    () => store.userPref.language,
+    () => {
+        const dir = store.userPref.language === 'he' ? 'rtl' : 'ltr'
         // useHead({ htmlAttrs: { dir } })
         document.documentElement.setAttribute('dir', dir)
+        setLocale(store.userPref.language)
     },
 )
 
@@ -242,18 +255,6 @@ watch(
         setTimeout(loadUser, 1)
     },
 )
-
-async function loadUser() {
-    // console.log('loading user10')
-    const user = useSupabaseUser()
-    if (!user.value) return //no user to load
-    // console.log('11supa-user:', user.value)
-    //@ts-ignore
-    const dbUser: User = await $fetch(
-        `/api/user/db-user?email=${user.value.email}`,
-    )
-    store.setUser(dbUser)
-}
 </script>
 
 <style>

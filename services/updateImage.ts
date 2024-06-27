@@ -17,6 +17,7 @@ export async function updateImage(fileLink: string ) {
                 throw new Error(`user id: ${user.value.id} not found. unable to update`)
             } else {
                 store.setToast({msg: 'Avatar updated', type: 'success', duration: 2500})
+                //@ts-ignore
                 const dbUser: User = await $fetch(
                     `/api/user/db-user?email=${user.value.email}`,
                 )

@@ -9,9 +9,9 @@
                 <select
                     v-model="pref.language"
                     class="bg-bkg_dark/80 h-8 p-1 min-w-24 focus-visible:outline focus-visible:outline-bkg_dark">
-                    <option value="en-US">English</option>
-                    <option value="es-ES">Spanish</option>
-                    <option value="he-IL">Hebrew</option>
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <option value="he">Hebrew</option>
                     <option value="">Use system settings</option>
                 </select>
             </div>

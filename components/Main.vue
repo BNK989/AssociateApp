@@ -43,6 +43,7 @@ const supabase = useSupabaseClient()
 const messages = ref<Word[] | null>([])
 
 const playSound = async (fileName: string) => {
+    if (!store.userPref.soundOn) return
     //@ts-ignore
     const audioPath = await import(`../assets/audio/${fileName}.mp3`)
     const audio = new Audio(audioPath.default)
@@ -190,14 +191,15 @@ onMounted(() => {
                     // @ts-ignore
                     if (payload.new.isResolved) {
                         playSound('correct')
+                        // @ts-ignore
                         scrollTo.value = payload.new.id
                         const idx = messages.value.findIndex(
+                            // @ts-ignore
                             (w) => w.id === payload.new.id,
                         )
                         messages.value[idx].isResolved = true
                     } else {
                         playSound('wrong')
-                        console.log('170payload:', payload)
                     }
                 }
             },
