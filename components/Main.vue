@@ -1,5 +1,5 @@
 <template>
-    <!-- <pre>2{{ messages }}</pre> -->
+    <!-- <pre @click="playSound('nudge')">test</pre> -->
     <div
         class="backdrop-blur-lg backdrop-saturate-150 md:border rounded md:border-accent-3/25 flex flex-col h-full">
         <ChatHead
@@ -43,7 +43,7 @@ const supabase = useSupabaseClient()
 const messages = ref<Word[] | null>([])
 
 const playSound = async (fileName: string) => {
-    if (!store.userPref.soundOn) return
+    if (!store.userPref?.soundOn) return
     //@ts-ignore
     const audioPath = await import(`../assets/audio/${fileName}.mp3`)
     const audio = new Audio(audioPath.default)
@@ -67,6 +67,33 @@ const nextTurnId = computed(() => {
     const PlayersCount = game.value.players?.length - 1
     return TurnOrderByIds.value[PlayersCount]
 })
+
+const isMyTurn = computed(() => {
+    return user.value?.id === nextTurnId.value
+})
+
+watch(
+    () => nextTurnId.value,
+    () => {
+        console.log('is my turn', storeUser.value?.id, nextTurnId.value)
+        if (storeUser.value?.id === nextTurnId.value) nudge(true)
+        else nudge(false)
+    },
+)
+const nudgeInterval = ref()
+const nudge = (isOn: boolean) => {
+    if (nudgeInterval.value || !isOn) clearInterval(nudgeInterval.value)
+    else
+        nudgeInterval.value = setInterval(() => {
+            playSound('nudge')
+            // TODO: CHANGE TAB HEADING: document.title = 'Your turn'
+            store.setToast({
+                msg: 'Your turn',
+                type: 'info',
+                duration: 1500,
+            })
+        }, 1000 * 10)
+}
 
 const loadMessages = async () => {
     try {

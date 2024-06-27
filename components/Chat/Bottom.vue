@@ -40,14 +40,16 @@ const isMyTurn = computed(() => {
 })
 
 const placeholder = computed(() => {
-    if (isMyTurn)
+    if (!isMyTurn.value) {
         return `${t('Placeholder_Not_your_turnA')} ${
             store.game?.players.find((p) => p.id === props.nextPlayerId)
                 ?.userName
         }${t('Placeholder_Not_your_turnB')}...`
-    return props.gameMode === 'INPUT'
-        ? t('Game_Text_Placeholder_input')
-        : t('Game_Text_Placeholder_guess')
+    } else {
+        return props.gameMode === 'INPUT'
+            ? t('Game_Text_Placeholder_input')
+            : t('Game_Text_Placeholder_guess')
+    }
 })
 const btnTxt = computed(() =>
     props.gameMode === 'INPUT' ? t('Game_Send_Btn') : t('Game_Guess_Btn'),

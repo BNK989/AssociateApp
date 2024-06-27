@@ -23,7 +23,7 @@
                 <span class="sr-only">Fire icon</span>
             </div>
             <div class="ms-3 text-sm font-normal">
-                {{ content }} {{ isWobble }}
+                {{ content }}
             </div>
             <button
                 type="button"
@@ -55,7 +55,7 @@ const toastClass = ref({})
 let timeoutId: number
 
 const isWobble = computed(() =>
-    ['oops', 'warn', 'error'].includes(store.toast.type),
+    ['oops', 'warn', 'error'].includes(store.toast?.type),
 )
 
 watch(

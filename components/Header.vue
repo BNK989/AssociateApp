@@ -197,15 +197,18 @@ watch(
         setLocale(locale.value)
     },
 )
-watch(
-    () => store.userPref.language,
-    () => {
-        const dir = store.userPref.language === 'he' ? 'rtl' : 'ltr'
-        // useHead({ htmlAttrs: { dir } })
-        document.documentElement.setAttribute('dir', dir)
-        setLocale(store.userPref.language)
-    },
-)
+onMounted(() => {
+    if (store.userPref) {
+        watch(
+            () => store.userPref.language,
+            (newLanguage) => {
+                const dir = newLanguage === 'he' ? 'rtl' : 'ltr'
+                document.documentElement.setAttribute('dir', dir)
+                setLocale(newLanguage)
+            },
+        )
+    }
+})
 
 const colorMode = useColorMode()
 const isDark = computed(() => colorMode.preference === 'dark')
