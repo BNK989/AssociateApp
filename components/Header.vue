@@ -252,7 +252,6 @@ async function loadUser() {
     const dbUser: User = await $fetch(
         `/api/user/db-user?email=${user.value.email}`,
     )
-    // console.log('dbUser:', dbUser)
     store.setUser(dbUser)
 }
 </script>

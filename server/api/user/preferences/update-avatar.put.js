@@ -2,28 +2,31 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (e) => {
-    const { email } = getQuery(e)
+
+    const {id, avatar} = await readBody(e)
 
     let res
 
     try {
-        res = await prisma.users.findUnique({
+        res = await prisma.users.update({
             where: {
-                email,
+                id,
+            },
+            data: {
+                avatar
             },
             select: {
-                id: true,
-                avatar: true,
-                userName: true,
                 email: true,
-                preferences: true
-            }
+                id: true,
+            },
         })
 
-        if (!res) throw new Error(`user with email ${email} not found`)
+        if (!res) throw new Error(`game id: ${gameId} not found`)
+
     } catch (err) {
         console.error('there was an error', err)
     }
 
     return res
+
 })

@@ -23,7 +23,8 @@ export const useStore = defineStore('store', {
         game: null,
     }),
     getters: {
-        playersEmails: (state) => state.game?.players.map(p => p.email)
+        playersEmails: (state) => state.game?.players.map(p => p.email),
+        userPref: (state) => state.user?.preferences
     },
     actions: {
         increment() {
