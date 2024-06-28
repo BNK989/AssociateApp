@@ -141,11 +141,12 @@ const users = await loadUsers()
 
 const changeGameMode = async () => {
     //@ts-ignore
-    const changeTo = game.value.GameMode === 'INPUT' ? 'SOLVE' : 'INPUT'
+    // const changeTo = game.value.GameMode === 'INPUT' ? 'SOLVE' : 'INPUT'
     $fetch(`/api/${gameId}/toggle-mode`, {
         method: 'PUT',
         body: {
-            gameMode: changeTo,
+            gameMode: 'SOLVE_PENDING',
+            senderId: storeUser.value.id,
         },
     })
 }
@@ -240,6 +241,13 @@ onMounted(() => {
                 filter: `id=eq.${gameId}`,
             },
             (payload) => {
+                // console.log('payload:', payload)
+                if (
+                    payload.new.GameMode === 'SOLVE_PENDING' &&
+                    !payload.new.confirmChange.includes(storeUser.value.id)
+                ) {
+                    confirmSolve() // TODO: ADD USER ID/EMAIL TO TELL THE OTHER PLAYERS WHO WANTS THE CHANGE
+                }
                 game.value.GameMode = payload.new.GameMode
             },
         )
@@ -247,12 +255,37 @@ onMounted(() => {
     realtimeChannel.subscribe()
 })
 
-console.log('realtimeChannel:', realtimeChannel)
+// console.log('realtimeChannel:', realtimeChannel)
+const confirmSolve = async () => {
+    const isConfirm = confirm(
+        'A player want to start solving the game, do you agree?',
+    )
+    if (isConfirm) {
+        await $fetch(`/api/${gameId}/confirm-solve`, {
+            //@ts-ignore
+            method: 'PUT',
+            body: {
+                senderId: storeUser.value.id,
+            },
+        })
+    } else {
+        await $fetch(`/api/${gameId}/toggle-mode`, {
+            //@ts-ignore
+            method: 'PUT',
+            body: {
+                gameMode: 'INPUT',
+                senderId: storeUser.value.id,
+                resetConfirmChange: true,
+            },
+        })
+    }
+}
 
 onUnmounted(() => {
     if (realtimeChannel) supabase.removeChannel(realtimeChannel)
     store.setGame(null)
     document.title = 'Associate Game'
+    if (nudgeInterval.value) clearInterval(nudgeInterval.value)
 })
 </script>
 <!-- backdrop-blur-lg bg-myBlue md:rounded-xl backdrop-saturate-150 border border-myWhite flex w-dvw h-dvh md:w-[80vw] md:h-[90dvh] -->

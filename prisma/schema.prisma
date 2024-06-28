@@ -13,9 +13,8 @@ model Users {
   createdAt     DateTime  @default(now()) @db.Timestamptz(6)
   avatar        String
   userName      String
-  // score         BigInt     @default(100)
-  // inActiveGame  Int?  
-  authinticator String?    
+  score         Int       @default(100)
+  inActiveGame  Int?  
   email         String     @unique
   lastLoginAt   DateTime?  @db.Timestamptz(6) @updatedAt
   preferences   Json?      
@@ -34,6 +33,7 @@ model Games {
   nextTurn      String?
   GameMode      GameMode  @default(INPUT)
   status        Status    @default(ACTIVE) 
+  confirmChange String[]  @default([])
   Users         UsersGames[]   
   messages      Messages[]
 }
@@ -70,5 +70,6 @@ enum Status {
 
 enum GameMode {
   INPUT
+  SOLVE_PENDING
   SOLVE
 }
