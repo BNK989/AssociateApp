@@ -1,9 +1,9 @@
 <template>
-    <section class="min-h-12 flex items-center justify-around">
+    <section class="min-h-14 flex items-center justify-around mt-1">
         <div class="flex-center gap-1">
             <ChatPlayersAvatarts :TurnOrderByIds="TurnOrderByIds" />
             <button
-                class="bg-accent-3/80 my-2 rounded-full text-sm"
+                class="bg-accent-3/80 rounded-full text-sm"
                 title="Add player"
                 @click="showModal">
                 <!-- {{ $t('Game_Add_player') }} -->
@@ -22,14 +22,15 @@
             </button>
         </div>
         <button
-            v-if="gameMode !== 'SOLVE' && wordLength > 5"
-            class="p-2 bg-accent-3/80 my-2 rounded-full text-sm md:px-4"
+            v-if="gameMode === 'INPUT' && wordLength > 5"
+            class="p-2 bg-accent-3/80 rounded-full text-sm md:px-4"
             @click="$emit('changeGameMode')">
             {{ $t('Game_Switch_mode') }}
             {{ gameMode === 'INPUT' ? $t('Guess') : $t('Input') }}
         </button>
-        <p class="text-sm">
-            {{ $t('Game_Words_Count') }} {{ wordLength || 0 }}
+        <p class="text-base">
+            {{ $t('Game_Score') }}: 
+            <MiniCounter :n="storeGame?.score"/>
         </p>
     </section>
     <dialog
@@ -47,6 +48,8 @@ const props = defineProps({
     TurnOrderByIds: Array,
 })
 const emit = defineEmits(['changeGameMode'])
+const store = useStore()
+const { game: storeGame } = storeToRefs(store)
 const modal = ref(null)
 
 const showModal = () => {

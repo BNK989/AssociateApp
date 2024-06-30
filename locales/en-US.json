@@ -25,5 +25,6 @@
     "Welcome": "Welcome",
     "Start_New_Game_Btn": "Start a New Game",
     "Placeholder_Not_your_turnA": "It's",
-    "Placeholder_Not_your_turnB": "'s turn"
+    "Placeholder_Not_your_turnB": "'s turn",
+    "Game_Score": "Score"
 }

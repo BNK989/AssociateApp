@@ -3,6 +3,7 @@ export interface Game {
     createdAt: Date
     title: string
     status: string
+    score: number
     Users?: Array<{ user: { email: string; userName: string } }>
     players?: SimpleUser[]
 }

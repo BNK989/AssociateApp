@@ -9,14 +9,25 @@ export default defineEventHandler(async (e) => {
         const res = await prisma.messages.update({
             where: {
                 id: +body.wordId,
+                isResolved: false,
                 content: {
                     equals: body.guess,
-                    mode: 'insensitive'
-                }
+                    mode: 'insensitive',
+                },
             },
             data: {
-                isResolved: true
-            }
+                isResolved: true,
+                Game: {
+                    update: {
+                        score: {
+                            increment: 100,
+                        },
+                    },
+                },
+            },
+            select: {
+                gameId: true,
+            },
         })
 
         // If the update operation does not throw, it means the record was found and updated
@@ -25,7 +36,9 @@ export default defineEventHandler(async (e) => {
         }
     } catch (err) {
         // If the update operation throws an error, catch it and handle it here
-        console.error("There was an error", err)
+        console.error('There was an error', err)
         throw new Error(`Unable to guess word: ${body.guess}`)
     }
+
+    //if guess is right go to games table and up the score
 })

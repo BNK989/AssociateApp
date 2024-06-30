@@ -24,7 +24,9 @@ export const useStore = defineStore('store', {
     }),
     getters: {
         playersEmails: (state) => state.game?.players.map(p => p.email),
-        userPref: (state) => state.user?.preferences
+        userPref: (state) => state.user?.preferences,
+        activeGameScore: (state) => state.game?.score,
+
     },
     actions: {
         increment() {
@@ -38,6 +40,9 @@ export const useStore = defineStore('store', {
         },
         setGame(game: Game) {
             this.game = game
-        }
+        },
+        setScore(score: number) {
+            this.game.score += score
+        },
     },
 })

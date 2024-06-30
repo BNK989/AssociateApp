@@ -41,6 +41,7 @@ const user = useSupabaseUser()
 const supabase = useSupabaseClient()
 
 const messages = ref<Word[] | null>([])
+//reactive no ref
 
 const playSound = async (fileName: string) => {
     if (!store.userPref?.soundOn) return
@@ -75,8 +76,7 @@ const isMyTurn = computed(() => {
 watch(
     () => nextTurnId.value,
     () => {
-        console.log('is my turn', storeUser.value?.id, nextTurnId.value)
-        if (storeUser.value?.id === nextTurnId.value) nudge(true)
+        if ( storeUser.value?.id === nextTurnId.value && game.value.players?.length > 1 ) nudge(true)
         else nudge(false)
     },
 )
@@ -145,7 +145,7 @@ const changeGameMode = async () => {
     $fetch(`/api/${gameId}/toggle-mode`, {
         method: 'PUT',
         body: {
-            gameMode: 'SOLVE_PENDING',
+            gameMode: game.value.players?.length === 1 ? 'SOLVE' : 'SOLVE_PENDING',
             senderId: storeUser.value.id,
         },
     })
@@ -226,6 +226,7 @@ onMounted(() => {
                             (w) => w.id === payload.new.id,
                         )
                         messages.value[idx].isResolved = true
+                        store.setScore(100)
                     } else {
                         playSound('wrong')
                     }

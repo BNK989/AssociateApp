@@ -25,5 +25,6 @@
     "Welcome": "ברוך הבא",
     "Start_New_Game_Btn": "התחל משחק חדש",
     "Placeholder_Not_your_turnA": "תור",
-    "Placeholder_Not_your_turnB": ""
+    "Placeholder_Not_your_turnB": "",
+    "Game_Score": "ניקוד"
 }

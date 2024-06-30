@@ -21,13 +21,12 @@
                         {{ w.isResolved ? w.content : w.cipher }}
                     </p>
                     <p v-else>
-                        <!-- TODO : only next in line sees the word -->
                         {{
                             nextPlayerId === storeUser.id ? w.content : w.cipher
                         }}
                     </p>
                     <small>{{
-                        wordsWithUsers[i]?.id === storeUser.id
+                        wordsWithUsers[i]?.id === storeUser?.id
                             ? $t('You')
                             : wordsWithUsers[i]?.userName
                     }}</small>
@@ -46,10 +45,11 @@
 <script lang="ts" setup>
 // import type { WordAndUser } from '@/types/user'
 import type { Word } from '@/types/word'
+import type { User } from '~/types/user'
 
 const props = defineProps({
     words: { type: Array as PropType<Word[]>, required: false },
-    users: { type: Array, required: false },
+    users: { type: Array as PropType<User[]>, required: false },
     guessedCount: Number,
     gameMode: String,
     scrollTo: Number,
