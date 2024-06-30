@@ -39,6 +39,9 @@
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
 
+const supabase = useSupabaseClient()
+let realtimeChannel
+
 const localPath = useLocalePath()
 const router = useRouter()
 
@@ -46,6 +49,30 @@ const user = useSupabaseUser()
 
 const email = user?.value?.email
 const activeGames = ref([])
+const myGames = computed(() => storeUser.value?.games?.join(',') || [])
+
+console.log('myGames:', myGames.value)
+
+const getGamesUpdate = () => {
+    realtimeChannel = supabase.channel('public:Games').on(
+        'postgres_changes',
+        {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'Games',
+            filter: `id=in.(${myGames.value})`,
+            // filter: 'status=in.(ACTIVE, SOLVE_PENDING, INPUT)',
+            // filter: `user=in.(${storeUser.value?.id})`,
+            //"20d221bb-a523-4383-ba43-f83e19bd6407"
+        },
+        (payload) => {
+            console.log('index payload:', payload)
+        },
+    )
+
+    realtimeChannel.subscribe()
+    console.log('realtimeChannel:', realtimeChannel)
+}
 
 onMounted(async () => {
     // console.log('supa-user:', user)
@@ -53,6 +80,7 @@ onMounted(async () => {
     getActiveGames()
 })
 watch(() => storeUser.value?.id, getActiveGames)
+watch(() => myGames.value, getGamesUpdate)
 
 async function getActiveGames() {
     // console.log('storeUser.value?.id:', storeUser.value?.id)
@@ -83,4 +111,8 @@ const createNewGame = async () => {
         console.error('there was an error', err)
     }
 }
+
+onUnmounted(() => {
+    supabase.removeChannel(realtimeChannel)
+})
 </script>
