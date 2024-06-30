@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+    .flex-center {
+        display: flex;
+        justify-items: center;
+        align-items: center;
+    }
+}
+
 @layer base {
     :root {
         --color-bkg: 200deg 2% 81%;

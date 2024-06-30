@@ -13,6 +13,7 @@
         <img
             class="w-10 h-10 me-2 rounded-full"
             v-for="avatar in avatars"
+            :title="avatar.name"
             :key="avatar.id"
             :class="
                 avatar.id === store.user?.id ? `border-2 border-accent-3` : ''
