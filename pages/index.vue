@@ -51,8 +51,6 @@ const email = user?.value?.email
 const activeGames = ref([])
 const myGames = computed(() => storeUser.value?.games?.join(',') || [])
 
-console.log('myGames:', myGames.value)
-
 const getGamesUpdate = () => {
     realtimeChannel = supabase.channel('public:Games').on(
         'postgres_changes',
@@ -61,17 +59,17 @@ const getGamesUpdate = () => {
             schema: 'public',
             table: 'Games',
             filter: `id=in.(${myGames.value})`,
-            // filter: 'status=in.(ACTIVE, SOLVE_PENDING, INPUT)',
-            // filter: `user=in.(${storeUser.value?.id})`,
-            //"20d221bb-a523-4383-ba43-f83e19bd6407"
         },
         (payload) => {
-            console.log('index payload:', payload)
+            // console.log('index payload:', payload)
+            store.setToast({
+                msg: `Game ${payload.new.title} updated`,
+                type: 'info',
+            })
         },
     )
 
     realtimeChannel.subscribe()
-    console.log('realtimeChannel:', realtimeChannel)
 }
 
 onMounted(async () => {

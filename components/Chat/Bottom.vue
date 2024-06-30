@@ -12,7 +12,7 @@
                 <button
                     type="submit"
                     :class="
-                        gameMode === 'SOLVE'
+                        props.gameMode === 'SOLVE'
                             ? `bg-accent-1 ${!isMyTurn ? 'bg-opacity-40' : ''}`
                             : `bg-accent-3 ${!isMyTurn ? 'bg-opacity-40' : ''}`
                     "
@@ -56,6 +56,7 @@ const btnTxt = computed(() =>
 )
 
 const onHandleSubmit = () => {
+    store.setToast({ msg: '' })
     if (!isMyTurn.value)
         return store.setToast({
             msg: 'Not your turn',

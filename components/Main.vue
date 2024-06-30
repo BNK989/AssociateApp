@@ -27,6 +27,7 @@
 import type { Word } from '@/types/word'
 import type { Game } from '@/types/game'
 import { createClient } from '@supabase/supabase-js'
+import { checkWin } from '@/services/checkGame'
 
 const route = useRoute()
 const { generateRandomString } = useUtilities()
@@ -76,23 +77,28 @@ const isMyTurn = computed(() => {
 watch(
     () => nextTurnId.value,
     () => {
-        if ( storeUser.value?.id === nextTurnId.value && game.value.players?.length > 1 ) nudge(true)
+        if (
+            storeUser.value?.id === nextTurnId.value &&
+            game.value.players?.length > 1
+        )
+            nudge(true)
         else nudge(false)
     },
 )
 const nudgeInterval = ref()
 const nudge = (isOn: boolean) => {
-    if (nudgeInterval.value || !isOn) clearInterval(nudgeInterval.value)
-    else
+    if (nudgeInterval.value || !isOn) {
+        clearInterval(nudgeInterval.value)
+    } else {
+        store.setToast({
+            msg: 'Your turn',
+            type: 'info',
+            duration: 99999,
+        })
         nudgeInterval.value = setInterval(() => {
             playSound('nudge')
-            // TODO: CHANGE TAB HEADING: document.title = 'Your turn'
-            store.setToast({
-                msg: 'Your turn',
-                type: 'info',
-                duration: 1500,
-            })
-        }, 1000 * 10)
+        }, 1000 * 30)
+    }
 }
 
 const loadMessages = async () => {
@@ -112,6 +118,11 @@ const loadGame = async () => {
         const data = (await $fetch(`/api/${gameId}/full-game`)) as Game
         if (!data) throw new Error('could not load messages')
         game.value = data
+        if (
+            game.value.GameMode === 'SOLVE_PENDING' &&
+            !game.value.confirmChange.includes(storeUser.value.id)
+        )
+            confirmSolve()
         document.title = 'Chat' + ' ' + game.value.title || ''
         store.setGame(data)
     } catch (err) {
@@ -145,7 +156,8 @@ const changeGameMode = async () => {
     $fetch(`/api/${gameId}/toggle-mode`, {
         method: 'PUT',
         body: {
-            gameMode: game.value.players?.length === 1 ? 'SOLVE' : 'SOLVE_PENDING',
+            gameMode:
+                game.value.players?.length === 1 ? 'SOLVE' : 'SOLVE_PENDING',
             senderId: storeUser.value.id,
         },
     })
@@ -227,6 +239,7 @@ onMounted(() => {
                         )
                         messages.value[idx].isResolved = true
                         store.setScore(100)
+                        checkWin(messages.value)
                     } else {
                         playSound('wrong')
                     }

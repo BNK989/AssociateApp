@@ -28,9 +28,10 @@
             {{ $t('Game_Switch_mode') }}
             {{ gameMode === 'INPUT' ? $t('Guess') : $t('Input') }}
         </button>
+        <p v-else class="lowercase">{{ gameMode }}</p>
         <p class="text-base">
-            {{ $t('Game_Score') }}: 
-            <MiniCounter :n="storeGame?.score"/>
+            {{ $t('Game_Score') }}:
+            <MiniCounter :n="storeGame?.score" />
         </p>
     </section>
     <dialog
