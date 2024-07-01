@@ -25,10 +25,14 @@
                                 <th scope="col" class="px-4 py-3">Player</th>
                                 <th scope="col" class="px-4 py-3">Stock</th>
                                 <th scope="col" class="px-4 py-3">Location</th>
-                                <th scope="col" class="px-4 py-3">Guess Rate</th>
+                                <th scope="col" class="px-4 py-3">
+                                    Guess Rate
+                                </th>
                                 <th scope="col" class="px-4 py-3">Rating</th>
                                 <th scope="col" class="px-4 py-3">Sales</th>
-                                <th scope="col" class="px-4 py-3">Last Active</th>
+                                <th scope="col" class="px-4 py-3">
+                                    Last Active
+                                </th>
                                 <th scope="col" class="px-4 py-3">
                                     Last Update
                                 </th>
@@ -36,7 +40,10 @@
                         </thead>
                         <tbody>
                             <tr
-                                v-for="product in 10"
+                                v-for="item in 10"
+                                @contextmenu.prevent="
+                                    showContextMenu($event, item)
+                                "
                                 class="border-b border-bkg_dark/50 hover:bg-bkg_dark/80 odd:bg-bkg_dark/20">
                                 <th
                                     scope="row"
@@ -109,10 +116,38 @@
             </div>
         </div>
     </section>
+    <MiniContextMenu
+        v-if="showMenu"
+        :actions="contextMenuActions"
+        @action-clicked="handleActionClick"
+        :x="menuX"
+        :y="menuY" />
 </template>
 
 <script setup lang="ts">
 definePageMeta({
     layout: 'scrollable',
 })
+const showMenu = ref(false)
+const menuX = ref(0)
+const menuY = ref(0)
+const targetRow = ref({})
+const contextMenuActions = ref([
+    { label: 'Edit', action: 'edit' },
+    { label: 'Delete', action: 'delete' },
+])
+const showContextMenu = (event, item) => {
+    showMenu.value = true
+    targetRow.value = item
+    menuX.value = event.clientX
+    menuY.value = event.clientY
+}
+const closeContextMenu = () => {
+    showMenu.value = false
+}
+
+function handleActionClick(action) {
+    if (action === 'closeContextMenu') closeContextMenu()
+    console.log(action, targetRow.value)
+}
 </script>
