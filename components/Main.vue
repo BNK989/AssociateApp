@@ -225,7 +225,8 @@ onMounted(() => {
             },
             (payload) => {
                 if (payload.eventType === 'INSERT') {
-                    messages.value.push(payload?.new as Word)
+                    const newWord = payload?.new as Word
+                    messages.value.push(newWord)
                     playSound('sent')
                 } else {
                     // @ts-ignore
