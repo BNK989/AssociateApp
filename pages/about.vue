@@ -9,8 +9,8 @@
             start playing: try and recreate the messages you've sent to each
             other and see how far backwords you can get
         </p>
-        <h2 class="text-3xl font-bold">About The Developer</h2>
-        <h3>Ben Klinovsky</h3>
+        <h2 class="text-3xl font-bold mt-4">About The Developer</h2>
+        <h3 class="my-1">Ben Klinovsky</h3>
         <p>
             I'm Ben this game is part of my nuxt3 projects you can find it on my
             github
@@ -19,12 +19,12 @@
             This is also a family project with both my siblings contributing and
             supporting this project
         </p>
-        <h2 class="text-3xl font-bold">Credits</h2>
-        <h5>Contributors</h5>
-        <ul>
-            <li>Tom</li>
-            <li>Maya</li>
-            <li>Asaf</li>
+        <h2 class="text-3xl font-bold mt-4">Credits</h2>
+        <h5 class="mt-1">Contributors</h5>
+        <ul class="list-disc pl-4">
+            <li class="text-base">Tom</li>
+            <li class="text-base">Maya</li>
+            <li class="text-base">Asaf</li>
         </ul>
         <!-- <pre>{{ locale }}</pre>
         <pre>{{ locales[0] }}</pre>

@@ -19,10 +19,10 @@
         <h2 class="text-2xl my-2">{{ $t('Active_Games') }}</h2>
 
         <ul class="flex gap-4 flex-wrap w-full">
-            <li v-for="game in activeGames" class="">
+            <li v-for="game in activeGames">
                 <nuxt-link :to="localPath(`/game/${game.id}`)">
                     <div
-                        class="grid grid-cols-[minmax(min-content,1fr)_min-content] gap-3 min-h-32 rounded bg-accent-3/80 md:max-w-56 p-3 cursor-pointer hover:bg-accent-3/50 duration-300">
+                        class="grid grid-cols-[minmax(min-content,1fr)_min-content] gap-1 min-h-32 rounded bg-accent-3/80 max-w-40 h-36 md:max-w-56 p-2 cursor-pointer hover:bg-accent-3/50 duration-300">
                         <h2 class="text-2xl">{{ game.title }}</h2>
                         <h6 class="text-sm lowercase self-start">
                             {{ game.GameMode }}
@@ -79,6 +79,9 @@
 </template>
 
 <script lang="ts" setup>
+definePageMeta({
+    layout: 'scrollable',
+})
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
 

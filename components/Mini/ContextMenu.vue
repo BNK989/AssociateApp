@@ -24,6 +24,7 @@ const emitAction = (action) => {
     emit('action-clicked', action)
 }
 </script>
+<!-- source: https://medium.com/@sj.anyway/custom-right-click-context-menu-in-vue3-b323a3913684 -->
 
 <style scoped>
 .context-menu {
