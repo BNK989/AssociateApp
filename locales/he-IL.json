@@ -26,5 +26,8 @@
     "Start_New_Game_Btn": "התחל משחק חדש",
     "Placeholder_Not_your_turnA": "תור",
     "Placeholder_Not_your_turnB": "",
-    "Game_Score": "ניקוד"
+    "Game_Score": "ניקוד",
+    "Signup_to_play": "הירשם כדי לשחק",
+    "Non_Active_Games": "משחקים לא פעילים",
+    "Active_Games": "משחקים פעילים"
 }

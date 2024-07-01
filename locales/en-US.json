@@ -26,5 +26,8 @@
     "Start_New_Game_Btn": "Start a New Game",
     "Placeholder_Not_your_turnA": "It's",
     "Placeholder_Not_your_turnB": "'s turn",
-    "Game_Score": "Score"
+    "Game_Score": "Score",
+    "Signup_to_play": "Signup to play",
+    "Non_Active_Games": "Non Active Games",
+    "Active_Games": "Active Games"
 }
