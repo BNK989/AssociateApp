@@ -7,6 +7,17 @@ const router = useRouter()
 const supabase = useSupabaseClient()
 const store = useStore()
 
+const upsertAndLoadUser = async (email, name, avatar) => {
+    const { user: newUser, error } = await $fetch('/api/user/upsert', {
+        method: 'POST',
+        body: { email, name, avatar },
+    })
+    if (error) throw error
+
+    store.setUser(newUser)
+    if (newUser) router.push('/')
+}
+
 onMounted(async () => {
     try {
         // Wait for the Supabase session to be established
@@ -19,31 +30,14 @@ onMounted(async () => {
             throw new Error('No user data found after login.')
 
         const user = userData.user
-        // console.log('22user:', user)
         const userEmail = user.email
         const { full_name, avatar_url } = user.user_metadata
 
-        // console.log('User data:', userEmail, full_name, avatar_url)
-
-        // Upsert user into your database
         const temp = await upsertAndLoadUser(userEmail, full_name, avatar_url)
-        // console.log('newUser:', newUser)
-
-        // Redirect to the desired page after successful login
     } catch (err) {
-        console.error('There was an error at login:', err.message)
+        console.error('There was an error at login:', err)
         store.setToast({ msg: 'There was an error at login', type: 'error' })
-        push('/profile/login')
+        router.push('/profile/login')
     }
 })
-const upsertAndLoadUser = async (email, name, avatar) => {
-    const {user: newUser, error} = await $fetch('/api/user/upsert', {
-        method: 'POST',
-        body: { email, name, avatar },
-    })
-    if(error) throw error
-
-    store.setUser(newUser)
-    if (newUser) router.push('/')
-}
 </script>
