@@ -6,9 +6,8 @@ dotenv.config()
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY)
 
 export default defineEventHandler(async (e) => {
-    // const result = await run()
-    // return result
-    console.log('process.env.GEMINI_KEY:', process.env.GEMINI_KEY)
+    const word = e.context.params.word
+    // return await run()
 })
 
 async function run() {

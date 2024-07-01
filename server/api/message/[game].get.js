@@ -5,6 +5,7 @@ export default defineEventHandler(async (e) => {
     const gameId = +e.context.params.game
 
     let res
+    let refinedRes
 
     try {
         res = await prisma.messages.findMany({
@@ -29,5 +30,17 @@ export default defineEventHandler(async (e) => {
         console.error('there was an error', err)
     }
 
-    return res
+    refinedRes = res.map((msg, i) => {
+        const isLast = i === res.length - 1
+        return {
+            id: msg.id,
+            createdAt: msg.createdAt,
+            content: msg.isResolved || isLast ? msg.content : '',
+            cipher: msg.cipher,
+            isResolved: msg.isResolved,
+            senderId: msg.senderId,
+        }
+    })
+
+    return refinedRes
 })
