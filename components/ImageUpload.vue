@@ -16,19 +16,17 @@ import type {
 } from '@bytescale/upload-widget'
 import type { PreventableEvent } from '@bytescale/upload-widget-vue'
 // import env from 'dotenv'
+const apiKey = import.meta.env.VITE_BYTESCALE_KEY
 
 // -----
 // Configuration:
 // https://www.bytescale.com/docs/upload-widget#configuration
 // -----
 
-const apiKey = process.env.BYTESCALE_KEY
-// console.log('apiKey:', env('BYTESCALE_KEY'))
-
 const config = useRuntimeConfig()
 const options: UploadWidgetConfig = {
     // apiKey: config.public.BYTESCALE_KEY, // This is your API key.
-    apiKey: 'public_FW25c7BA9bSdu8ymqZgdU27hzHxR',
+    apiKey,
     editor: {
         images: {
             allowResizeOnMove: true,

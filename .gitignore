@@ -29,3 +29,5 @@ todo.md
 # for vercel ignoring middleware
 # middleware
 # middleware/**/*
+pnpm-lock.yaml
+settings.json
