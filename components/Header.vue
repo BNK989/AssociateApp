@@ -237,10 +237,21 @@ const logout = async () => {
     if (!user.value) return
     try {
         const { error } = await supabase.auth.signOut()
-        if (error) throw error
+        if (error) {
+            if (
+                error.message ===
+                'Session from session_id claim in JWT does not exist'
+            ) {
+                console.warn(
+                    'Session does not exist or has already been invalidated.',
+                )
+            } else {
+                throw error
+            }
+        }
         storeUser.value = null
     } catch (err) {
-        console.error('there was an error', err)
+        console.error('There was an error during sign out:', err)
     }
 }
 

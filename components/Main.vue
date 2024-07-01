@@ -26,7 +26,7 @@
 import type { Word } from '@/types/word'
 import type { Game } from '@/types/game'
 import { createClient } from '@supabase/supabase-js'
-import { checkWin } from '@/services/checkGame'
+// import { checkWin } from '@/services/checkGame'
 import VueConfetti from 'vue-confetti'
 
 const route = useRoute()
@@ -48,7 +48,9 @@ const { appContext } = getCurrentInstance()
 appContext.app.use(VueConfetti)
 const getConfetti = () => {
     // https://www.npmjs.com/package/vue-confetti
+    // @ts-ignore
     appContext.config.globalProperties.$confetti.start()
+    // @ts-ignore
     setTimeout(() => appContext.config.globalProperties.$confetti.stop(), 9000)
 }
 
@@ -239,16 +241,18 @@ onMounted(() => {
                 } else {
                     // @ts-ignore
                     if (payload.new.isResolved) {
+                        const payloadWord = payload?.new as Word
                         playSound('correct')
                         // @ts-ignore
-                        scrollTo.value = payload.new.id
+                        scrollTo.value = payloadWord.id
                         const idx = messages.value.findIndex(
                             // @ts-ignore
-                            (w) => w.id === payload.new.id,
+                            (w) => w.id === payloadWord.id,
                         )
                         messages.value[idx].isResolved = true
+                        messages.value[idx].content = payloadWord?.content
                         store.setScore(100)
-                        checkWin(messages.value)
+                        // checkWin(messages.value)
                     } else {
                         playSound('wrong')
                     }
@@ -264,21 +268,22 @@ onMounted(() => {
                 filter: `id=eq.${gameId}`,
             },
             (payload) => {
-                // console.log('payload:', payload)
+                const payloadNew = payload?.new as Game
+                console.log('payload:', payloadNew)
                 if (
-                    payload.new.GameMode === 'SOLVE_PENDING' &&
-                    !payload.new.confirmChange.includes(storeUser.value.id)
+                    payloadNew.GameMode === 'SOLVE_PENDING' &&
+                    !payloadNew.confirmChange.includes(storeUser.value.id)
                 ) {
                     confirmSolve() // TODO: ADD USER ID/EMAIL TO TELL THE OTHER PLAYERS WHO WANTS THE CHANGE
                 }
                 if (
-                    payload.new.guessedCount === 0 &&
-                    payload.new.status === 'FINISHED'
+                    payloadNew.totalWords === 0 &&
+                    payloadNew.status === 'FINISHED'
                 ) {
-                    // console.log('game ended!')
+                    console.log('game ended!')
                     getConfetti()
                 }
-                game.value.GameMode = payload.new.GameMode
+                game.value.GameMode = payloadNew.GameMode
             },
         )
 

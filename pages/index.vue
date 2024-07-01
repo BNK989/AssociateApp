@@ -164,6 +164,7 @@ const createNewGame = async () => {
 }
 
 onUnmounted(() => {
+    if (!realtimeChannel) return
     supabase.removeChannel(realtimeChannel)
 })
 </script>

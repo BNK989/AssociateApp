@@ -39,7 +39,7 @@ export default defineEventHandler(async (e) => {
         })
         console.log('res:', res)
         if (res.Game.totalWords === 0) {
-            await $fetch(`/api/${game_id}/finish-game`, {
+            await $fetch(`/api/${res.gameId}/finish-game`, {
                 method: 'PUT',
             })
         }
