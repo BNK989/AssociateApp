@@ -13,6 +13,15 @@ export default defineEventHandler(async (e) => {
     if (resetConfirmChange) data.confirmChange = []
     if (!resetConfirmChange && senderId) data.confirmChange = { push: senderId }
 
+    if (gameMode === 'SOLVE') {
+        data.totalWords =
+            (await prisma.messages.count({
+                where: {
+                    gameId: game_id,
+                },
+            })) - 1
+    }
+
     let res
 
     try {

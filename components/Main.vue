@@ -15,7 +15,6 @@
             :gameMode="gameMode"
             :nextPlayerId="nextTurnId"
             :scrollTo="scrollTo" />
-        <!-- <pre>{{ guessedCount }}</pre> -->
         <ChatBottom
             :gameMode="gameMode"
             :nextPlayerId="nextTurnId"
@@ -28,6 +27,7 @@ import type { Word } from '@/types/word'
 import type { Game } from '@/types/game'
 import { createClient } from '@supabase/supabase-js'
 import { checkWin } from '@/services/checkGame'
+import VueConfetti from 'vue-confetti'
 
 const route = useRoute()
 const { generateRandomString } = useUtilities()
@@ -43,6 +43,14 @@ const supabase = useSupabaseClient()
 
 const messages = ref<Word[] | null>([])
 //reactive no ref
+
+const { appContext } = getCurrentInstance()
+appContext.app.use(VueConfetti)
+const getConfetti = () => {
+    // https://www.npmjs.com/package/vue-confetti
+    appContext.config.globalProperties.$confetti.start()
+    setTimeout(() => appContext.config.globalProperties.$confetti.stop(), 9000)
+}
 
 const playSound = async (fileName: string) => {
     if (!store.userPref?.soundOn) return
@@ -262,6 +270,13 @@ onMounted(() => {
                     !payload.new.confirmChange.includes(storeUser.value.id)
                 ) {
                     confirmSolve() // TODO: ADD USER ID/EMAIL TO TELL THE OTHER PLAYERS WHO WANTS THE CHANGE
+                }
+                if (
+                    payload.new.guessedCount === 0 &&
+                    payload.new.status === 'FINISHED'
+                ) {
+                    // console.log('game ended!')
+                    getConfetti()
                 }
                 game.value.GameMode = payload.new.GameMode
             },

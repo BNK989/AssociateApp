@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client'
+import { test } from '@/services/checkGame'
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (e) => {
     const body = await readBody(e)
-    console.log('body:', body)
 
     try {
         const res = await prisma.messages.update({
@@ -22,16 +22,31 @@ export default defineEventHandler(async (e) => {
                         score: {
                             increment: 100,
                         },
+                        totalWords: {
+                            decrement: 1,
+                        },
                     },
                 },
             },
             select: {
                 gameId: true,
+                Game: {
+                    select: {
+                        totalWords: true,
+                    },
+                },
             },
         })
+        console.log('res:', res)
+        if (res.Game.totalWords === 0) {
+            await $fetch(`/api/${game_id}/finish-game`, {
+                method: 'PUT',
+            })
+        }
 
         // If the update operation does not throw, it means the record was found and updated
         return {
+            totalWords: res.Game.totalWords,
             message: 'Word guessed successfully',
         }
     } catch (err) {

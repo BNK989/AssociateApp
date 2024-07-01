@@ -34,6 +34,7 @@ model Games {
   GameMode      GameMode  @default(INPUT)
   status        Status    @default(ACTIVE) 
   confirmChange String[]  @default([])
+  totalWords    Int?      
   Users         UsersGames[]   
   messages      Messages[]
 }

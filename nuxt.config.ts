@@ -33,6 +33,7 @@ export default defineNuxtConfig({
     imports: {
         dirs: ['stores'],
     },
+    // plugins: [ { src: '~/plugins/vue-confetti.js', mode: 'client', name: 'vue-confetti', order: 0 },],
     //@ts-ignore
     i18n: {
         strategy: 'prefix_except_default',

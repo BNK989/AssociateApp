@@ -40,7 +40,7 @@ const isMyTurn = computed(() => {
 })
 
 const placeholder = computed(() => {
-    if (!isMyTurn.value) {
+    if (!isMyTurn.value && props.gameMode !== 'SOLVE') {
         return `${t('Placeholder_Not_your_turnA')} ${
             store.game?.players.find((p) => p.id === props.nextPlayerId)
                 ?.userName
@@ -57,7 +57,7 @@ const btnTxt = computed(() =>
 
 const onHandleSubmit = () => {
     store.setToast({ msg: '' })
-    if (!isMyTurn.value)
+    if (!isMyTurn.value && props.gameMode !== 'SOLVE')
         return store.setToast({
             msg: 'Not your turn',
             type: 'oops',

@@ -11,3 +11,8 @@ export function checkWin(messages: Word[]) {
     return totalMsgs === totalResolved
 }
 
+export function test(){
+    console.log('test')
+    return 'test'
+}
+
