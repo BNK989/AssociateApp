@@ -75,6 +75,9 @@
             </ul>
         </div>
         <!-- END OF NON ACTIVE GAMES -->
+        <div class="my-4">
+            <MiniShare />
+        </div>
     </div>
 </template>
 
