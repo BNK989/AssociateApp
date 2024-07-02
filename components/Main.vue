@@ -149,7 +149,6 @@ const nextWordToGuess = computed(
     () => messages.value[messages.value.length - guessedCount.value - 2],
 )
 
-// TODO load users in game
 const loadUsers = async () => {
     if (!gameId) return console.warn('no gameId at loadUsers')
     const { data } = await useFetch(`/api/user/by/${gameId}`, {
@@ -158,7 +157,6 @@ const loadUsers = async () => {
     return data
 }
 const users = await loadUsers()
-// TODO GameMode should be in db
 
 const changeGameMode = async () => {
     //@ts-ignore
@@ -286,11 +284,31 @@ onMounted(() => {
                 game.value.GameMode = payloadNew.GameMode
             },
         )
+        .on(
+            'postgres_changes',
+            {
+                event: 'INSERT',
+                schema: 'public',
+                table: 'UsersGames',
+                filter: `GameId=eq.${gameId}`,
+            },
+            async (payload) => {
+                const newUserId = payload?.new?.UserId
+                await loadUsers()
+                await loadGame()
+                const { userName: newUserName } = storeGame.value.players.find(
+                    (p) => p.id === newUserId,
+                )
+                store.setToast({
+                    msg: `${newUserName} has joined the game!`,
+                    type: 'success',
+                })
+            },
+        )
 
     realtimeChannel.subscribe()
 })
 
-// console.log('realtimeChannel:', realtimeChannel)
 const confirmSolve = async () => {
     const isConfirm = confirm(
         'A player want to start solving the game, do you agree?',

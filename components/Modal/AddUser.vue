@@ -51,36 +51,36 @@
                                 class="flex justify-between items-center p-2 box-border odd:bg-accent-2/10 odd:md:bg-accent-2/0 even:bg-accent-2/5 even:md:bg-accent-2/0 md:mx-3 rounded">
                                 <span>{{ p.userName }}</span>
                                 <!-- <pre>{{ storeGame.Users }}</pre> -->
-                                
-                                    <button v-if="!store?.playersEmails" >Add</button>
-                                    <button v-else
-                                        @click="addPlayerToGame(p.id)"
-                                        class="px-3 py-1 text-sm bg-accent-2/40 rounded-full"
-                                        :class="{
-                                            'bg-accent-2/15':
+
+                                <button v-if="!store?.playersEmails">
+                                    Add
+                                </button>
+                                <button
+                                    v-else
+                                    @click="addPlayerToGame(p.id)"
+                                    class="px-3 py-1 text-sm bg-accent-2/40 rounded-full"
+                                    :class="{
+                                        'bg-accent-2/15':
                                             store?.playersEmails.includes(
                                                 p.email,
                                             ),
-                                        }"
-                                        :disabled="
-                                            store?.playersEmails.includes(
-                                                p.email,
-                                            )"
-                                            >                        
-                                            
-                                            {{ store?.playersEmails?.includes(
-                                                p?.email,
-                                            )
-                                                ? 'Added'
-                                                : 'Add'
-                                        }}
-                                    </button>
-                                
-                                
+                                    }"
+                                    :disabled="
+                                        store?.playersEmails.includes(p.email)
+                                    ">
+                                    {{
+                                        store?.playersEmails?.includes(p?.email)
+                                            ? 'Added'
+                                            : 'Add'
+                                    }}
+                                </button>
                             </li>
                         </ul>
                     </div>
                 </form>
+                <div class="w-full flex justify-center items-center">
+                    <MiniShare title="Send an invite" :gameId="storeGame?.id" />
+                </div>
             </div>
         </div>
     </div>
@@ -96,7 +96,7 @@ const players = ref([])
 const q = ref('')
 
 onMounted(() => {
-    getPlayers()    
+    getPlayers()
 })
 
 // TODO: ADD DEBOUNCE TO GET PLAYERS
@@ -106,11 +106,13 @@ const getPlayers = async () => {
         `/api/user/all-users${q.value ? `?userName=${q.value}` : ''}`,
         { method: 'GET' },
     )
-    if (storeUser.value){
+    if (storeUser.value) {
         //@ts-ignore
-        qPlayers.filter(p => p.email !== storeUser.value?.email)
+        qPlayers.filter((p) => p.email !== storeUser.value?.email)
         //@ts-ignore
-        players.value = qPlayers.filter((p) => p.email !== storeUser.value?.email)
+        players.value = qPlayers.filter(
+            (p) => p.email !== storeUser.value?.email,
+        )
     } else {
         console.error('storeUser not loaded')
         players.value = qPlayers
@@ -118,23 +120,33 @@ const getPlayers = async () => {
 }
 
 const addPlayerToGame = async (id: number) => {
-
-    try{
+    try {
         //@ts-ignore
-        const { error, success } = await $fetch(`/api/${storeGame.value.id}/add-user`, {
-            method: 'PUT',
-            body: {
-                user_id: id,
+        const { error, success } = await $fetch(
+            `/api/${storeGame.value.id}/add-user`,
+            {
+                method: 'PUT',
+                body: {
+                    user_id: id,
+                },
             },
-        })
-        
+        )
+
         if (error) console.error('133there was an error', error)
-        if (success) store.setToast({msg: 'User added', type: 'success', duration: 2500})
-        else store.setToast({msg: 'Issue adding user', type: 'error', duration: 2500})
-    
-    }
-    catch(err){
-    console.error("137there was an error", err)
+        if (success)
+            store.setToast({
+                msg: 'User added',
+                type: 'success',
+                duration: 2500,
+            })
+        else
+            store.setToast({
+                msg: 'Issue adding user',
+                type: 'error',
+                duration: 2500,
+            })
+    } catch (err) {
+        console.error('137there was an error', err)
     }
 }
 </script>

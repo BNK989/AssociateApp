@@ -1,18 +1,13 @@
 import { defineStore } from 'pinia'
 import type { User } from '@/types/user'
 import type { Game } from '@/types/game'
+import type { Toast } from '@/types/toast'
 
 interface State {
     count: number
     user: User | null
     toast: Toast | null
     game: Game | null
-}
-
-type Toast = {
-    msg: string
-    type?: string
-    duration?: number
 }
 
 export const useStore = defineStore('store', {
