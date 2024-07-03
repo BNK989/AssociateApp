@@ -19,7 +19,7 @@
         <h2 class="text-2xl my-2">{{ $t('Active_Games') }}</h2>
 
         <ul class="flex gap-4 flex-wrap w-full">
-            <li v-for="game in activeGames">
+            <li v-for="game in activeGames" @contextmenu.prevent="showContextMenu($event, game.id)">
                 <nuxt-link :to="localPath(`/game/${game.id}`)">
                     <div
                         class="grid grid-cols-[minmax(min-content,1fr)_min-content] gap-1 min-h-32 rounded bg-accent-3/80 max-w-40 h-36 md:max-w-56 p-2 cursor-pointer hover:bg-accent-3/50 duration-300">
@@ -79,6 +79,14 @@
             <MiniShare />
         </div>
     </div>
+
+    <MiniContextMenu
+        v-if="showMenu"
+        :actions="contextMenuActions"
+        @action-clicked="handleActionClick"
+        :x="menuX"
+        :y="menuY" />
+
 </template>
 
 <script lang="ts" setup>
@@ -95,6 +103,44 @@ const localPath = useLocalePath()
 const router = useRouter()
 
 const user = useSupabaseUser()
+
+// **** CONTEXT MENU ****
+const showMenu = ref(false)
+const menuX = ref(0)
+const menuY = ref(0)
+const targetRow = ref({})
+const contextMenuActions = ref([
+    { label: 'Archive', action: 'archive' },
+    { label: 'Delete', action: 'delete' },
+])
+
+const showContextMenu = (event, item) => {
+    showMenu.value = true
+    targetRow.value = item
+    menuX.value = event.clientX
+    menuY.value = event.clientY
+}
+const closeContextMenu = () => {
+    showMenu.value = false
+}
+
+function handleActionClick(action : string):void {
+    switch (action) {
+        case 'closeContextMenu':
+            closeContextMenu()
+            break;
+        case 'archive':
+            // TODO: archiveGame()
+             break;
+        case 'delete':
+            // TODO: deleteGame()
+            console.log('delete game', targetRow.value)
+             break;
+        default:
+        closeContextMenu()
+    }
+}
+// **** CONTEXT MENU END ****
 
 const email = user?.value?.email
 const allGames = ref([])

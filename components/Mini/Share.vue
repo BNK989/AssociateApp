@@ -19,7 +19,7 @@ const props = defineProps({
     },
     gameId: {
         type: Number,
-        default: '',
+        default: null,
     },
 })
 

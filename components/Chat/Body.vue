@@ -13,7 +13,7 @@
                     class="size-8 rounded-full me-1"
                     alt="Rounded avatar" />
                 <div
-                    class="px-3 pt-1 pb-2 bg-blue-300 bg-opacity-10 w-min whitespace-nowrap">
+                    class="px-3 pt-1 pb-2 bg-blue-300 bg-opacity-10 w-min whitespace-nowrap select-none">
                     <div class="flex items-center gap-2">
                         <p
                             v-if="i < words!.length - 1"
@@ -29,7 +29,7 @@
                             }}
                         </p>
                         <span
-                            v-if="!w.isResolved"
+                            v-if="!w.isResolved && i < words!.length - 1"
                             @click="getHint(w.id)"
                             class="cursor-help"
                             title="get hint">

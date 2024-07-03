@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <h2 class="text-3xl font-bold">About The Game</h2>
+    <div class="mx-2 mt-2" >
+        <h2 class="text-3xl font-bold mb-2">About The Game</h2>
         <p>
             The Association game is a word association game with a chat twist.
         </p>
@@ -40,6 +40,9 @@
 </template>
 
 <script lang="ts" setup>
+definePageMeta({
+    layout: 'scrollable',
+})
 const { locale, setLocale, locales } = useI18n()
 const localPath = useLocalePath()
 const selectedLocale = computed({

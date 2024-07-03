@@ -1,7 +1,7 @@
 <template>
     <NuxtImg
         v-if="user?.avatar"
-        :class="`w-10 h-10 me-2 rounded-full ${errLoadingImg ? 'hidden' : ''} ${
+        :class="`w-10 h-10 rounded-full ${errLoadingImg ? 'hidden' : ''} ${
             props.class ? props.class : ''
         }`"
         :src="user?.avatar"

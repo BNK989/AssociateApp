@@ -44,7 +44,7 @@
                 </div>
                 <div
                     popover
-                    class="md:flex md:flex-1 fixed m-0 top-12 md:top-0 shadow-lg text-content md:shadow-none shadow-accent-2/10 md:relative md:bg-opacity-0 md:mx-4 z-10 bg-bkg border-t md:border-none border-content/10 w-full lg:w-auto lg:order-1"
+                    class="md:flex md:flex-1 fixed h-max overflow-visible inset-none m-0 top-12 md:top-0 shadow-lg text-content md:shadow-none shadow-accent-2/10 md:relative md:bg-opacity-0 md:mx-4 z-10 bg-bkg border-t md:border-none border-content/10 w-full lg:w-auto lg:order-1"
                     id="mobile-menu-2">
                     <ul
                         class="w-full flex flex-col md:items-center mt-4 font-medium lg:flex-row lg:mt-0 justify-between">
@@ -110,9 +110,14 @@
                             </div>
                             <div
                                 v-else
-                                class="relative flex items-center justify-start min-h-14 md:min-h-10 gap-3 px-3 bg-blue-200 bg-opacity-20 my-2 py-2 md:bg-opacity-0 md:my-0">
+                                class="relative flex-center min-h-14 md:min-h-10 gap-3 px-3 bg-blue-200 bg-opacity-20 my-2 py-2 md:bg-opacity-0 md:my-0">
                                 <button @click="showUserMenu = !showUserMenu">
-                                    <UserAvatar :user="storeUser" />
+                                    <div
+                                        class="border-2 p-[2px] rounded-full border-y-accent-3 border-x-accent-1 rotate-45">
+                                        <UserAvatar
+                                            :user="storeUser"
+                                            class="-rotate-45" />
+                                    </div>
                                 </button>
 
                                 <!-- Popover menu Start -->
@@ -121,7 +126,7 @@
                                     <div
                                         v-if="showUserMenu"
                                         @click="hideThePopover"
-                                        class="fixed w-fit end-20 m-auto md:top-16 md:end-48 z-20 bg-bkg divide-y divide-accent-3/50 rounded-lg shadow-xl shadow-content/10 md:w-44">
+                                        class="absolute top-12 bg-bkg shadow-xl shadow-bkg_dark/40 rounded h-fit w-fit divide-y divide-accent-3/50 ">
                                         <div class="px-4 py-3 text-sm">
                                             <div>{{ storeUser?.userName }}</div>
                                             <div

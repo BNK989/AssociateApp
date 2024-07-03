@@ -3,7 +3,7 @@
         class="fixed z-40 inset-0 w-dvw h-dvh bg-bkg_dark/10"
         @click="emitAction('closeContextMenu', 'closeContextMenu')">
         <div
-            class="absolute h-1/3 z-50 context-menu bg-bkg min-w-36 border border-bkg_dark/50"
+            class="absolute h-fit z-50 context-menu bg-bkg min-w-36 border border-bkg_dark/50"
             :style="{ top: y + 'px', left: x + 'px' }">
             <div
                 v-for="action in actions"

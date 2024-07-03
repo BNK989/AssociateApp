@@ -24,21 +24,14 @@ export default defineEventHandler(async (e) => {
                     },
                 },
             },
-            // select: {
-            //     id: true,
-            //     avatar: true,
-            //     userName: true,
-            //     email: true,
-            //     preferences: true,
-            // },
         })
+
+        if (!res) throw new Error(`user with email ${email} not found`)
         reducedRes = { ...res, games: res.Games.map((g) => g.game.id) }
 
         delete reducedRes.Games
         delete reducedRes.createdAt
         delete reducedRes.lastLoginAt
-
-        if (!res) throw new Error(`user with email ${email} not found`)
     } catch (err) {
         console.error('there was an error', err)
     }
