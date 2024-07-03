@@ -1,4 +1,4 @@
-import { parseISO, format, formatRelative, differenceInHours, differenceInDays } from 'date-fns';
+import { parseISO, format, formatRelative, differenceInHours, differenceInDays, compareAsc, compareDesc } from 'date-fns';
 
 export function relativeTime(timestamp) {
     const date = parseISO(timestamp);
@@ -16,11 +16,18 @@ export function relativeTime(timestamp) {
       return `Last updated yesterday`//at ${format(date, 'HH:mm')}`
     } else {
       const rel = formatRelative(timestamp, now)
-      return removeAfterAt(rel.replace('last', 'Last updated'))
+      return _removeAfterAt(rel.replace('last', 'Last updated'))
     }
   }
+  
+  const dates = [
+    new Date(1995, 6, 2),
+    new Date(1987, 1, 11),
+    new Date(1989, 6, 10),
+  ];
+  dates.sort(compareAsc);
 
-  function removeAfterAt(inputString) {
+  function _removeAfterAt(inputString) {
     // Define the regex pattern to match 'at' and everything that follows
     const regex = /\sat.*/;
     

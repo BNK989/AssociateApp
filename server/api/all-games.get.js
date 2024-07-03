@@ -32,6 +32,9 @@ export default defineEventHandler(async (e) => {
                     },
                 },
             },
+            orderBy: {
+                updatedAt: 'desc', // Sort by updatedAt in descending order
+            },
         })
 
         if (!res) throw new Error(`game id: ${gameId} not found`)

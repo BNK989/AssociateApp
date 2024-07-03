@@ -15,7 +15,6 @@
                 {{ $t('Signup_to_play') }}
             </button>
         </nuxt-link>
-        <pre>{{ activeGames[1]?.updatedAt }}</pre>
         <h2 class="text-2xl my-2">{{ $t('Active_Games') }}</h2>
 
         <ul class="flex gap-4 flex-wrap w-full">
