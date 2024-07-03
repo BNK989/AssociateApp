@@ -31,3 +31,5 @@ todo.md
 # middleware/**/*
 pnpm-lock.yaml
 settings.json
+
+unused_plugins/

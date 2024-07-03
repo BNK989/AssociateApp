@@ -13,10 +13,10 @@ export default {
                 bkg_dark: 'hsl(var(--color-bkg-dark) / <alpha-value>)',
                 content: 'hsl(var(--color-content) / <alpha-value>)',
             },
-        },
-        animation: {
-            'pulse-slow': 'pulse 11s linear infinite',
-            'pulse-slow-offset': 'pulse 13s linear infinite',
+            animation: {
+                'pulse-slow': 'pulse 11s linear infinite',
+                'pulse-slow-offset': 'pulse 13s linear infinite',
+            },
         },
     },
     plugins: [require('tailwindcss-rtl')],

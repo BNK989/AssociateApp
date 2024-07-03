@@ -1,3 +1,5 @@
+import type { MiniUser } from "./user"
+
 export interface Word {
   id: number
   createdAt: Date
@@ -5,4 +7,5 @@ export interface Word {
   cipher: string
   isResolved: boolean
   senderId: string
+  user?: MiniUser
 }

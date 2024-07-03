@@ -94,7 +94,7 @@
                             <div
                                 @click="hideThePopover"
                                 v-if="!user"
-                                class="flex items-center justify-evenly bg-blue-200 bg-opacity-20 my-2 md:bg-opacity-0 md:my-0">
+                                class="flex items-center justify-evenly gap-2 bg-blue-200 bg-opacity-20 my-2 md:bg-opacity-0 md:my-0">
                                 <NuxtLink
                                     :to="localPath('/profile/login')"
                                     class="hover:bg-content/10 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
@@ -126,7 +126,7 @@
                                     <div
                                         v-if="showUserMenu"
                                         @click="hideThePopover"
-                                        class="absolute top-12 bg-bkg shadow-xl shadow-bkg_dark/40 rounded h-fit w-fit divide-y divide-accent-3/50 ">
+                                        class="absolute top-12 bg-bkg shadow-xl shadow-bkg_dark/40 rounded h-fit w-fit divide-y divide-accent-3/50">
                                         <div class="px-4 py-3 text-sm">
                                             <div>{{ storeUser?.userName }}</div>
                                             <div

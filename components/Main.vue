@@ -267,7 +267,6 @@ onMounted(() => {
             },
             (payload) => {
                 const payloadNew = payload?.new as Game
-                console.log('payload:', payloadNew)
                 if (
                     payloadNew.GameMode === 'SOLVE_PENDING' &&
                     !payloadNew.confirmChange.includes(storeUser.value.id)

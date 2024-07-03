@@ -8,7 +8,7 @@ export interface User {
     preferences?: Preferences
 }
 
-export type WordAndUser = {
+export type MiniUser = {
     id: string,
     avatar: string,
     userName: string
