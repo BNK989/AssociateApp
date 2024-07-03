@@ -15,7 +15,7 @@
                 {{ $t('Signup_to_play') }}
             </button>
         </nuxt-link>
-        <!-- <pre>{{ activeGames }}</pre> -->
+        <pre>{{ activeGames[1]?.updatedAt }}</pre>
         <h2 class="text-2xl my-2">{{ $t('Active_Games') }}</h2>
 
         <ul class="flex gap-4 flex-wrap w-full">
@@ -27,19 +27,29 @@
                 :userEmail="storeUser?.email" />
         </ul>
         <!-- END OF ACTIVE GAME -->
-        <div v-if="otherGames.length > 0">
-            <h2 class="text-2xl my-2">
-                {{ $t('Non_Active_Games') }}
-            </h2>
+        <div v-if="archivedGames.length > 0">
+            <button
+                class="py-2 px-3 my-4 rounded-full w-full md:w-2/5 bg-accent-3"
+                @click="
+                    showNonActiveGames.archived = !showNonActiveGames.archived
+                ">
+                {{ showNonActiveGames.archived ? 'Hide' : 'Show' }} Archived
+                games
+            </button>
+            <div v-if="showNonActiveGames.archived">
+                <h2 class="text-2xl my-2">
+                    {{ $t('Non_Active_Games') }}
+                </h2>
 
-            <ul class="grid gap-4 grid-cols-2 md:grid-cols-4">
-                <ChatPreview
-                    v-for="game in otherGames"
-                    @contextmenu.prevent="showContextMenu($event, game.id)"
-                    :key="game.id"
-                    :game="game"
-                    :userEmail="storeUser?.email" />
-            </ul>
+                <ul class="grid gap-4 grid-cols-2 md:grid-cols-4">
+                    <ChatPreview
+                        v-for="game in archivedGames"
+                        @contextmenu.prevent="showContextMenu($event, game.id)"
+                        :key="game.id"
+                        :game="game"
+                        :userEmail="storeUser?.email" />
+                </ul>
+            </div>
         </div>
         <!-- END OF NON ACTIVE GAMES -->
         <div class="my-4">
@@ -118,9 +128,20 @@ const allGames = ref([])
 const activeGames = computed(
     () => allGames.value?.filter((g) => g.status === 'ACTIVE') || [],
 )
-const otherGames = computed(
-    () => allGames.value?.filter((g) => g.status !== 'ACTIVE') || [],
+const archivedGames = computed(
+    () => allGames.value?.filter((g) => g.status === 'ARCHIVED') || [],
 )
+const deletedGames = computed(
+    () => allGames.value?.filter((g) => g.status === 'DELETED') || [],
+)
+const finishedGames = computed(
+    () => allGames.value?.filter((g) => g.status === 'FINISHED') || [],
+)
+const showNonActiveGames = ref({
+    archived: false,
+    deleted: false,
+    finished: false,
+})
 
 onMounted(async () => {
     if (!storeUser.value) return
