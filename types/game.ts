@@ -10,7 +10,10 @@ export interface Game {
     nextTurn?: string
     GameMode?: 'INPUT' | 'SOLVE_PENDING' | 'SOLVE'
     confirmChange?: string[]
-    totalWords?: number      
+    totalWords?: number
+    _count?: {
+        messages: number
+    }
 }
 
 type SimpleUser = {

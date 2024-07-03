@@ -1,6 +1,9 @@
 <template>
     <div
         class="fixed z-40 inset-0 w-dvw h-dvh bg-bkg_dark/10"
+        @contextmenu.prevent="
+            emitAction('closeContextMenu', 'closeContextMenu')
+        "
         @click="emitAction('closeContextMenu', 'closeContextMenu')">
         <div
             class="absolute h-fit z-50 context-menu bg-bkg min-w-36 border border-bkg_dark/50"
@@ -19,6 +22,13 @@
 <script setup>
 const { actions, x, y } = defineProps(['actions', 'x', 'y'])
 const emit = defineEmits(['action-clicked'])
+
+// const screenWidth = window.innerWidth
+// console.log('screenWidth:', screenWidth)
+// const newX = computed(() => {
+//     if (screenWidth + 150 > x) return x - 150
+//     else
+// })
 
 const emitAction = (action) => {
     emit('action-clicked', action)

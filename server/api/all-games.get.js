@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (e) => {
-
     const { user_id } = getQuery(e)
 
     let res
@@ -12,32 +11,33 @@ export default defineEventHandler(async (e) => {
             where: {
                 Users: {
                     some: {
-                        UserId: user_id
-                    }
-                }
+                        UserId: user_id,
+                    },
+                },
             },
             include: {
                 Users: {
                     select: {
                         user: {
                             select: {
-                                email: true,                                
-                                userName: true
-                            }
-                        }
-                    }
-                }
-            }
+                                email: true,
+                                userName: true,
+                            },
+                        },
+                    },
+                },
+                _count: {
+                    select: {
+                        messages: true,
+                    },
+                },
+            },
         })
 
-        //try create if connect does not work
-
         if (!res) throw new Error(`game id: ${gameId} not found`)
-
     } catch (err) {
         console.error('there was an error', err)
     }
 
     return res
-
 })
