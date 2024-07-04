@@ -6,16 +6,39 @@
                 <a href="#" class="hover:underline">BNK™</a>. All Rights
                 Reserved.</span
             >
+            <!-- <button
+                class="py-1 px-4 mx-4 bg-bkg_dark/20 rounded-full"
+                @click="sendNotification('fdfdf')">
+                Allow Notifications
+            </button> -->
         </div>
     </footer>
 </template>
 
 <script setup>
+import {
+    sendNotification,
+    checkNotificationPermission,
+} from '@/services/notifications'
+onMounted(() => {
+    checkNotificationPermission()
+    document.addEventListener('visibilitychange', setIsHidden)
+})
+
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
 const myGames = computed(() => storeUser.value?.games?.join(',') || [])
+const isHidden = ref(false)
 
 const supabase = useSupabaseClient()
+
+const setIsHidden = () => {
+    if (document.visibilityState !== 'visible') {
+        isHidden.value = true
+    } else {
+        isHidden.value = false
+    }
+}
 
 let realtimeChannel
 const getGamesUpdate = () => {
@@ -31,6 +54,9 @@ const getGamesUpdate = () => {
                 filter: `id=in.(${myGames.value})`,
             },
             (payload) => {
+                if (isHidden.value) {
+                    sendNotification(`Game ${payload.new.title} updated`)
+                }
                 store.setToast({
                     msg: `Game ${payload.new.title} updated`,
                     type: 'info',
@@ -50,6 +76,11 @@ const getGamesUpdate = () => {
                 const { id: InviteId, gameId, inviterId } = payload.new.id
                 //TODO GET GAME TITLE
                 // `${inviterName} has invited you to a game`
+                if (isHidden.value) {
+                    sendNotification(
+                        `You have been invited to a game reload home page to view`,
+                    )
+                }
                 store.setToast({
                     msg: `You have been invited to a game reload home page to view`,
                     type: 'success',
@@ -65,6 +96,7 @@ const getGamesUpdate = () => {
 watch(() => myGames.value, getGamesUpdate)
 
 onUnmounted(() => {
+    document.removeEventListener('visibilitychange', setIsHidden)
     if (!realtimeChannel) return
     supabase.removeChannel(realtimeChannel)
 })
