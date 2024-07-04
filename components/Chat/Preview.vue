@@ -2,7 +2,7 @@
     <li>
         <NuxtLink :to="localPath(`/game/${game.id}`)">
             <div
-                class="grid grid-cols-[minmax(min-content,1fr)_min-content] gap-1 min-h-32 max-h-fit rounded bg-accent-3/80 max-w-40 md:max-w-56 p-2 cursor-pointer hover:bg-accent-3/50 duration-300">
+                class="grid grid-cols-[minmax(min-content,1fr)_min-content] gap-1 min-h-32 max-h-fit rounded bg-accent-3/80 md:max-w-56 p-2 cursor-pointer hover:bg-accent-3/50 duration-300">
                 <h2 class="text-2xl">{{ game.title }}</h2>
                 <h6 class="text-sm lowercase self-start">
                     {{ game.GameMode }}

@@ -4,6 +4,10 @@
         "url": "/"
     },
     {
+        "name": "Invites",
+        "url": "/invites"
+    },
+    {
         "name": "About",
         "url": "/about"
     },

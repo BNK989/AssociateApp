@@ -1,5 +1,5 @@
 <template>
-    <div class="p-4">
+    <div class="p-2 md:p-4">
         <h1 class="text-3xl font-bold text-right ltr:text-left">
             {{ $t('Welcome') }}
         </h1>
@@ -31,28 +31,47 @@
         <!-- END OF ACTIVE GAME -->
         <div v-if="archivedGames.length > 0">
             <button
+                v-if="!showNonActiveGames"
                 class="py-2 px-3 my-4 rounded-full w-full md:w-2/5 bg-accent-3"
-                @click="
-                    showNonActiveGames.archived = !showNonActiveGames.archived
-                ">
-                {{ showNonActiveGames.archived ? 'Hide' : 'Show' }} Archived
-                games
+                @click.once="showNonActiveGames = 'FINISHED'">
+                Show Non Active Games
             </button>
-            <div v-if="showNonActiveGames.archived">
-                <h2 class="text-2xl my-2">
-                    {{ $t('Non_Active_Games') }}
-                </h2>
 
-                <ul class="grid gap-4 grid-cols-2 md:grid-cols-4">
-                    <ChatPreview
-                        v-for="game in archivedGames"
-                        @contextmenu.prevent="showContextMenu($event, game.id)"
-                        :key="game.id"
-                        :game="game"
-                        :userEmail="storeUser?.email" />
+            <div
+                v-if="showNonActiveGames"
+                class="my-4 text-sm font-medium text-center text-content/75 border-b border-content/50">
+                <ul class="flex flex-wrap -mb-px border-b-2 border-accent-3/60">
+                    <li
+                        v-for="c in nonActiveGamesCategory"
+                        :key="c"
+                        class="me-2">
+                        <button
+                            @click="showNonActiveGames = c.toUpperCase()"
+                            class="inline-block capitalize p-4 border-accent-3/90 rounded-t-lg"
+                            :class="
+                                showNonActiveGames === c.toUpperCase()
+                                    ? 'border-b-2 bg-bkg_dark'
+                                    : ''
+                            ">
+                            {{ c }}
+                        </button>
+                    </li>
                 </ul>
+                <div v-if="showNonActiveGames">
+                    <ul class="grid gap-4 my-4 grid-cols-2 md:grid-cols-4">
+                        <ChatPreview
+                            v-for="game in nonActiveGames"
+                            @contextmenu.prevent="
+                                showContextMenu($event, game.id)
+                            "
+                            :key="game.id"
+                            :game="game"
+                            :userEmail="storeUser?.email" />
+                    </ul>
+                </div>
             </div>
         </div>
+
         <!-- END OF NON ACTIVE GAMES -->
         <div class="my-4">
             <MiniShare />
@@ -128,9 +147,20 @@ async function handleActionClick(action: string): Promise<void> {
 // **** CONTEXT MENU END ****
 
 const allGames = ref([])
+const showNonActiveGames = ref('')
+const nonActiveGames = ref([])
+const nonActiveGamesCategory = ref(['finished', 'archived', 'deleted'])
 //@ts-ignore
 const activeGames = computed(
     () => allGames.value?.filter((g) => g.status === 'ACTIVE') || [],
+)
+watch(
+    () => showNonActiveGames.value,
+    () => {
+        nonActiveGames.value = allGames.value?.filter(
+            (g) => g.status === showNonActiveGames.value,
+        )
+    },
 )
 const archivedGames = computed(
     () => allGames.value?.filter((g) => g.status === 'ARCHIVED') || [],
@@ -141,11 +171,6 @@ const deletedGames = computed(
 const finishedGames = computed(
     () => allGames.value?.filter((g) => g.status === 'FINISHED') || [],
 )
-const showNonActiveGames = ref({
-    archived: false,
-    deleted: false,
-    finished: false,
-})
 
 onMounted(async () => {
     if (!storeUser.value) return
