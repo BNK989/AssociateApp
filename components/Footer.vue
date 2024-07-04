@@ -19,24 +19,47 @@ const supabase = useSupabaseClient()
 
 let realtimeChannel
 const getGamesUpdate = () => {
-    if (myGames.value.length < 1) return
-    realtimeChannel = supabase.channel('public:Games').on(
-        'postgres_changes',
-        {
-            event: 'UPDATE',
-            schema: 'public',
-            table: 'Games',
-            filter: `id=in.(${myGames.value})`,
-        },
-        (payload) => {
-            store.setToast({
-                msg: `Game ${payload.new.title} updated`,
-                type: 'info',
-            })
-        },
-    )
+    // if (myGames.value.length < 1) return
+    realtimeChannel = supabase
+        .channel('public:Games')
+        .on(
+            'postgres_changes',
+            {
+                event: 'UPDATE',
+                schema: 'public',
+                table: 'Games',
+                filter: `id=in.(${myGames.value})`,
+            },
+            (payload) => {
+                store.setToast({
+                    msg: `Game ${payload.new.title} updated`,
+                    type: 'info',
+                })
+            },
+        )
+        .on(
+            'postgres_changes',
+            {
+                event: 'INSERT',
+                schema: 'public',
+                table: 'Invites',
+                filter: `inviteeId=eq.${storeUser.value.id}`,
+            },
+            (payload) => {
+                console.log('payload:', payload)
+                const { id: InviteId, gameId, inviterId } = payload.new.id
+                //TODO GET GAME TITLE
+                // `${inviterName} has invited you to a game`
+                store.setToast({
+                    msg: `You have been invited to a game reload home page to view`,
+                    type: 'success',
+                    duration: 6000,
+                })
+            },
+        )
 
     realtimeChannel.subscribe()
+    console.log('realtimeChannel:', realtimeChannel)
 }
 
 watch(() => myGames.value, getGamesUpdate)

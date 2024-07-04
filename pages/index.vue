@@ -15,7 +15,7 @@
                 {{ $t('Signup_to_play') }}
             </button>
         </nuxt-link>
-        <div v-if="storeUser?.receivedInvites.length > 0">
+        <div v-if="storeUser?.receivedInvites?.length > 0">
             <PendingInvites />
         </div>
         <h2 class="text-2xl my-2">{{ $t('Active_Games') }}</h2>
