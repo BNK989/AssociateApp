@@ -2,8 +2,7 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (e) => {
-
-    const {user_id} = await readBody(e)
+    const { user_id } = await readBody(e)
     const game_id = +e.context.params.game
     // console.log('user_id:', user_id, game_id)
 
@@ -16,21 +15,20 @@ export default defineEventHandler(async (e) => {
             },
             data: {
                 Users: {
-                    create: [{
-                        user: { connect: { id: user_id } },
-                    }]
-                }
-            }
+                    create: [
+                        {
+                            user: { connect: { id: user_id } },
+                        },
+                    ],
+                },
+            },
         })
-        console.log('25res:', res)
 
         if (!res) throw new Error(`game id: ${gameId} not found`)
-
     } catch (err) {
         console.error('there was an error', err)
-        return {success: false, error: error.message}
+        return { success: false, error: error.message }
     }
 
-    return {success: true, addedUser: res}
-
+    return { success: true, addedUser: res }
 })

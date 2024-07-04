@@ -26,12 +26,31 @@ export default defineEventHandler(async (e) => {
                         },
                     },
                 },
+                invites: {
+                    where: {
+                        status: 'PENDING',
+                    },
+                    select: {
+                        invitee: {
+                            select: {
+                                id: true,
+                                email: true,
+                                userName: true,
+                                avatar: true,
+                            },
+                        },
+                    },
+                },
             },
         })
 
         if (!res) throw new Error(`game id: ${gameId} not found`)
 
-        cleanRes = { ...res, players: res.Users.map((u) => u.user) }
+        cleanRes = {
+            ...res,
+            players: res.Users.map((u) => u.user),
+            invites: res.invites.map((i) => i.invitee),
+        }
         delete cleanRes.Users
     } catch (err) {
         console.error('there was an error', err)

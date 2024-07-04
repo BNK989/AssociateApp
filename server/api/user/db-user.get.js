@@ -23,11 +23,29 @@ export default defineEventHandler(async (e) => {
                         },
                     },
                 },
+                receivedInvites: {
+                    where: {
+                        status: 'PENDING',
+                    },
+                    select: {
+                        inviter: {
+                            select: {
+                                email: true,
+                                userName: true,
+                                avatar: true,
+                            },
+                        },
+                    },
+                },
             },
         })
 
         if (!res) throw new Error(`user with email ${email} not found`)
-        reducedRes = { ...res, games: res.Games.map((g) => g.game.id) }
+        reducedRes = {
+            ...res,
+            games: res.Games.map((g) => g.game.id),
+            receivedInvites: res.receivedInvites.map((i) => i.inviter),
+        }
 
         delete reducedRes.Games
         delete reducedRes.createdAt

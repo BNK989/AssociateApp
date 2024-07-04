@@ -20,6 +20,8 @@ model Users {
   preferences   Json?      
   Games         UsersGames[]   
   messages      Messages[]
+  sentInvites   Invites[]   @relation("SentInvites")
+  receivedInvites Invites[] @relation("ReceivedInvites")
 
   @@index([email])
 }
@@ -35,8 +37,11 @@ model Games {
   status        Status    @default(ACTIVE) 
   confirmChange String[]  @default([])
   totalWords    Int?      
+  ticker        Int?
+  invites       Invites[]   @relation("GameInvites")
   Users         UsersGames[]   
   messages      Messages[]
+  
 }
 
 model UsersGames {
@@ -62,6 +67,23 @@ model Messages {
   Sender        Users    @relation(fields: [senderId], references: [id], onDelete: Cascade)
 }
 
+model Invites {
+  id            Int         @id @default(autoincrement())
+  createdAt     DateTime    @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime?   @db.Timestamptz(6) @updatedAt
+  alias         String?
+  status        InviteStatus @default(PENDING)
+  
+  inviterId     String      @db.Uuid
+  inviter       Users       @relation("SentInvites", fields: [inviterId], references: [id], onDelete: Cascade)
+
+  inviteeId     String      @db.Uuid
+  invitee       Users       @relation("ReceivedInvites", fields: [inviteeId], references: [id], onDelete: Cascade)
+
+  gameId        Int
+  game          Games       @relation("GameInvites", fields: [gameId], references: [id], onDelete: Cascade)
+}
+
 enum Status {
   ACTIVE
   ARCHIVED
@@ -74,3 +96,12 @@ enum GameMode {
   SOLVE_PENDING
   SOLVE
 }
+
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+// pnpx prisma migrate dev --name [migrationName]
+// pnpx prisma generate

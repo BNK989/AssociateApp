@@ -40,7 +40,7 @@
                         class="bg-bkg border border-accent-2/40 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 placeholder:text-content/65"
                         placeholder="Type player name" />
                 </div>
-                <form action="#">
+                <section>
                     <div
                         class="grid gap-4 mb-4 md:border border-accent-2/40 py-4 rounded min-h-96">
                         <ul
@@ -57,7 +57,7 @@
                                 </button>
                                 <button
                                     v-else
-                                    @click="addPlayerToGame(p.id)"
+                                    @click="invitePlayerToGame($event, p.id)"
                                     class="px-3 py-1 text-sm bg-accent-2/40 rounded-full"
                                     :class="{
                                         'bg-accent-2/15':
@@ -71,15 +71,21 @@
                                     {{
                                         store?.playersEmails?.includes(p?.email)
                                             ? 'Added'
+                                            : store?.inviteesEmails?.includes(
+                                                  p?.email,
+                                              )
+                                            ? 'Invite Sent'
                                             : 'Add'
                                     }}
                                 </button>
                             </li>
                         </ul>
                     </div>
-                </form>
+                </section>
                 <div class="w-full flex justify-center items-center">
-                    <MiniShare title="Send an invite" :gameId="storeGame?.id" />
+                    <MiniShare
+                        title="Share an invite"
+                        :gameId="storeGame?.id" />
                 </div>
             </div>
         </div>
@@ -119,34 +125,38 @@ const getPlayers = async () => {
     }
 }
 
-const addPlayerToGame = async (id: number) => {
+const invitePlayerToGame = async (ev: MouseEvent, id: number) => {
+    const target = ev.target as HTMLElement
+
     try {
         //@ts-ignore
-        const { error, success } = await $fetch(
-            `/api/${storeGame.value.id}/add-user`,
-            {
-                method: 'PUT',
-                body: {
-                    user_id: id,
-                },
+        const data = await $fetch(`/api/invite/send`, {
+            method: 'POST',
+            body: {
+                inviterId: storeUser.value?.id,
+                inviteeId: id,
+                gameId: storeGame.value.id,
             },
-        )
+        })
 
-        if (error) console.error('133there was an error', error)
-        if (success)
+        if (!data) {
+            throw new Error('there was an error creating the invite')
+        } else {
+            console.log('data:', data)
             store.setToast({
-                msg: 'User added',
+                msg: 'User Invited',
                 type: 'success',
                 duration: 2500,
             })
-        else
-            store.setToast({
-                msg: 'Issue adding user',
-                type: 'error',
-                duration: 2500,
-            })
+            target.innerText = 'Invite Sent'
+        }
     } catch (err) {
         console.error('137there was an error', err)
+        store.setToast({
+            msg: 'Issue Inviting user',
+            type: 'error',
+            duration: 2500,
+        })
     }
 }
 </script>

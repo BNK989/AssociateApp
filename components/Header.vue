@@ -185,7 +185,7 @@ import type { User } from '~/types/user'
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
 
-import { loadUser, updateUserPreferences } from '@/services/loadUser'
+import { loadUser } from '@/services/loadUser'
 
 const { locale, setLocale, locales } = useI18n()
 const localPath = useLocalePath()

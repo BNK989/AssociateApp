@@ -5,11 +5,13 @@ export interface User {
     userName: string;
     avatar: string;
     authinticator?: string;
-    preferences?: Preferences
+    preferences?: Preferences;
+    receivedInvites: MiniUser[];
 }
 
 export type MiniUser = {
-    id: string,
+    id?: string,
+    email?: string,
     avatar: string,
     userName: string
 }

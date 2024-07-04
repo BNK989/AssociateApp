@@ -15,6 +15,9 @@
                 {{ $t('Signup_to_play') }}
             </button>
         </nuxt-link>
+        <div v-if="storeUser?.receivedInvites.length > 0">
+            <PendingInvites />
+        </div>
         <h2 class="text-2xl my-2">{{ $t('Active_Games') }}</h2>
 
         <ul class="flex gap-4 flex-wrap w-full">
@@ -65,6 +68,8 @@
 </template>
 
 <script lang="ts" setup>
+import PendingInvites from '~/components/Invites/PendingInvites.vue'
+
 definePageMeta({
     layout: 'scrollable',
 })

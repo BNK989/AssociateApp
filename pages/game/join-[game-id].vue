@@ -20,7 +20,7 @@ const supabase = useSupabaseClient()
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
 
-const gameId = route.params.gameid
+const gameId = route?.params?.gameid
 
 const joinGame = async () => {
     if (!storeUser.value)

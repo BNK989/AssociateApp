@@ -10,10 +10,10 @@ export async function loadUser() {
         `/api/user/db-user?email=${user.value.email}`,
     )
     store.setUser(dbUser)
-    updateUserPreferences()
+    _updateUserPreferences()
 }
 
-export const updateUserPreferences = () => {
+const _updateUserPreferences = () => {
     const pref = store.userPref
     if(pref.theme) useHead({ htmlAttrs: { 'data-theme': pref.theme } })
 }

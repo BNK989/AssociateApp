@@ -25,8 +25,7 @@
 <script lang="ts" setup>
 import type { Word } from '@/types/word'
 import type { Game } from '@/types/game'
-import { createClient } from '@supabase/supabase-js'
-// import { checkWin } from '@/services/checkGame'
+// import { createClient } from '@supabase/supabase-js'
 import VueConfetti from 'vue-confetti'
 
 const route = useRoute()
