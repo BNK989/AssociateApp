@@ -9,8 +9,8 @@
             :TurnOrderByIds="TurnOrderByIds"
             @changeGameMode="changeGameMode" />
         <ChatBody
-            :words="messages as any"
-            :users="users as any"
+            :words="messages"
+            :users="users"
             :guessedCount="guessedCount"
             :gameMode="gameMode"
             :nextPlayerId="nextTurnId"
@@ -25,6 +25,7 @@
 <script lang="ts" setup>
 import type { Word } from '@/types/word'
 import type { Game } from '@/types/game'
+import type { MiniUser } from '~/types/user'
 // import { createClient } from '@supabase/supabase-js'
 import VueConfetti from 'vue-confetti'
 

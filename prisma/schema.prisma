@@ -46,10 +46,10 @@ model Games {
 
 model UsersGames {
   UserId        String  @db.Uuid
-  user          Users   @relation(fields: [UserId], references: [id])
+  user          Users   @relation(fields: [UserId], references: [id], onDelete: Cascade)
 
   GameId        Int
-  game          Games   @relation(fields: [GameId], references: [id])
+  game          Games   @relation(fields: [GameId], references: [id], onDelete: Cascade)
 
   @@id([UserId, GameId])
 }

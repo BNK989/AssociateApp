@@ -35,7 +35,7 @@
                     </svg>
                 </span>
             </div>
-            <small>{{ isMe ? $t('You') : w.user.userName }}</small>
+            <small>{{ isMe ? $t('You') : w.user?.userName }}</small>
         </div>
         <div v-if="isArrow" id="lastGuess">
             <SvgArrowRight class="rotate-180 animate-pulse" />

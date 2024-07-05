@@ -5,6 +5,7 @@
             <div class="relative">
                 <input
                     type="text"
+                    ref="inputField"
                     :class="true ? '' : ''"
                     class="block w-full p-4 ps-4 text-sm bg-bkg md:border border-accent-3/40 rounded-lg focus:ring-accent-3/10 focus:border-accent-3/10 focus:outline-none"
                     :placeholder="placeholder"
@@ -33,6 +34,7 @@ const props = defineProps({
 const store = useStore()
 const { user } = storeToRefs(store)
 const word = ref('')
+const inputField = ref(null)
 const emit = defineEmits(['handleSubmit'])
 
 const isMyTurn = computed(() => {
@@ -65,5 +67,8 @@ const onHandleSubmit = () => {
         })
     emit('handleSubmit', word.value)
     word.value = ''
+    nextTick(() => {
+        inputField.value?.focus()
+    })
 }
 </script>

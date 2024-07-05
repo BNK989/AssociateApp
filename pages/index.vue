@@ -20,13 +20,16 @@
         </div>
         <h2 class="text-2xl my-2">{{ $t('Active_Games') }}</h2>
 
-        <ul class="flex gap-4 flex-wrap w-full">
+        <ul v-if="activeGames.length > 0" class="flex gap-4 flex-wrap w-full">
             <ChatPreview
                 v-for="game in activeGames"
                 @contextmenu.prevent="showContextMenu($event, game.id)"
                 :key="game.id"
                 :game="game"
                 :userEmail="storeUser?.email" />
+        </ul>
+        <ul v-else class="flex gap-4 flex-wrap w-full my-2">
+                <SkeletonCard v-for="c in 4"/>
         </ul>
         <!-- END OF ACTIVE GAME -->
         <div v-if="archivedGames.length > 0">
@@ -87,6 +90,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { SkeletonCard } from '#build/components'
 import PendingInvites from '~/components/Invites/PendingInvites.vue'
 
 definePageMeta({

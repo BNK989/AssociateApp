@@ -30,9 +30,16 @@
 </template>
 
 <script lang="ts" setup>
+import type { MiniUser } from '@/types/user'
 const props = defineProps({
-    user: Object,
-    class: String,
+    user: {
+        type: Object as PropType<MiniUser>,
+        required: true,
+    },
+    class: {
+        type: String,
+        required: false,
+    },
 })
 const errLoadingImg = ref(false)
 
