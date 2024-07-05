@@ -35,7 +35,7 @@
         <div v-if="archivedGames.length > 0">
             <button
                 v-if="!showNonActiveGames"
-                class="py-2 px-3 my-4 rounded-full w-full md:w-2/5 bg-accent-3"
+                class="py-2 px-6 my-4 rounded-full w-full md:w-fit border border-accent-3 text-content/80"
                 @click.once="showNonActiveGames = 'FINISHED'">
                 Show Non Active Games
             </button>
