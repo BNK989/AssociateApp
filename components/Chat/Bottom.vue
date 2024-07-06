@@ -44,8 +44,7 @@ const isMyTurn = computed(() => {
 const placeholder = computed(() => {
     if (!isMyTurn.value && props.gameMode !== 'SOLVE') {
         return `${t('Placeholder_Not_your_turnA')} ${
-            store.game?.players.find((p) => p.id === props.nextPlayerId)
-                ?.userName
+            store.game?.players.find((p) => p.id === props.nextPlayerId)?.userName
         }${t('Placeholder_Not_your_turnB')}...`
     } else {
         return props.gameMode === 'INPUT'
@@ -65,6 +64,14 @@ const onHandleSubmit = () => {
             type: 'oops',
             duration: 2000,
         })
+
+    if (!word.value) {
+        return store.setToast({
+            msg: 'Please enter a word',
+            type: 'oops',
+            duration: 2000,
+        })
+    }
     emit('handleSubmit', word.value)
     word.value = ''
     nextTick(() => {
