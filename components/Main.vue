@@ -87,10 +87,7 @@ const isMyTurn = computed(() => {
 watch(
     () => nextTurnId.value,
     () => {
-        if (
-            storeUser.value?.id === nextTurnId.value &&
-            game.value.players?.length > 1
-        )
+        if (storeUser.value?.id === nextTurnId.value && game.value.players?.length > 1)
             nudge(true)
         else nudge(false)
     },
@@ -164,8 +161,7 @@ const changeGameMode = async () => {
     $fetch(`/api/${gameId}/toggle-mode`, {
         method: 'PUT',
         body: {
-            gameMode:
-                game.value.players?.length === 1 ? 'SOLVE' : 'SOLVE_PENDING',
+            gameMode: game.value.players?.length === 1 ? 'SOLVE' : 'SOLVE_PENDING',
             senderId: storeUser.value.id,
         },
     })
@@ -210,11 +206,15 @@ async function guessWord(word: string) {
             body,
         })
         if (!res) throw new Error('could not guess word')
-        else feedback.value = 'Correct'
+
+        if (res.success) {
+            feedback.value = 'Correct'
+        } else {
+            feedback.value = 'Guess Again'
+            store.setToast({ msg: 'Guess Again', type: 'oops', duration: 2000 })
+        }
     } catch (err) {
         console.warn('No match found', err)
-        feedback.value = 'Guess Again'
-        store.setToast({ msg: 'Guess Again', type: 'oops', duration: 2000 })
     }
 }
 
@@ -273,10 +273,7 @@ onMounted(() => {
                 ) {
                     confirmSolve() // TODO: ADD USER ID/EMAIL TO TELL THE OTHER PLAYERS WHO WANTS THE CHANGE
                 }
-                if (
-                    payloadNew.totalWords === 0 &&
-                    payloadNew.status === 'FINISHED'
-                ) {
+                if (payloadNew.totalWords === 0 && payloadNew.status === 'FINISHED') {
                     console.log('game ended!')
                     getConfetti()
                 }
@@ -309,9 +306,7 @@ onMounted(() => {
 })
 
 const confirmSolve = async () => {
-    const isConfirm = confirm(
-        'A player want to start solving the game, do you agree?',
-    )
+    const isConfirm = confirm('A player want to start solving the game, do you agree?')
     if (isConfirm) {
         await $fetch(`/api/${gameId}/confirm-solve`, {
             //@ts-ignore

@@ -1,10 +1,10 @@
 <template>
     <li
-        class="flex-1"
+        class="flex-1 min-w-[45%] md:min-w-48"
         :class="game.GameMode === 'SOLVE' ? 'bg-accent-2/40' : 'bg-accent-3/60'">
         <NuxtLink :to="localPath(`/game/${game.id}`)">
             <div
-                class="grid grid-cols-[minmax(min-content,1fr)_min-content] gap-1 md:min-w-48 min-h-36 max-h-fit rounded p-2 cursor-pointer hover:bg-accent-3/50 duration-300">
+                class="grid grid-cols-[minmax(min-content,1fr)_min-content] gap-1 min-h-36 max-h-fit rounded p-2 cursor-pointer hover:bg-accent-3/50 duration-300">
                 <h2 class="text-2xl">{{ game.title }}</h2>
                 <h6 class="text-sm lowercase self-start">
                     {{ game.GameMode }}

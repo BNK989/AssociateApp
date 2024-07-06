@@ -38,6 +38,7 @@ model Games {
   confirmChange String[]  @default([])
   totalWords    Int?      
   ticker        Int?
+  // guessesInRow  Int?
   invites       Invites[]   @relation("GameInvites")
   Users         UsersGames[]   
   messages      Messages[]
@@ -61,6 +62,7 @@ model Messages {
   content       String
   cipher        String
   isResolved    Boolean  @default(false)
+  resolveAttempts Int?
   gameId        Int     
   Game          Games    @relation(fields: [gameId], references: [id], onDelete: Cascade)
   senderId      String   @db.Uuid

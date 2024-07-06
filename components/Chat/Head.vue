@@ -1,6 +1,6 @@
 <template>
     <section class="min-h-14 flex items-center justify-around mt-1">
-        <div class="flex-center gap-1">
+        <div class="flex-center gap-1 min-w-fit">
             <ChatPlayersAvatarts :TurnOrderByIds="TurnOrderByIds" />
             <button
                 class="bg-accent-3/80 rounded-full text-sm"
