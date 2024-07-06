@@ -58,12 +58,7 @@
                                         class="block py-2 pr-4 pl-3 rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0"
                                         aria-current="page"
                                         >{{
-                                            $t(
-                                                `Menu_${link.name.replaceAll(
-                                                    ' ',
-                                                    '_',
-                                                )}`,
-                                            )
+                                            $t(`Menu_${link.name.replaceAll(' ', '_')}`)
                                         }}</NuxtLink
                                     >
                                 </li>
@@ -101,9 +96,7 @@
                                     >{{ $t('Login') }}</NuxtLink
                                 >
                                 <NuxtLink
-                                    :to="
-                                        localPath('/profile/login?signup=true')
-                                    "
+                                    :to="localPath('/profile/login?signup=true')"
                                     class="hover:bg-content/10 bg-primary-700 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
                                     >{{ $t('Signup') }}</NuxtLink
                                 >
@@ -187,6 +180,8 @@ const { user: storeUser } = storeToRefs(store)
 
 import { loadUser } from '@/services/loadUser'
 
+const router = useRouter()
+
 const { locale, setLocale, locales } = useI18n()
 const localPath = useLocalePath()
 const selectedLocale = computed({
@@ -221,9 +216,7 @@ const { menuData: menu } = useLocalData()
 
 const user = useSupabaseUser()
 const supabase = useSupabaseClient()
-const { data: dbUser } = await useFetch(
-    `/api/user/db-user?email=${user?.value?.email}`,
-)
+const { data: dbUser } = await useFetch(`/api/user/db-user?email=${user?.value?.email}`)
 
 const hideThePopover = () => {
     const popover = document.getElementById('mobile-menu-2')
@@ -243,18 +236,15 @@ const logout = async () => {
     try {
         const { error } = await supabase.auth.signOut()
         if (error) {
-            if (
-                error.message ===
-                'Session from session_id claim in JWT does not exist'
-            ) {
-                console.warn(
-                    'Session does not exist or has already been invalidated.',
-                )
+            if (error.message === 'Session from session_id claim in JWT does not exist') {
+                console.warn('Session does not exist or has already been invalidated.')
             } else {
                 throw error
             }
         }
         storeUser.value = null
+        showUserMenu.value = false
+        router.push({ path: '/' })
     } catch (err) {
         console.error('There was an error during sign out:', err)
     }

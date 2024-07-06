@@ -3,8 +3,7 @@
         <div class="mx-auto max-w-screen-xl text-center">
             <span class="text-sm sm:text-center"
                 >© 2021-{{ new Date().getFullYear() }}
-                <a href="#" class="hover:underline">BNK™</a>. All Rights
-                Reserved.</span
+                <a href="#" class="hover:underline">BNK™</a>. All Rights Reserved.</span
             >
             <!-- <button
                 class="py-1 px-4 mx-4 bg-bkg_dark/20 rounded-full"
@@ -16,12 +15,9 @@
 </template>
 
 <script setup>
-import {
-    sendNotification,
-    checkNotificationPermission,
-} from '@/services/notifications'
+import { sendNotification, checkNotificationPermission } from '@/services/notifications'
 onMounted(() => {
-    checkNotificationPermission()
+    setTimeout(checkNotificationPermission, 5 * 1000)
     document.addEventListener('visibilitychange', setIsHidden)
 })
 
@@ -90,7 +86,6 @@ const getGamesUpdate = () => {
         )
 
     realtimeChannel.subscribe()
-    console.log('realtimeChannel:', realtimeChannel)
 }
 
 watch(() => myGames.value, getGamesUpdate)

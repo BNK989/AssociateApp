@@ -3,69 +3,75 @@
         <h1 class="text-3xl font-bold text-right ltr:text-left">
             {{ $t('Welcome') }}
         </h1>
-        <button
-            v-if="storeUser"
-            @click="createNewGame"
-            class="py-2 px-3 my-4 rounded-full w-full md:w-2/5 bg-accent-3">
-            {{ $t('Start_New_Game_Btn') }}
-        </button>
-        <nuxt-link v-else :to="localPath('/profile/login?signup=true')">
-            <button class="py-2 px-3 my-4 rounded-full w-full md:w-2/5 bg-accent-3">
-                {{ $t('Signup_to_play') }}
-            </button>
-        </nuxt-link>
-        <div v-if="storeUser?.receivedInvites?.length > 0">
-            <PendingInvites />
+        <!-- Logged OUT -->
+        <div v-if="!storeUser">
+            <NuxtLink :to="localPath('/profile/login?signup=true')">
+                <button class="py-2 px-3 my-4 rounded-full w-full md:w-2/5 bg-accent-3">
+                    {{ $t('Signup_to_play') }}
+                </button>
+            </NuxtLink>
         </div>
-        <h2 class="text-2xl my-2">{{ $t('Active_Games') }}</h2>
-        <Transition v-if="activeGames.length > 0 || !isLoading">
-            <ul class="flex gap-4 flex-wrap w-full">
-                <ChatPreview
-                    v-for="game in activeGames"
-                    @contextmenu.prevent="showContextMenu($event, game.id)"
-                    :key="game.id"
-                    :game="game"
-                    :userEmail="storeUser?.email" />
-            </ul>
-        </Transition>
-        <ul v-else class="flex gap-4 flex-wrap w-full my-2">
-            <SkeletonCard v-for="c in 4" />
-        </ul>
-        <!-- END OF ACTIVE GAME -->
-        <div v-if="archivedGames.length > 0">
+        <div v-else>
             <button
-                v-if="!showNonActiveGames"
-                class="py-2 px-6 my-4 rounded-full w-full md:w-fit border border-accent-3 text-content/80"
-                @click.once="showNonActiveGames = 'FINISHED'">
-                Show Non Active Games
+                v-if="storeUser"
+                @click="createNewGame"
+                class="py-2 px-3 my-4 rounded-full w-full md:w-2/5 bg-accent-3">
+                {{ $t('Start_New_Game_Btn') }}
             </button>
 
-            <div
-                v-if="showNonActiveGames"
-                class="my-4 text-sm font-medium text-center text-content/75 border-b border-content/50">
-                <ul class="flex flex-wrap -mb-px border-b-2 border-accent-3/60">
-                    <li v-for="c in nonActiveGamesCategory" :key="c" class="me-2">
-                        <button
-                            @click="showNonActiveGames = c.toUpperCase()"
-                            class="inline-block capitalize p-4 border-accent-3/90 rounded-t-lg"
-                            :class="
-                                showNonActiveGames === c.toUpperCase()
-                                    ? 'border-b-2 bg-bkg_dark'
-                                    : ''
-                            ">
-                            {{ c }}
-                        </button>
-                    </li>
+            <div v-if="storeUser?.receivedInvites?.length > 0">
+                <PendingInvites />
+            </div>
+            <h2 class="text-2xl my-2">{{ $t('Active_Games') }}</h2>
+            <Transition v-if="activeGames.length > 0 || !isLoading">
+                <ul class="flex gap-4 flex-wrap w-full">
+                    <ChatPreview
+                        v-for="game in activeGames"
+                        @contextmenu.prevent="showContextMenu($event, game.id)"
+                        :key="game.id"
+                        :game="game"
+                        :userEmail="storeUser?.email" />
                 </ul>
-                <div v-if="showNonActiveGames">
-                    <ul class="grid gap-4 my-4 grid-cols-2 md:grid-cols-4">
-                        <ChatPreview
-                            v-for="game in nonActiveGames"
-                            @contextmenu.prevent="showContextMenu($event, game.id)"
-                            :key="game.id"
-                            :game="game"
-                            :userEmail="storeUser?.email" />
+            </Transition>
+            <ul v-else class="flex gap-4 flex-wrap w-full my-2">
+                <SkeletonCard v-for="c in 4" />
+            </ul>
+            <!-- END OF ACTIVE GAME -->
+            <div v-if="archivedGames.length > 0">
+                <button
+                    v-if="!showNonActiveGames"
+                    class="py-2 px-6 my-4 rounded-full w-full md:w-fit border border-accent-3 text-content/80"
+                    @click.once="showNonActiveGames = 'FINISHED'">
+                    Show Non Active Games
+                </button>
+
+                <div
+                    v-if="showNonActiveGames"
+                    class="my-4 text-sm font-medium text-center text-content/75 border-b border-content/50">
+                    <ul class="flex flex-wrap -mb-px border-b-2 border-accent-3/60">
+                        <li v-for="c in nonActiveGamesCategory" :key="c" class="me-2">
+                            <button
+                                @click="showNonActiveGames = c.toUpperCase()"
+                                class="inline-block capitalize p-4 border-accent-3/90 rounded-t-lg"
+                                :class="
+                                    showNonActiveGames === c.toUpperCase()
+                                        ? 'border-b-2 bg-bkg_dark'
+                                        : ''
+                                ">
+                                {{ c }}
+                            </button>
+                        </li>
                     </ul>
+                    <div v-if="showNonActiveGames">
+                        <ul class="grid gap-4 my-4 grid-cols-2 md:grid-cols-4">
+                            <ChatPreview
+                                v-for="game in nonActiveGames"
+                                @contextmenu.prevent="showContextMenu($event, game.id)"
+                                :key="game.id"
+                                :game="game"
+                                :userEmail="storeUser?.email" />
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
