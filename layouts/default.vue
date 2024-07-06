@@ -14,4 +14,13 @@
 <script setup lang="ts">
 const { locale } = useI18n()
 const isRtl = computed(() => ['ar', 'he'].includes(locale.value))
+// useHead({
+//     meta: [
+//         {
+//             name: 'viewport',
+//             content:
+//                 'width=device-width, initial-scale=1, interactive-widget=resizes-content',
+//         },
+//     ],
+// })
 </script>

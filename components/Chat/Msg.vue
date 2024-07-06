@@ -14,7 +14,7 @@
                 </p>
                 <!-- IF LAST -->
                 <p v-else>
-                    {{ isMyTurn ? w.content : w.cipher }}
+                    {{ isMyTurn || isSolve ? w.content : w.cipher }}
                 </p>
                 <span
                     v-if="!w.isResolved && !isLast"
@@ -63,6 +63,10 @@ const props = defineProps({
         required: true,
     },
     isMe: {
+        type: Boolean,
+        required: true,
+    },
+    isSolve: {
         type: Boolean,
         required: true,
     },

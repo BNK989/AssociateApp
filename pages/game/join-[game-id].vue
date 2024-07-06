@@ -1,12 +1,12 @@
 <template>
-    <div class="flex-center flex-col gap-4">
-        <h2 class="text-3xl bg-gradient-to-r from-accent-3 to-accent-2">
+    <div class="flex-center flex-col gap-4 mx-2 my-auto">
+        <h2 class="my-4 text-3xl bg-gradient-to-r from-accent-3 to-accent-2 text-transparent bg-clip-text text-center">
             You've been invited to join a game
         </h2>
         <button
-            class="py-3 px-6 bg-accent-3 border border-content shadow-xl shadow-accent-3/15 w-3/5 hover:bg-accent-3/50 duration-300"
+            class="py-3 px-6 text-2xl border-2 border-bkg_dark/30 bg-gradient-to-tr from-accent-2 to-accent-3 font-bold rounded shadow-xl shadow-accent-3/15 w-3/5 hover:bg-accent-3/50 duration-300"
             @click="joinGame">
-            Join Game
+            Join Now
         </button>
     </div>
 </template>

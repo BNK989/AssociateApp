@@ -10,6 +10,7 @@
                 :isMe="w.user?.id === storeUser?.id"
                 :isLast="i === wordsWithUsers.length - 1"
                 :isMyTurn="nextPlayerId === storeUser.id"
+                :isSolve="gameMode === 'SOLVE'"
                 :isArrow="i === nextWordIdx && gameMode === 'SOLVE'" />
 
             <li ref="last" key="last"></li>
