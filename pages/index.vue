@@ -10,8 +10,7 @@
             {{ $t('Start_New_Game_Btn') }}
         </button>
         <nuxt-link v-else :to="localPath('/profile/login?signup=true')">
-            <button
-                class="py-2 px-3 my-4 rounded-full w-full md:w-2/5 bg-accent-3">
+            <button class="py-2 px-3 my-4 rounded-full w-full md:w-2/5 bg-accent-3">
                 {{ $t('Signup_to_play') }}
             </button>
         </nuxt-link>
@@ -19,17 +18,18 @@
             <PendingInvites />
         </div>
         <h2 class="text-2xl my-2">{{ $t('Active_Games') }}</h2>
-
-        <ul v-if="activeGames.length > 0" class="flex gap-4 flex-wrap w-full">
-            <ChatPreview
-                v-for="game in activeGames"
-                @contextmenu.prevent="showContextMenu($event, game.id)"
-                :key="game.id"
-                :game="game"
-                :userEmail="storeUser?.email" />
-        </ul>
+        <Transition v-if="activeGames.length > 0 || !isLoading">
+            <ul class="flex gap-4 flex-wrap w-full">
+                <ChatPreview
+                    v-for="game in activeGames"
+                    @contextmenu.prevent="showContextMenu($event, game.id)"
+                    :key="game.id"
+                    :game="game"
+                    :userEmail="storeUser?.email" />
+            </ul>
+        </Transition>
         <ul v-else class="flex gap-4 flex-wrap w-full my-2">
-                <SkeletonCard v-for="c in 4"/>
+            <SkeletonCard v-for="c in 4" />
         </ul>
         <!-- END OF ACTIVE GAME -->
         <div v-if="archivedGames.length > 0">
@@ -44,10 +44,7 @@
                 v-if="showNonActiveGames"
                 class="my-4 text-sm font-medium text-center text-content/75 border-b border-content/50">
                 <ul class="flex flex-wrap -mb-px border-b-2 border-accent-3/60">
-                    <li
-                        v-for="c in nonActiveGamesCategory"
-                        :key="c"
-                        class="me-2">
+                    <li v-for="c in nonActiveGamesCategory" :key="c" class="me-2">
                         <button
                             @click="showNonActiveGames = c.toUpperCase()"
                             class="inline-block capitalize p-4 border-accent-3/90 rounded-t-lg"
@@ -64,9 +61,7 @@
                     <ul class="grid gap-4 my-4 grid-cols-2 md:grid-cols-4">
                         <ChatPreview
                             v-for="game in nonActiveGames"
-                            @contextmenu.prevent="
-                                showContextMenu($event, game.id)
-                            "
+                            @contextmenu.prevent="showContextMenu($event, game.id)"
                             :key="game.id"
                             :game="game"
                             :userEmail="storeUser?.email" />
@@ -92,6 +87,7 @@
 <script lang="ts" setup>
 import type { SkeletonCard } from '#build/components'
 import PendingInvites from '~/components/Invites/PendingInvites.vue'
+import type { Game } from '~/types/game'
 
 definePageMeta({
     layout: 'scrollable',
@@ -149,7 +145,7 @@ async function handleActionClick(action: string): Promise<void> {
     }
 }
 // **** CONTEXT MENU END ****
-
+const isLoading = ref(true)
 const allGames = ref([])
 const showNonActiveGames = ref('')
 const nonActiveGames = ref([])
@@ -183,11 +179,21 @@ onMounted(async () => {
 watch(() => storeUser.value?.id, getAllGames)
 
 async function getAllGames() {
-    if (!storeUser.value?.id) allGames.value = []
-    else
-        allGames.value = await $fetch(
-            `/api/all-games?user_id=${storeUser.value?.id}`,
-        )
+    if (!storeUser.value?.id) {
+        allGames.value = []
+    } else {
+        isLoading.value = true
+        try {
+            // @ts-ignore
+            allGames.value = (await $fetch(
+                `/api/all-games?user_id=${storeUser.value?.id}`,
+            )) as Game[]
+        } catch (err) {
+            console.error('there fetching allGames', err)
+        } finally {
+            isLoading.value = false
+        }
+    }
 }
 
 const createNewGame = async () => {
@@ -211,3 +217,15 @@ const createNewGame = async () => {
     }
 }
 </script>
+
+<style scoped>
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}
+</style>
