@@ -23,7 +23,7 @@
                 <PendingInvites />
             </div>
             <h2 class="text-2xl my-2">{{ $t('Active_Games') }}</h2>
-            <Transition v-if="activeGames.length > 0 || !isLoading">
+            <Transition v-if="activeGames.length > 0 || pending">
                 <ul class="flex gap-4 flex-wrap w-full">
                     <ChatPreview
                         v-for="game in activeGames"
@@ -37,7 +37,7 @@
                 <SkeletonCard v-for="c in 4" />
             </ul>
             <!-- END OF ACTIVE GAME -->
-            <div v-if="archivedGames.length > 0">
+            <div v-if="isNonActiveGames.length > 0">
                 <button
                     v-if="!showNonActiveGames"
                     class="py-2 px-6 my-4 rounded-full w-full md:w-fit border border-accent-3 text-content/80"
@@ -92,17 +92,81 @@
 
 <script lang="ts" setup>
 import type { SkeletonCard } from '#build/components'
-import PendingInvites from '~/components/Invites/PendingInvites.vue'
 import type { Game } from '~/types/game'
+import PendingInvites from '~/components/Invites/PendingInvites.vue'
 
 definePageMeta({
     layout: 'scrollable',
 })
+
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
 
 const localPath = useLocalePath()
 const router = useRouter()
+
+const {
+    data: allGames,
+    pending,
+    refresh,
+    clear,
+} = useFetch<Game[]>('/api/all-games', {
+    query: {
+        user_id: storeUser.value?.id,
+    },
+    lazy: true,
+    server: false,
+    onResponseError({ response }) {
+        console.error('there fetching allGames', response)
+    },
+})
+
+const showNonActiveGames = ref('')
+const nonActiveGames = ref([])
+const nonActiveGamesCategory = ref(['finished', 'archived', 'deleted'])
+
+const activeGames = computed(
+    () => allGames.value?.filter((g) => g.status === 'ACTIVE') || [],
+)
+const isNonActiveGames = computed(
+    () => allGames.value?.filter((g) => g.status !== 'ACTIVE') || [],
+)
+
+watch(
+    () => showNonActiveGames.value,
+    () => {
+        nonActiveGames.value = allGames.value?.filter(
+            (g) => g.status === showNonActiveGames.value,
+        )
+    },
+)
+watch(
+    () => storeUser.value?.id,
+    () => {
+        storeUser.value ? refresh() : clear()
+    },
+)
+
+const createNewGame = async () => {
+    if (!storeUser.value?.id)
+        return store.setToast({ msg: 'Please login first', type: 'warn' })
+    const title = prompt('Enter game title', 'Untitled Game')
+    if (!title) return
+
+    try {
+        const newGame = await $fetch('/api/create-game', {
+            method: 'POST',
+            body: {
+                title,
+                user_id: storeUser.value?.id,
+            },
+        })
+        if (!newGame) throw new Error('game not created')
+        router.push(`/game/${newGame.id}`)
+    } catch (err) {
+        console.error('there was an error', err)
+    }
+}
 
 // **** CONTEXT MENU ****
 const showMenu = ref(false)
@@ -137,7 +201,7 @@ async function handleActionClick(action: string): Promise<void> {
             },
         })
         if (res?.ok) {
-            getAllGames()
+            refresh()
             store.setToast({
                 msg: `Game has been successfully ${action}.`,
                 type: 'success',
@@ -151,77 +215,6 @@ async function handleActionClick(action: string): Promise<void> {
     }
 }
 // **** CONTEXT MENU END ****
-const isLoading = ref(true)
-const allGames = ref([])
-const showNonActiveGames = ref('')
-const nonActiveGames = ref([])
-const nonActiveGamesCategory = ref(['finished', 'archived', 'deleted'])
-//@ts-ignore
-const activeGames = computed(
-    () => allGames.value?.filter((g) => g.status === 'ACTIVE') || [],
-)
-watch(
-    () => showNonActiveGames.value,
-    () => {
-        nonActiveGames.value = allGames.value?.filter(
-            (g) => g.status === showNonActiveGames.value,
-        )
-    },
-)
-const archivedGames = computed(
-    () => allGames.value?.filter((g) => g.status === 'ARCHIVED') || [],
-)
-const deletedGames = computed(
-    () => allGames.value?.filter((g) => g.status === 'DELETED') || [],
-)
-const finishedGames = computed(
-    () => allGames.value?.filter((g) => g.status === 'FINISHED') || [],
-)
-
-onMounted(async () => {
-    if (!storeUser.value) return
-    getAllGames()
-})
-watch(() => storeUser.value?.id, getAllGames)
-
-async function getAllGames() {
-    if (!storeUser.value?.id) {
-        allGames.value = []
-    } else {
-        isLoading.value = true
-        try {
-            // @ts-ignore
-            allGames.value = (await $fetch(
-                `/api/all-games?user_id=${storeUser.value?.id}`,
-            )) as Game[]
-        } catch (err) {
-            console.error('there fetching allGames', err)
-        } finally {
-            isLoading.value = false
-        }
-    }
-}
-
-const createNewGame = async () => {
-    if (!storeUser.value?.id)
-        return store.setToast({ msg: 'Please login first', type: 'warn' })
-    const title = prompt('Enter game title', 'Untitled Game')
-    if (!title) return
-
-    try {
-        const newGame = await $fetch('/api/create-game', {
-            method: 'POST',
-            body: {
-                title,
-                user_id: storeUser.value?.id,
-            },
-        })
-        if (!newGame) throw new Error('game not created')
-        router.push(`/game/${newGame.id}`)
-    } catch (err) {
-        console.error('there was an error', err)
-    }
-}
 </script>
 
 <style scoped>

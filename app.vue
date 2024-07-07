@@ -1,5 +1,6 @@
 <template>
-    <Toast/>
+    <NuxtLoadingIndicator />
+    <Toast />
     <NuxtLayout>
         <NuxtPage />
     </NuxtLayout>
@@ -26,17 +27,15 @@
 
 // initialize components based on data attribute selectors
 // onMounted(() => {
-    // initAccordions()
-    // initCarousels()
-    // initCollapses()
-    // initDials()
-    // initDismisses()
-    // initDrawers()
-    // initDropdowns()
-    // initModals()
-    // initPopovers()
-    // initTabs()
-    // initTooltips()
-
-
+// initAccordions()
+// initCarousels()
+// initCollapses()
+// initDials()
+// initDismisses()
+// initDrawers()
+// initDropdowns()
+// initModals()
+// initPopovers()
+// initTabs()
+// initTooltips()
 </script>
