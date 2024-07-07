@@ -49,7 +49,7 @@ export const useStore = defineStore('store', {
             this.game = game
         },
         setScore(score: number) {
-            this.game.score += score
+            this.game.score = score
         },
     },
 })

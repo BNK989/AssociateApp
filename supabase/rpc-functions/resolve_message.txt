@@ -1,0 +1,45 @@
+CREATE OR REPLACE FUNCTION resolve_message(world_id INT, guess TEXT)
+RETURNS INT AS $$
+DECLARE
+    message RECORD;
+    total_words INT;
+BEGIN
+    -- Fetch the message based on the world_id
+    SELECT * INTO message
+    FROM "Messages"
+    WHERE id = world_id;
+
+    -- Increment resolveAttempts by 1
+    UPDATE "Messages"
+    SET "resolveAttempts" = COALESCE("resolveAttempts", 0) + 1
+    WHERE id = world_id;
+
+    -- Check if the guess is correct (case-insensitive)
+    IF LOWER(message.content) = LOWER(guess) THEN
+        -- Update isResolved to true
+        UPDATE "Messages"
+        SET "isResolved" = TRUE
+        WHERE id = world_id;
+
+        -- Increment game score by 100 and decrement totalWords by 1
+        UPDATE "Games"
+        SET score = score + 100,
+            "totalWords" = "totalWords" - 1
+        WHERE id = message."gameId";
+
+        -- Fetch the updated totalWords
+        SELECT "totalWords" INTO total_words
+        FROM "Games"
+        WHERE id = message."gameId";
+
+        RETURN total_words;
+    ELSE
+        -- Fetch the current totalWords
+        SELECT "totalWords" INTO total_words
+        FROM "Games"
+        WHERE id = message."gameId";
+
+        RETURN total_words;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;

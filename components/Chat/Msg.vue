@@ -104,6 +104,11 @@ const contextMenuActions = computed(() => {
                 action: 'getHint',
                 icon: '💡',
             },
+            {
+                label: 'Reveal solution (500 point)',
+                action: 'reveal',
+                icon: '🔒',
+            },
         ]
     }
 })
@@ -123,8 +128,10 @@ async function handleActionClick(action: string): Promise<void> {
     let res
     if (action === 'closeContextMenu') {
         closeContextMenu()
-    } else {
+    } else if (action === 'getHint') {
         getHint(targetRow.value)
+    } else if (action === 'reveal') {
+        reveal(targetRow.value)
     }
 }
 // **** CONTEXT MENU END ****
@@ -132,6 +139,12 @@ async function handleActionClick(action: string): Promise<void> {
 const getHint = async (wordId) => {
     const hint = await $fetch(`/api/ai/hint?msg_id=${wordId}`)
     store.setToast({ msg: hint, type: 'info', duration: 10000 })
+}
+
+const reveal = async (wordId) => {
+    const res = await $fetch(`/api/message/reveal?msg_id=${wordId}`, {
+        method: 'PUT',
+    })
 }
 </script>
 

@@ -249,8 +249,7 @@ onMounted(() => {
                         )
                         messages.value[idx].isResolved = true
                         messages.value[idx].content = payloadWord?.content
-                        store.setScore(100)
-                        // checkWin(messages.value)
+                        // store.setScore(100)
                     } else {
                         playSound('wrong')
                     }
@@ -278,6 +277,7 @@ onMounted(() => {
                     getConfetti()
                 }
                 game.value.GameMode = payloadNew.GameMode
+                store.setScore(payloadNew.score)
             },
         )
         .on(

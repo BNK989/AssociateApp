@@ -13,7 +13,11 @@ export default defineEventHandler(async (e) => {
     if (error) {
         return { success: false, error: error.message }
     }
-
+    if (data === 0) {
+        await $fetch(`/api/${res.gameId}/finish-game`, {
+            method: 'PUT',
+        })
+    }
     return { success: true, data }
 })
 
