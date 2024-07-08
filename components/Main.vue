@@ -25,9 +25,6 @@
 <script lang="ts" setup>
 import type { Word } from '@/types/word'
 import type { Game } from '@/types/game'
-import type { MiniUser } from '~/types/user'
-// import { createClient } from '@supabase/supabase-js'
-import VueConfetti from 'vue-confetti'
 
 const route = useRoute()
 const { generateRandomString } = useUtilities()
@@ -44,14 +41,15 @@ const supabase = useSupabaseClient()
 const messages = ref<Word[] | null>([])
 //reactive no ref
 
+const nuxtApp = useNuxtApp()
 const { appContext } = getCurrentInstance()
-appContext.app.use(VueConfetti)
+
 const getConfetti = () => {
     // https://www.npmjs.com/package/vue-confetti
     // @ts-ignore
-    appContext.config.globalProperties.$confetti.start()
+    nuxtApp.$confettiStart(appContext)
     // @ts-ignore
-    setTimeout(() => appContext.config.globalProperties.$confetti.stop(), 9000)
+    setTimeout(() => nuxtApp.$confettiStop(appContext), 9000)
 }
 
 const playSound = async (fileName: string) => {
@@ -198,6 +196,7 @@ async function guessWord(word: string) {
     const body = {
         guess: word,
         wordId: nextWordToGuess.value.id,
+        gameId,
     }
 
     try {
@@ -265,6 +264,7 @@ onMounted(() => {
                 filter: `id=eq.${gameId}`,
             },
             (payload) => {
+                console.log('payload:', payload)
                 const payloadNew = payload?.new as Game
                 if (
                     payloadNew.GameMode === 'SOLVE_PENDING' &&

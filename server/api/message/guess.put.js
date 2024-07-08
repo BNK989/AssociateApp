@@ -6,7 +6,7 @@ const supabaseKey = process.env.SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 export default defineEventHandler(async (e) => {
     const body = await readBody(e)
-    const { wordId: world_id, guess } = body
+    const { wordId: world_id, guess, gameId } = body
 
     const { data, error } = await supabase.rpc('resolve_message', { world_id, guess })
 
@@ -14,7 +14,7 @@ export default defineEventHandler(async (e) => {
         return { success: false, error: error.message }
     }
     if (data === 0) {
-        await $fetch(`/api/${res.gameId}/finish-game`, {
+        await $fetch(`/api/${gameId}/finish-game`, {
             method: 'PUT',
         })
     }
