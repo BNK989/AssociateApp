@@ -35,6 +35,11 @@
             <button class="p-4 bg-accent-2/40" @click="start">Confetti!</button>
             <button class="p-4 border border-accent-2/40" @click="stop">Stop</button>
         </div>
+        <div class="text-5xl flex-center gap-4 my-6">
+            <button @click="() => (num += 100)">+</button>
+            <MiniCounter :n="num" />
+            <button @click="() => (num -= 100)">-</button>
+        </div>
     </div>
 </template>
 
@@ -48,6 +53,7 @@ const selectedLocale = computed({
     get: () => locale.value,
     set: (v) => setLocale(v),
 })
+const num = ref(0)
 
 const nuxtApp = useNuxtApp()
 const { appContext } = getCurrentInstance()
