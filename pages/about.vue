@@ -31,25 +31,31 @@
             </option>
         </select>
         <nuxt-link :to="localPath('/')">Go to homepage</nuxt-link> -->
-        <div class="flex-center gap-4">
+        <!-- <div class="flex-center gap-4">
             <button class="p-4 bg-accent-2/40" @click="start">Confetti!</button>
             <button class="p-4 border border-accent-2/40" @click="stop">Stop</button>
-        </div>
-        <div class="text-5xl flex-center gap-4 my-6">
+        </div> -->
+        <!-- <div class="text-5xl flex-center gap-4 my-6">
             <button @click="() => (num += 100)">+</button>
             <MiniCounter :n="num" />
             <button @click="() => (num -= 100)">-</button>
-        </div>
-        <div class="flex flex-col">
+        </div> -->
+        <!-- <div class="flex flex-col">
             <MiniEncrypter :t="text" />
             <button class="p-4 border border-accent-2/40" @click="() => (text += 'bla')">
                 Bla
             </button>
+        </div> -->
+        <div class="balls flex-center gap-4">
+            <div class="size-8 rounded-full bg-accent-1"></div>
+            <div class="size-8 rounded-full bg-accent-2"></div>
+            <div class="size-8 rounded-full bg-accent-3"></div>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
+import gsap from 'gsap'
 definePageMeta({
     layout: 'scrollable',
 })
@@ -70,4 +76,12 @@ const start = () => {
 const stop = () => {
     nuxtApp.$confettiStop(appContext)
 }
+
+onMounted(() => {
+    gsap.from('.size-8', {
+        scale: 0,
+        duration: 2,
+        stagger: 0.25,
+    })
+})
 </script>

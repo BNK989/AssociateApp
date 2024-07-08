@@ -15,6 +15,7 @@ model Users {
   userName      String
   score         Int       @default(100)
   inActiveGame  Int?  
+  //isTemp        Boolean   @default(false)
   email         String     @unique
   lastLoginAt   DateTime?  @db.Timestamptz(6) @updatedAt
   preferences   Json?      

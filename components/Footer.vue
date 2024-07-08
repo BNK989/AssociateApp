@@ -77,6 +77,7 @@ const getGamesUpdate = () => {
                         `You have been invited to a game reload home page to view`,
                     )
                 }
+                store.incrementTotalInvites()
                 store.setToast({
                     msg: `You have been invited to a game reload home page to view`,
                     type: 'success',

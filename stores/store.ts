@@ -8,6 +8,7 @@ interface State {
     user: User | null
     toast: Toast | null
     game: Game | null
+    totalInvites: number
 }
 
 export const useStore = defineStore('store', {
@@ -16,31 +17,25 @@ export const useStore = defineStore('store', {
         user: null,
         toast: null,
         game: null,
+        totalInvites: 0
     }),
     getters: {
         playersEmails: (state) => state.game?.players.map(p => p.email),
         inviteesEmails: (state) => state.game?.invites.map(i => i.email),
-        // inviteeEmails: (state) => {
-        //     // if(!state.game?.invites || state.game?.invites.length) return [555]
-        //     console.log('state.game.invites:', state.game.invites)
-        //     // return state.game?.invites//.map(inv => inv.email)
-        //     return [555 ,444]
-        // },
         userPref: (state) => state.user?.preferences,
         activeGameScore: (state) => state.game?.score,
 
     },
-    // setters: {
-    //     inviteeEmails: (state, emails: string[]) => {
-    //         state.game?.invitees = emails.map(e => ({ email: e }))
-    //     }
-    // },
+
     actions: {
         increment() {
             this.count++
         },
         setUser(user: User | null) {
             this.user = user
+            if (user) {
+                this.totalInvites = user.receivedInvites.length
+            }
         },
         setToast(toast: Toast) {
             this.toast = toast
@@ -51,5 +46,9 @@ export const useStore = defineStore('store', {
         setScore(score: number) {
             this.game.score = score
         },
+        incrementTotalInvites() {
+            this.totalInvites++
+        },
+       
     },
 })

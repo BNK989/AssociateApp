@@ -24,7 +24,7 @@
             </div>
             <h2 class="text-2xl my-2">{{ $t('Active_Games') }}</h2>
             <Transition v-if="activeGames.length > 0 || pending">
-                <ul class="flex gap-4 flex-wrap w-full">
+                <ul class="ChatPreview flex gap-4 flex-wrap w-full">
                     <ChatPreview
                         v-for="game in activeGames"
                         @contextmenu.prevent="showContextMenu($event, game.id)"
@@ -94,6 +94,7 @@
 import type { SkeletonCard } from '#build/components'
 import type { Game } from '~/types/game'
 import PendingInvites from '~/components/Invites/PendingInvites.vue'
+import gsap from 'gsap'
 
 definePageMeta({
     layout: 'scrollable',
@@ -121,6 +122,15 @@ const {
     onResponseError({ response }) {
         console.error('there fetching allGames', response)
     },
+    onResponse() {
+        nextTick(() => {
+            gsap.from('ul.ChatPreview > li', {
+                scale: 0,
+                duration: 0.6,
+                stagger: 0.15,
+            })
+        })
+    },
 })
 
 const showNonActiveGames = ref('')
@@ -133,6 +143,19 @@ const activeGames = computed(
 const isNonActiveGames = computed(
     () => allGames.value?.filter((g) => g.status !== 'ACTIVE') || [],
 )
+
+// onMounted(() => {
+//     gsap.fromTo(
+//         '.ChatPreview',
+//         {
+//             scale: 0,
+//             duration: 2,
+//         },
+//         {
+//             scale: 1,
+//         },
+//     )
+// })
 
 watch(
     () => showNonActiveGames.value,

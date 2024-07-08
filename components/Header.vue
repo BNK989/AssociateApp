@@ -51,7 +51,7 @@
                         <li>
                             <ul
                                 class="flex flex-col gap-4 md:items-center my-4 md:my-0 font-medium lg:flex-row lg:mt-0 justify-between">
-                                <li v-for="link in menu">
+                                <li v-for="link in menu" class="relative">
                                     <NuxtLink
                                         @click="hideThePopover"
                                         :to="localPath(link.url)"
@@ -61,6 +61,16 @@
                                             $t(`Menu_${link.name.replaceAll(' ', '_')}`)
                                         }}</NuxtLink
                                     >
+                                    <span
+                                        v-if="link.name === 'Invites' && totalInvites > 0"
+                                        class="invite-badge absolute size-5 w-fit px-1 flex-center bg-accent-1/90 shadow-lg shadow-content/25 rounded-full -top-3 left-16 md:left-10 text-sm"
+                                        >{{ totalInvites }}</span
+                                    >
+                                </li>
+                                <li>
+                                    <button @click="store.incrementTotalInvites()">
+                                        TEST
+                                    </button>
                                 </li>
                             </ul>
                         </li>
@@ -103,7 +113,7 @@
                             </div>
                             <div
                                 v-else
-                                class="relative flex-center min-h-14 md:min-h-10 gap-3 px-3 bg-blue-200 bg-opacity-20 my-2 py-2 md:bg-opacity-0 md:my-0">
+                                class="relative flex-center min-h-14 md:min-h-10 gap-3 px-3 bg-blue-200 bg-opacity-20 my-2 py-2 md:py-0 md:bg-opacity-0 md:my-0">
                                 <button @click="showUserMenu = !showUserMenu">
                                     <div
                                         class="border-2 p-[2px] rounded-full border-y-accent-3 border-x-accent-1 rotate-45">
@@ -175,8 +185,9 @@
 
 <script lang="ts" setup>
 import type { User } from '~/types/user'
+import gsap from 'gsap'
 const store = useStore()
-const { user: storeUser } = storeToRefs(store)
+const { user: storeUser, totalInvites } = storeToRefs(store)
 
 import { loadUser } from '@/services/loadUser'
 
@@ -195,6 +206,23 @@ watch(
         const dir = locale.value === 'he' ? 'rtl' : 'ltr'
         document.documentElement.setAttribute('dir', dir)
         setLocale(locale.value)
+    },
+)
+watch(
+    () => totalInvites.value,
+    () => {
+        if (totalInvites.value > 0) {
+            gsap.fromTo(
+                '.invite-badge',
+                { y: 0 },
+                {
+                    y: -10,
+                    duration: 0.3,
+                    yoyo: true,
+                    repeat: 1,
+                },
+            )
+        }
     },
 )
 onMounted(() => {
@@ -272,9 +300,10 @@ watch(
 :has(:popover-open) .burger-menu svg:last-of-type {
     display: block;
 }
-
-[popover] {
-    animation: slide-in 0.6s ease;
+@media (max-width: 1024px) {
+    [popover] {
+        animation: slide-in 0.6s ease;
+    }
 }
 
 .pop-enter-active {
