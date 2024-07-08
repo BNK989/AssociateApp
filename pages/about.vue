@@ -40,6 +40,12 @@
             <MiniCounter :n="num" />
             <button @click="() => (num -= 100)">-</button>
         </div>
+        <div class="flex flex-col">
+            <MiniEncrypter :t="text" />
+            <button class="p-4 border border-accent-2/40" @click="() => (text += 'bla')">
+                Bla
+            </button>
+        </div>
     </div>
 </template>
 
@@ -54,6 +60,7 @@ const selectedLocale = computed({
     set: (v) => setLocale(v),
 })
 const num = ref(0)
+const text = ref('A')
 
 const nuxtApp = useNuxtApp()
 const { appContext } = getCurrentInstance()

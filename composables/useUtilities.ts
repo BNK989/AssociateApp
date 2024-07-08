@@ -21,15 +21,15 @@ export const useUtilities = () => {
 
 
 
-    const generateRandomString = (length: number = 5): string => {
+    const generateRandomString = (length: number = 5, prefix: string = '::', suffix: string = '::'): string => {
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-        let str = '::'
+        let str = prefix
 
         for (let i = 0; i < length; i++) {
             str += chars.charAt(Math.floor(Math.random() * chars.length))
         }
 
-        return str + '::'
+        return str + suffix
     }
 
     function debounce(func, timeout = 300){

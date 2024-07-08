@@ -26,5 +26,5 @@
         "titleBar.inactiveBackground": "#11111199",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
-    "cSpell.words": ["bytescale", "flowbite", "gsap", "tweened"]
+    "cSpell.words": ["bytescale", "Encrypter", "flowbite", "gsap", "tweened"]
 }
