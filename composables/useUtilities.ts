@@ -1,3 +1,4 @@
+import  { nouns, adjectives } from '@/data/name-generator.json'
 export const useUtilities = () => {
     /**
      * Capitalizes the first letter of each word in a string
@@ -41,11 +42,18 @@ export const useUtilities = () => {
         };
       }
 
+      function generateName() {
+
+        return `${capitalize(adjectives[Math.floor(Math.random() * adjectives.length)])} ${capitalize(nouns[Math.floor(Math.random() * nouns.length)])}`
+
+      }
+
 
     return {
         capitalize,
         formatCurrency,
         generateRandomString,
+        generateName,
         debounce,
     }
 }

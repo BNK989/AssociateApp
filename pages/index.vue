@@ -105,6 +105,8 @@ const { user: storeUser } = storeToRefs(store)
 const localPath = useLocalePath()
 const router = useRouter()
 
+const { generateName } = useUtilities()
+
 const {
     data: allGames,
     pending,
@@ -150,7 +152,8 @@ watch(
 const createNewGame = async () => {
     if (!storeUser.value?.id)
         return store.setToast({ msg: 'Please login first', type: 'warn' })
-    const title = prompt('Enter game title', 'Untitled Game')
+    // const title = prompt('Enter game title', generateName())
+    const title = generateName()
     if (!title) return
 
     try {
