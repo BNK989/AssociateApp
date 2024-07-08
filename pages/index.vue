@@ -165,7 +165,7 @@ const createNewGame = async () => {
             },
         })
         if (!newGame) throw new Error('game not created')
-        router.push(`/game/${newGame.id}`)
+        router.push(`/game/${newGame.id}#newGame`)
     } catch (err) {
         console.error('there was an error', err)
     }

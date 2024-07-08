@@ -52,6 +52,12 @@ const emit = defineEmits(['changeGameMode'])
 const store = useStore()
 const { game: storeGame } = storeToRefs(store)
 const modal = ref(null)
+const route = useRoute()
+onMounted(() => {
+    if (route.hash === '#newGame') {
+        showModal()
+    }
+})
 
 const showModal = () => {
     modal.value.showModal()
