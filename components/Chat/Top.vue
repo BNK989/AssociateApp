@@ -1,5 +1,5 @@
 <template>
-    <section class="min-h-14 flex items-center justify-around mt-1">
+    <section class="min-h-14 flex items-center justify-between mt-1 mx-4">
         <div class="flex-center gap-1 min-w-fit">
             <ChatPlayersAvatarts :TurnOrderByIds="TurnOrderByIds" />
             <button
@@ -26,6 +26,27 @@
             <MiniCounter :n="storeGame?.score" />
         </div>
         <button
+            v-if="gameMode === 'INPUT' && wordLength > 5"
+            class="flex-center gap-1 px-1 bg-accent-3/80 rounded-full text-sm md:px-4 hover:bg-accent-3/40 py-2 duration-200"
+            @click="$emit('changeGameMode')">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-4">
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+            </svg>
+
+            {{ $t('Game_Switch_mode') }}
+            {{ gameMode === 'INPUT' ? $t('Guess') : $t('Input') }}
+        </button>
+        <button
+            v-else
             @click="showGameMenu = !showGameMenu"
             class="p-[2px] bg-accent-3/80 rounded-full text-sm md:px-4">
             <svg
@@ -42,6 +63,7 @@
                     d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg>
         </button>
+
         <Transition name="top-pop">
             <div
                 v-if="showGameMenu"
@@ -53,13 +75,6 @@
                         Game Options
                     </h3>
                     <div class="flex-center flex-col gap-1">
-                        <button
-                            v-if="gameMode === 'INPUT' && wordLength > 5"
-                            class="w-full md:px-4 hover:bg-bkg_dark/40 py-2 duration-200"
-                            @click="$emit('changeGameMode')">
-                            {{ $t('Game_Switch_mode') }}
-                            {{ gameMode === 'INPUT' ? $t('Guess') : $t('Input') }}
-                        </button>
                         <button
                             v-if="gameMode === 'SOLVE'"
                             @click="$emit('getHint')"

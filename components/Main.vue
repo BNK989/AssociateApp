@@ -1,8 +1,8 @@
 <template>
     <!-- <pre @click="playSound('nudge')">test</pre> -->
     <div
-        class="backdrop-blur-lg backdrop-saturate-150 md:border rounded md:border-accent-3/25 flex flex-col h-full">
-        <ChatHead
+        class="backdrop-blur-lg backdrop-saturate-150 md:border rounded md:border-accent-3/25 flex flex-col h-dvh">
+        <ChatTop
             :gameMode="gameMode"
             :wordLength="messages?.length || 0"
             :feedback="feedback"
