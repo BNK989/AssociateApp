@@ -64,13 +64,10 @@
                                     <span
                                         v-if="link.name === 'Invites' && totalInvites > 0"
                                         class="invite-badge absolute size-5 w-fit px-1 flex-center bg-accent-1/90 shadow-lg shadow-content/25 rounded-full -top-3 left-16 md:left-10 text-sm"
-                                        >{{ totalInvites }}</span
+                                        >{{
+                                            totalInvites > 9 ? '9+' : totalInvites
+                                        }}</span
                                     >
-                                </li>
-                                <li>
-                                    <button @click="store.incrementTotalInvites()">
-                                        TEST
-                                    </button>
                                 </li>
                             </ul>
                         </li>
