@@ -19,6 +19,7 @@ watch(
             duration: 1,
             number: Number(n) || 0,
         })
+        if (n === 0) return
         gsap.fromTo(
             '.ttt',
             {

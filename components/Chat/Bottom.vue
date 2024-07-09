@@ -1,13 +1,13 @@
 <template>
     <section
-        class="border-accent-3/40 min-h-8 shadow-2xl shadow-white sm:shadow-none mb-2">
+        class="border-accent-3/40 min-h-8 shadow-2xl shadow-content/20 sm:shadow-none">
         <form @submit.prevent="onHandleSubmit">
             <div class="relative">
                 <input
                     type="text"
                     ref="inputField"
                     :class="true ? '' : ''"
-                    class="block w-full p-4 ps-4 text-sm bg-bkg md:border border-accent-3/40 rounded-lg focus:ring-accent-3/10 focus:border-accent-3/10 focus:outline-none"
+                    class="block w-full p-4 ps-4 text-sm bg-bkg md:border border-accent-3/40 rounded-t-lg focus:ring-accent-3/10 focus:border-accent-3/10 focus:outline-none"
                     :placeholder="placeholder"
                     v-model="word" />
                 <button

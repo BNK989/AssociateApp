@@ -1,6 +1,22 @@
 <template>
-    <section class="min-h-14 flex items-center justify-between mt-1 mx-4">
+    <section class="min-h-14 flex items-center justify-between mt-1 mx-2 md:mx-4">
         <div class="flex-center gap-1 min-w-fit">
+            <button class="w-min sm:hidden">
+                <NuxtLink :to="localPath('/')">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="size-6">
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    </svg>
+                </NuxtLink>
+            </button>
             <ChatPlayersAvatarts :TurnOrderByIds="TurnOrderByIds" />
             <button
                 class="bg-accent-3/80 rounded-full text-sm"
@@ -41,9 +57,7 @@
                     stroke-linejoin="round"
                     d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
             </svg>
-
-            {{ $t('Game_Switch_mode') }}
-            {{ gameMode === 'INPUT' ? $t('Guess') : $t('Input') }}
+            {{ $t('Game_Switch_Guess') }}
         </button>
         <button
             v-else
@@ -132,11 +146,16 @@ const props = defineProps({
     TurnOrderByIds: Array,
 })
 const emit = defineEmits(['changeGameMode', 'getHint', 'revealWord'])
+
+const route = useRoute()
+const localPath = useLocalePath()
+
 const store = useStore()
 const { game: storeGame } = storeToRefs(store)
+
 const modal = ref(null)
 const showGameMenu = ref(false)
-const route = useRoute()
+
 onMounted(() => {
     if (route.hash === '#newGame') {
         showModal()

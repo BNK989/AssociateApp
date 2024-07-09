@@ -7,6 +7,9 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+    layout: 'chat',
+})
 const store = useStore()
 const { user } = storeToRefs(store)
 const localPath = useLocalePath()
