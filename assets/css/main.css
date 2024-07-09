@@ -19,6 +19,8 @@
         --color-accent1: 288deg 100% 39%;
         --color-accent2: 168deg 100% 24%;
         --color-accent3: 224deg 71% 68%;
+        --color-warn: 43.26deg 96% 33%;
+        --color-error: 349deg 98% 37%;
     }
     @media (prefers-color-scheme: dark) {
         :root {
@@ -28,6 +30,8 @@
             --color-accent1: 288deg 96% 60%;
             --color-accent2: 168deg 84% 48%;
             --color-accent3: 224deg 76% 48%;
+            --color-warn: 43.26deg 96.4% 56.3%;
+            --color-error: 349deg 98% 37%;
         }
     }
     :root[data-theme='dark'] {
@@ -37,6 +41,8 @@
         --color-accent1: 288deg 96% 60%;
         --color-accent2: 168deg 84% 48%;
         --color-accent3: 224deg 76% 48%;
+        --color-warn: 43.26deg 96.4% 56.3%;
+        --color-error: 349deg 98% 37%;
     }
     :root[data-theme='light'] {
         --color-bkg: 200deg 2% 81%;
@@ -45,5 +51,7 @@
         --color-accent1: 288deg 100% 39%;
         --color-accent2: 168deg 100% 24%;
         --color-accent3: 224deg 71% 68%;
+        --color-warn: 43.26deg 96% 33%;
+        --color-error: 349deg 98% 37%;
     }
 }

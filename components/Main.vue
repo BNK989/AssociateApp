@@ -7,7 +7,9 @@
             :wordLength="messages?.length || 0"
             :feedback="feedback"
             :TurnOrderByIds="TurnOrderByIds"
-            @changeGameMode="changeGameMode" />
+            @changeGameMode="changeGameMode"
+            @get-hint="getHint"
+            @reveal-word="revealWord" />
         <ChatBody
             :words="messages"
             :users="users"
@@ -171,6 +173,24 @@ let realtimeChannel
 const handleSubmit = (word: string) => {
     if (gameMode.value === 'INPUT') addWord(word)
     else guessWord(word)
+}
+
+const getHint = async () => {
+    console.log('hint re:')
+    // const hint = await $fetch(`/api/ai/hint?msg_id=${nextWordToGuess.value.id}`)
+    // store.setToast({ msg: hint, type: 'info', duration: 10000 })
+}
+
+const revealWord = async () => {
+    console.log('reveal re:')
+    // const res = await $fetch(`/api/message/reveal?msg_id=${nextWordToGuess.value.id}`, {
+    //     method: 'PUT',
+    // })
+    // if (!res) {
+    //     store.setToast({ msg: 'could not reveal word', type: 'error' })
+    // } else {
+    //     store.setToast({ msg: 'word revealed', type: 'success', duration: 1500 })
+    // }
 }
 
 async function addWord(word: string) {

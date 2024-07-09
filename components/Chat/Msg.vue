@@ -5,8 +5,8 @@
             :src="w.user?.avatar"
             class="size-8 rounded-full me-1"
             alt="Rounded avatar" />
+        <!-- @contextmenu.prevent="showContextMenu($event, w.id)" -->
         <div
-            @contextmenu.prevent="showContextMenu($event, w.id)"
             class="px-3 pt-1 pb-2 bg-blue-300 bg-opacity-10 w-min whitespace-nowrap select-none">
             <div class="flex items-center gap-2">
                 <MiniEncrypter :t="stringToShow" />
@@ -16,14 +16,14 @@
         <div v-if="isArrow" id="lastGuess">
             <SvgArrowRight class="rotate-180 animate-pulse" />
         </div>
-        <Transition>
+        <!-- <Transition>
             <MiniContextMenu
                 v-if="showMenu"
                 :actions="contextMenuActions"
                 @action-clicked="handleActionClick"
                 :x="menuX"
                 :y="menuY" />
-        </Transition>
+        </Transition> -->
     </li>
 </template>
 
@@ -72,64 +72,64 @@ const stringToShow = computed(() => {
 const store = useStore()
 
 // **** CONTEXT MENU ****
-const showMenu = ref(false)
-const menuX = ref(0)
-const menuY = ref(0)
-const targetRow = ref({})
-const contextMenuActions = computed(() => {
-    if (props.w.isResolved) {
-        return [{ label: 'Delete', action: 'delete' }]
-    } else {
-        return [
-            // { label: 'Delete', action: 'delete' },
+// const showMenu = ref(false)
+// const menuX = ref(0)
+// const menuY = ref(0)
+// const targetRow = ref({})
+// const contextMenuActions = computed(() => {
+//     if (props.w.isResolved) {
+//         return [{ label: 'Delete', action: 'delete' }]
+//     } else {
+//         return [
+//             // { label: 'Delete', action: 'delete' },
 
-            {
-                label: 'Request a hint',
-                action: 'getHint',
-                icon: '💡',
-            },
-            {
-                label: 'Reveal solution (500 point)',
-                action: 'reveal',
-                icon: '🔒',
-            },
-        ]
-    }
-})
+//             {
+//                 label: 'Request a hint',
+//                 action: 'getHint',
+//                 icon: '💡',
+//             },
+//             {
+//                 label: 'Reveal solution (500 point)',
+//                 action: 'reveal',
+//                 icon: '🔒',
+//             },
+//         ]
+//     }
+// })
 
-const showContextMenu = (event, item) => {
-    if (props.w.isResolved) return
-    showMenu.value = true
-    targetRow.value = item
-    menuX.value = event.layerX
-    menuY.value = event.layerY
-}
-const closeContextMenu = () => {
-    showMenu.value = false
-}
+// const showContextMenu = (event, item) => {
+//     if (props.w.isResolved) return
+//     showMenu.value = true
+//     targetRow.value = item
+//     menuX.value = event.layerX
+//     menuY.value = event.layerY
+// }
+// const closeContextMenu = () => {
+//     showMenu.value = false
+// }
 
-async function handleActionClick(action: string): Promise<void> {
-    let res
-    if (action === 'closeContextMenu') {
-        closeContextMenu()
-    } else if (action === 'getHint') {
-        getHint(targetRow.value)
-    } else if (action === 'reveal') {
-        reveal(targetRow.value)
-    }
-}
+// async function handleActionClick(action: string): Promise<void> {
+//     let res
+//     if (action === 'closeContextMenu') {
+//         closeContextMenu()
+//     } else if (action === 'getHint') {
+//         getHint(targetRow.value)
+//     } else if (action === 'reveal') {
+//         reveal(targetRow.value)
+//     }
+// }
 // **** CONTEXT MENU END ****
 
-const getHint = async (wordId) => {
-    const hint = await $fetch(`/api/ai/hint?msg_id=${wordId}`)
-    store.setToast({ msg: hint, type: 'info', duration: 10000 })
-}
+// const getHint = async (wordId) => {
+//     const hint = await $fetch(`/api/ai/hint?msg_id=${wordId}`)
+//     store.setToast({ msg: hint, type: 'info', duration: 10000 })
+// }
 
-const reveal = async (wordId) => {
-    const res = await $fetch(`/api/message/reveal?msg_id=${wordId}`, {
-        method: 'PUT',
-    })
-}
+// const reveal = async (wordId) => {
+//     const res = await $fetch(`/api/message/reveal?msg_id=${wordId}`, {
+//         method: 'PUT',
+//     })
+// }
 </script>
 
 <style>

@@ -12,6 +12,8 @@ export default {
                 bkg: 'hsl(var(--color-bkg) / <alpha-value>)',
                 bkg_dark: 'hsl(var(--color-bkg-dark) / <alpha-value>)',
                 content: 'hsl(var(--color-content) / <alpha-value>)',
+                warn: 'hsl(var(--color-warn) / <alpha-value>)',
+                error: 'hsl(var(--color-error) / <alpha-value>)',
             },
             animation: {
                 'pulse-slow': 'pulse 11s linear infinite',
