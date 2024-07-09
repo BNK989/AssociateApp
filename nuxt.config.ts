@@ -11,6 +11,10 @@ export default defineNuxtConfig({
                     name: 'Give it a shot play now!',
                     content: 'My awesome app',
                 },
+                {
+                    name: 'interactive-widget',
+                    content: 'resizes-content',
+                },
             ],
         },
     },
