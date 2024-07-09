@@ -1,6 +1,6 @@
 <template>
     <section
-        class="relative border-y border-accent-3/40 h-full overflow-y-scroll overflow-x-hidden before:size-48 before:fixed before:inset-16 before:bg-accent-3 before:z-[-1] before:rounded-full before:blur-3xl before:animate-pulse-slow after:size-24 after:fixed after:bottom-16 after:right-8 md:after:right-48 after:bg-accent-1 after:z-[-1] after:rounded-full after:blur-3xl after:animate-pulse-slow-offset">
+        class="body-section relative border-y border-accent-3/40 h-full overflow-y-scroll overflow-x-hidden before:size-48 before:fixed before:inset-16 before:bg-accent-3 before:z-[-1] before:rounded-full before:blur-3xl after:size-24 after:fixed after:bottom-16 after:right-8 md:after:right-48 after:bg-accent-1 after:z-[-1] after:rounded-full after:blur-3xl">
         <TransitionGroup name="list" tag="ul" class="flex flex-col gap-3 my-2">
             <ChatMsg
                 v-for="(w, i) in wordsWithUsers"
@@ -71,3 +71,30 @@ watch(
     async () => await transFocus(),
 )
 </script>
+
+<style scoped>
+.body-section::before {
+    animation: dance 45s infinite ease-in-out;
+}
+.body-section::after {
+    animation: dance 18s infinite reverse ease-in-out;
+}
+
+@keyframes dance {
+    20% {
+        transform: translateY(150%) translateX(180%);
+        opacity: 0.75;
+    }
+    40% {
+        transform: scale(2) translateY(150%) translateX(180%);
+        opacity: 0.5;
+    }
+    60% {
+        transform: translateY(140%) translateX(180%);
+        opacity: 0.75;
+    }
+    80% {
+        transform: scale(2.5) translateY(150%) translateX(-180%);
+    }
+}
+</style>
