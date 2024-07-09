@@ -17,9 +17,9 @@
         <h2 class="text-3xl font-bold mt-4">Credits</h2>
         <h5 class="mt-1">Contributors</h5>
         <ul class="list-disc pl-4">
-            <li class="text-base">Tom</li>
-            <li class="text-base">Maya</li>
-            <li class="text-base">Asaf</li>
+            <li class="text-base odd:text-accent-1 even:text-accent-2">Tom</li>
+            <li class="text-base odd:text-accent-1 even:text-accent-2">Maya</li>
+            <li class="text-base odd:text-accent-1 even:text-accent-2">Asaf</li>
         </ul>
         <!-- <pre>{{ locale }}</pre>
         <pre>{{ locales[0] }}</pre>
@@ -46,11 +46,11 @@
                 Bla
             </button>
         </div> -->
-        <div class="balls flex-center gap-4">
+        <!-- <div class="balls flex-center gap-4">
             <div class="size-8 rounded-full bg-accent-1"></div>
             <div class="size-8 rounded-full bg-accent-2"></div>
             <div class="size-8 rounded-full bg-accent-3"></div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -78,7 +78,7 @@ const stop = () => {
 }
 
 onMounted(() => {
-    gsap.from('.size-8', {
+    gsap.from('.list-disc > li', {
         scale: 0,
         duration: 2,
         stagger: 0.25,

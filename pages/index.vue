@@ -113,7 +113,7 @@ const {
     pending,
     refresh,
     clear,
-} = useFetch<Game[]>('/api/all-games', {
+} = await useFetch<Game[]>('/api/all-games', {
     query: {
         user_id: storeUser.value?.id,
     },
