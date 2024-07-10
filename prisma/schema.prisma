@@ -108,3 +108,9 @@ enum InviteStatus {
 
 // pnpx prisma migrate dev --name [migrationName]
 // pnpx prisma generate
+// pnpx prisma studio 
+
+// map a field: nextTurn String? @map("next_turn") 
+// -> in the db it would be next_turn, in the code it would be nextTurn
+
+// researcg seeding for dummy data
