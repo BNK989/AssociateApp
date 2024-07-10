@@ -27,7 +27,9 @@
                 <ul class="ChatPreview flex gap-4 flex-wrap w-full">
                     <ChatPreview
                         v-for="game in activeGames"
-                        @contextmenu.prevent="showContextMenu($event, game.id)"
+                        @contextmenu.prevent="
+                            showContextMenu($event, game.id, game.status)
+                        "
                         :key="game.id"
                         :game="game"
                         :userEmail="storeUser?.email" />
@@ -66,7 +68,9 @@
                         <ul class="grid gap-4 my-4 grid-cols-2 md:grid-cols-4">
                             <ChatPreview
                                 v-for="game in nonActiveGames"
-                                @contextmenu.prevent="showContextMenu($event, game.id)"
+                                @contextmenu.prevent="
+                                    showContextMenu($event, game.id, game.status)
+                                "
                                 :key="game.id"
                                 :game="game"
                                 :userEmail="storeUser?.email" />
@@ -199,14 +203,28 @@ const showMenu = ref(false)
 const menuX = ref(0)
 const menuY = ref(0)
 const targetRow = ref({})
-const contextMenuActions = ref([
-    { label: 'Archive', action: 'archive' },
-    { label: 'Delete', action: 'delete' },
-])
+const gameState = ref('')
+const contextMenuActions = computed(() => {
+    // ACTIVE  ARCHIVED  DELETED  FINISHED
+    const menuOptions = [
+        { label: 'Archive', action: 'archive' },
+        { label: 'Delete', action: 'delete' },
+    ]
+    if (gameState.value === 'ACTIVE') {
+        return menuOptions
+    } else if (gameState.value === 'ARCHIVED') {
+        return [{ label: 'Delete', action: 'delete' }]
+    } else if (gameState.value === 'DELETED') {
+        return [{ label: 'Delete Forever', action: 'deleteForever' }]
+    }
 
-const showContextMenu = (event, item) => {
+    return menuOptions
+})
+
+const showContextMenu = (event, item, currState) => {
     showMenu.value = true
     targetRow.value = item
+    gameState.value = currState
     menuX.value = event.clientX
     menuY.value = event.clientY
 }
@@ -218,7 +236,7 @@ async function handleActionClick(action: string): Promise<void> {
     let res
     if (action === 'closeContextMenu') {
         closeContextMenu()
-    } else {
+    } else if (action === 'delete' || action === 'archive') {
         res = await $fetch(`/api/${targetRow.value}/toggle-status`, {
             method: 'PUT',
             body: {
@@ -235,6 +253,22 @@ async function handleActionClick(action: string): Promise<void> {
         } else {
             store.setToast({
                 msg: `Failed to ${action} game.`,
+                type: 'error',
+            })
+        }
+    } else if (action === 'deleteForever') {
+        res = await $fetch(`/api/${targetRow.value}/delete-game`, {
+            method: 'DELETE',
+        })
+        if (res.succuss) {
+            refresh()
+            store.setToast({
+                msg: `Game has been successfully deleted.`,
+                type: 'success',
+            })
+        } else {
+            store.setToast({
+                msg: `Failed to delete game.`,
                 type: 'error',
             })
         }

@@ -4,10 +4,10 @@ import { getSupabaseSessionToken } from '@/utils/auth';
 
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-    console.log('from:', from.path)
-    console.log('to:', to.path)
     if(!process.client) return
-    console.log('Session Token:', getSupabaseSessionToken())
+    // console.log('from:', from.path)
+    // console.log('to:', to.path)
+    // console.log('Session Token:', getSupabaseSessionToken())
     // if (!to.path.includes('profile')) return
     // const user = useSupabaseUser()
     // if (!user.value) return navigateTo('/login')
