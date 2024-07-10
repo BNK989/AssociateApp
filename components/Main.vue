@@ -7,6 +7,8 @@
             :wordLength="messages?.length || 0"
             :feedback="feedback"
             :TurnOrderByIds="TurnOrderByIds"
+            :relax-check-enabled="relaxCheckEnabled"
+            @toggleRelaxCheck="toggleRelaxCheck"
             @changeGameMode="changeGameMode"
             @get-hint="getHint"
             @reveal-word="revealWord" />
@@ -39,6 +41,9 @@ const store = useStore()
 const { user: storeUser, game: storeGame } = storeToRefs(store)
 const user = useSupabaseUser()
 const supabase = useSupabaseClient()
+const relaxCheckEnabled = ref(false)
+
+provide('relaxCheckEnabled', relaxCheckEnabled)
 
 const messages = ref<Word[] | null>([])
 //reactive no ref
@@ -52,6 +57,10 @@ const getConfetti = () => {
     nuxtApp.$confettiStart(appContext)
     // @ts-ignore
     setTimeout(() => nuxtApp.$confettiStop(appContext), 9000)
+}
+
+const toggleRelaxCheck = () => {
+    relaxCheckEnabled.value = !relaxCheckEnabled.value
 }
 
 const playSound = async (fileName: string) => {
@@ -167,7 +176,6 @@ const changeGameMode = async () => {
     })
 }
 
-//TODO: add cipher animation https://vuejs.org/guide/extras/animation.html#animation-techniques
 let realtimeChannel
 
 const handleSubmit = (word: string) => {
@@ -218,19 +226,30 @@ async function guessWord(word: string) {
         wordId: nextWordToGuess.value.id,
         gameId,
     }
+    let apiRoute = '/api/message/guess'
+
+    if (relaxCheckEnabled.value) {
+        apiRoute = '/api/message/relax-guess'
+        relaxCheckEnabled.value = false
+    }
 
     try {
-        const res = await $fetch(`/api/message/guess`, {
+        const res = await $fetch(apiRoute, {
             method: 'PUT',
             body,
         })
         if (!res) throw new Error('could not guess word')
-
-        if (res.success) {
+        //@ts-ignore
+        if (res?.success) {
             feedback.value = 'Correct'
         } else {
             feedback.value = 'Guess Again'
-            store.setToast({ msg: 'Guess Again', type: 'oops', duration: 2000 })
+            store.setToast({
+                // @ts-ignore
+                msg: 'Guess Again ' + res?.error ? res.error : '',
+                type: 'oops',
+                duration: 2000,
+            })
         }
     } catch (err) {
         console.warn('No match found', err)
@@ -284,7 +303,6 @@ onMounted(() => {
                 filter: `id=eq.${gameId}`,
             },
             (payload) => {
-                console.log('payload:', payload)
                 const payloadNew = payload?.new as Game
                 if (
                     payloadNew.GameMode === 'SOLVE_PENDING' &&

@@ -16,6 +16,7 @@
 
 <script setup>
 import { sendNotification, checkNotificationPermission } from '@/services/notifications'
+const route = useRoute()
 onMounted(() => {
     setTimeout(checkNotificationPermission, 5 * 1000)
     document.addEventListener('visibilitychange', setIsHidden)
@@ -23,10 +24,42 @@ onMounted(() => {
 
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
-const myGames = computed(() => storeUser.value?.games?.join(',') || [])
-const isHidden = ref(false)
 
 const supabase = useSupabaseClient()
+
+const isHidden = ref(false)
+// const myGames = computed(() => {
+//     console.log('storeUser.value?.games:', storeUser.value?.games)
+//     const allGames = storeUser.value?.games?.filter((g) => g !== +activeGame.value)
+//     console.log('allGames:', allGames)
+//     return allGames.join(',') || []
+// })
+const myGames = ref('')
+const currGame = ref(null)
+
+watch(
+    () => route.path,
+    () => {
+        const regex = /game\/(.*)/
+        const match = route.path.match(regex)
+        let activeGame
+        let allGames
+        if (!match) {
+            activeGame = null
+        } else {
+            activeGame = +match[1]
+            currGame.value = activeGame
+        }
+
+        if (activeGame) {
+            allGames = storeUser.value?.games?.filter((g) => g !== +activeGame.value)
+        } else {
+            allGames = storeUser.value?.games
+        }
+        myGames.value = allGames.join(',')
+        getGamesUpdate()
+    },
+)
 
 const setIsHidden = () => {
     if (document.visibilityState !== 'visible') {
@@ -38,6 +71,7 @@ const setIsHidden = () => {
 
 let realtimeChannel
 const getGamesUpdate = () => {
+    if (realtimeChannel) supabase.removeChannel(realtimeChannel)
     // if (myGames.value.length < 1) return
     realtimeChannel = supabase
         .channel('public:Games')
@@ -52,11 +86,12 @@ const getGamesUpdate = () => {
             (payload) => {
                 if (isHidden.value) {
                     sendNotification(`Game ${payload.new.title} updated`)
+                } else if (payload.new.id != currGame.value) {
+                    store.setToast({
+                        msg: `Game ${payload.new.title} updated`,
+                        type: 'info',
+                    })
                 }
-                store.setToast({
-                    msg: `Game ${payload.new.title} updated`,
-                    type: 'info',
-                })
             },
         )
         .on(
@@ -68,7 +103,6 @@ const getGamesUpdate = () => {
                 filter: `inviteeId=eq.${storeUser.value.id}`,
             },
             (payload) => {
-                console.log('payload:', payload)
                 const { id: InviteId, gameId, inviterId } = payload.new.id
                 //TODO GET GAME TITLE
                 // `${inviterName} has invited you to a game`
@@ -88,8 +122,6 @@ const getGamesUpdate = () => {
 
     realtimeChannel.subscribe()
 }
-
-watch(() => myGames.value, getGamesUpdate)
 
 onUnmounted(() => {
     document.removeEventListener('visibilitychange', setIsHidden)

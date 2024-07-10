@@ -3,7 +3,7 @@ import { levTest } from '@/services/levenshtein'
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (e) => {
-    const { wordId, guess } = await readBody(e)
+    const { wordId, guess, gameId } = await readBody(e)
     let res
 
     try {
@@ -34,7 +34,8 @@ export default defineEventHandler(async (e) => {
         return correctGuess(wordId)
     } else {
         // GUESS IS NOT SUCCESSFUL
-        throw new Error(`Unable to relax-guess word: ${guess}`)
+        // throw new Error(`Unable to relax-guess word: ${guess}`)
+        return { success: false, error: 'word too far from original' }
     }
 })
 
@@ -74,12 +75,12 @@ async function correctGuess(id) {
 
         // If the update operation does not throw, it means the record was found and updated
         return {
-            totalWords: res.Game.totalWords,
-            message: 'Word guessed successfully',
+            success: true,
+            data: res.Game.totalWords,
         }
     } catch (err) {
         // If the update operation throws an error, catch it and handle it here
         console.error('There was an error', err)
-        throw new Error(`Unable to guess word: ${body.guess}`)
+        return { success: false, error: err.message }
     }
 }

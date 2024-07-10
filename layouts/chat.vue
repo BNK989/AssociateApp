@@ -25,6 +25,7 @@ const isRtl = computed(() => ['ar', 'he'].includes(locale.value))
 // })
 
 const isMobile = computed(() => {
+    if (!process.client) return false
     const width =
         window.innerWidth ||
         document.documentElement.clientWidth ||

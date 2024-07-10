@@ -88,9 +88,14 @@
                     <h3 class="tracking-wider text-2xl border-b border-accent-3 mb-4">
                         Game Options
                     </h3>
-                    <div class="flex-center flex-col gap-1">
+                    <div v-if="gameMode === 'SOLVE'" class="flex-center flex-col gap-1">
                         <button
-                            v-if="gameMode === 'SOLVE'"
+                            @click="$emit('toggleRelaxCheck')"
+                            class="flex-center gap-1 text-accent-2 hover:bg-bkg_dark/40 w-full py-2 duration-200">
+                            {{ relaxCheckEnabled ? 'Disable' : 'Enable' }} Relax Check
+                            (allow spelling errors)
+                        </button>
+                        <button
                             @click="$emit('getHint')"
                             class="flex-center gap-1 text-accent-2 hover:bg-bkg_dark/40 w-full py-2 duration-200">
                             <svg
@@ -108,7 +113,6 @@
                             Get Hint
                         </button>
                         <button
-                            v-if="gameMode === 'SOLVE'"
                             @click="$emit('revealWord')"
                             class="flex-center gap-1 text-warn hover:bg-bkg_dark/40 w-full py-2 duration-200">
                             <svg
@@ -144,8 +148,9 @@ const props = defineProps({
     wordLength: Number,
     feedback: String,
     TurnOrderByIds: Array,
+    relaxCheckEnabled: Boolean,
 })
-const emit = defineEmits(['changeGameMode', 'getHint', 'revealWord'])
+const emit = defineEmits(['changeGameMode', 'getHint', 'revealWord', 'toggleRelaxCheck'])
 
 const route = useRoute()
 const localPath = useLocalePath()

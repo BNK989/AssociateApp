@@ -36,6 +36,7 @@ const { user } = storeToRefs(store)
 const word = ref('')
 const inputField = ref(null)
 const emit = defineEmits(['handleSubmit'])
+const relaxCheckEnabled = inject<Ref<boolean>>('relaxCheckEnabled')
 
 const isMyTurn = computed(() => {
     return user.value?.id === props.nextPlayerId
@@ -53,7 +54,11 @@ const placeholder = computed(() => {
     }
 })
 const btnTxt = computed(() =>
-    props.gameMode === 'INPUT' ? t('Game_Send_Btn') : t('Game_Guess_Btn'),
+    props.gameMode === 'INPUT'
+        ? t('Game_Send_Btn')
+        : !relaxCheckEnabled.value
+        ? t('Game_Guess_Btn')
+        : t('Game_Relax_Btn'),
 )
 
 const onHandleSubmit = () => {

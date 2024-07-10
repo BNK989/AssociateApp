@@ -17,6 +17,7 @@
     "Game_Add_player": "Agregar jugador",
     "Game_Words_Count": "Palabras",
     "You": "Tú",
+    "Game_Relax_Btn": "Relax Guess",
     "Game_Text_Placeholder_guess": "Adivina la palabra anterior",
     "Game_Text_Placeholder_input": "Escribe la siguiente palabra",
     "Game_Send_Btn": "Enviar",

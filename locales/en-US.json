@@ -23,6 +23,7 @@
     "Game_Text_Placeholder_input": "Type the next word...",
     "Game_Send_Btn": "Send",
     "Game_Guess_Btn": "Guess",
+    "Game_Relax_Btn": "Relax Guess",
     "Welcome": "Welcome",
     "Start_New_Game_Btn": "Start a New Game",
     "Placeholder_Not_your_turnA": "It's",
