@@ -1,10 +1,26 @@
 import type { User } from "~/types/user"
 
+import imageCompression from 'browser-image-compression'
+
+//Shrinks before upload
+export const imageCompressionFunc = async (imageFile) => {
+    const options = {
+        maxSizeMB: 0.5,          // (number) max size in MB
+        maxWidthOrHeight: 1000 // (number) max width or height
+      }
+
+    const compressedFile = await imageCompression(imageFile, options)
+    return compressedFile
+}
+
+
+
+
 export async function updateImage(fileLink: string ) {
     const store = useStore()
     const { user } = storeToRefs(store)
 
-    console.log('updating userAvatar for user:', user.value.id, 'to:', fileLink)
+    // console.log('updating userAvatar for user:', user.value.id, 'to:', fileLink)
     try{
         const res = await $fetch('http://localhost:3000/api/user/preferences/update-avatar', {
             method: 'PUT',

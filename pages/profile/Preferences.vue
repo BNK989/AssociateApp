@@ -28,10 +28,7 @@
             <div class="flex justify-between items-center">
                 <span class="font-medium">Play in game audio</span>
                 <label class="inline-flex items-center cursor-pointer">
-                    <input
-                        type="checkbox"
-                        v-model="pref.soundOn"
-                        class="sr-only peer" />
+                    <input type="checkbox" v-model="pref.soundOn" class="sr-only peer" />
                     <div
                         class="relative w-11 h-6 bg-bkg_dark/80 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent-3/50 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-content after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-content after:border-bkg_dark/50 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent-3/50"></div>
                 </label>
@@ -62,12 +59,10 @@
                     :src="newAvatar.preview || user.avatar"
                     alt=""
                     class="size-10 rounded-full" />
-                <ImageUpload />
+                <MiniUploadImage />
             </div>
 
-            <button
-                class="col-span-full border border-content py-2"
-                type="submit">
+            <button class="col-span-full border border-content py-2" type="submit">
                 Save
             </button>
         </form>
@@ -80,6 +75,7 @@ definePageMeta({
 })
 
 import { updateImage } from '@/services/updateImage'
+
 import type { User } from '~/types/user'
 
 const supabase = useSupabaseClient()
@@ -109,9 +105,7 @@ const handleSubmit = async () => {
     })
     if (updateUser) {
         //@ts-ignore
-        const dbUser: User = await $fetch(
-            `/api/user/db-user?email=${user.value.email}`,
-        )
+        const dbUser: User = await $fetch(`/api/user/db-user?email=${user.value.email}`)
         store.setUser(dbUser)
         store.setToast({
             msg: 'Profile updated',
