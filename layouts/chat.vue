@@ -5,6 +5,7 @@
         <Header v-show="!isMobile" />
         <div
             class="flex flex-col h-full overflow-y-hidden overflow-x-hidden mx-auto md:mt-4 md:space-y-4 md:px-4 xs:px-8 sm:px-10 lg:px-16 md:py-4 md:w-4/5 w-full">
+            <pre class="fixed inset-0 z-50">tempDvh: {{ tempDvh }}</pre>
             <slot />
         </div>
         <Footer class="hidden md:static" />
@@ -32,10 +33,13 @@ const isMobile = computed(() => {
         document.body.clientWidth
     return width < 768
 })
+
+const tempDvh = ref(0)
 // only run on client and on mobile
 function updateDynamicViewportHeight() {
     const dvh = window.visualViewport.height
     document.documentElement.style.setProperty('--chat-dvh', `${dvh}px`)
+    tempDvh.value = document.documentElement.style.getPropertyValue('--chat-dvh')
     console.log('dvh:', document.documentElement.style.getPropertyValue('--chat-dvh'))
 }
 
