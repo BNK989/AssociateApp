@@ -1,5 +1,5 @@
 <template>
-    <section class="border-accent-3/40 h-8 shadow-2xl shadow-content/20 sm:shadow-none">
+    <section class="border-accent-3/40 shadow-2xl shadow-content/20 sm:shadow-none">
         <form @submit.prevent="onHandleSubmit">
             <div class="relative">
                 <input

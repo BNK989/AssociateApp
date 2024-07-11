@@ -1,7 +1,7 @@
 <template>
     <!-- <pre @click="playSound('nudge')">test</pre> -->
     <div
-        class="main flex-1 min-h-chat_dvh backdrop-blur-lg backdrop-saturate-150 md:border rounded md:border-accent-3/25 flex flex-col">
+        class="main flex-1 h-dvh backdrop-blur-lg backdrop-saturate-150 md:border rounded md:border-accent-3/25 flex flex-col">
         <ChatTop
             :gameMode="gameMode"
             :wordLength="messages?.length || 0"
@@ -109,7 +109,6 @@ const nudge = (isOn: boolean) => {
         store.setToast({
             msg: 'Your turn',
             type: 'info',
-            duration: 99999,
         })
         nudgeInterval.value = setInterval(() => {
             playSound('nudge')

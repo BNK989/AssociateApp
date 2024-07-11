@@ -1,6 +1,6 @@
 <template>
     <main
-        class="text-content flex flex-col h-chat_dvh bg-bkg px-0 md:px-0"
+        class="text-content flex flex-col h-dvh bg-bkg px-0 md:px-0"
         :dir="isRtl ? 'rtl' : 'ltr'">
         <Header v-show="!isMobile" />
         <div
