@@ -50,8 +50,8 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    if(process.client){
+    if (process.client) {
         window.removeEventListener('resize', updateDynamicViewportHeight)
     }
-}),
+})
 </script>
