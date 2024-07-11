@@ -42,7 +42,8 @@
             <MiniCounter :n="storeGame?.score" />
         </div>
         <button
-            v-if="gameMode === 'INPUT' && wordLength > 5"
+            v-if="gameMode === 'INPUT'"
+            :disabled="wordLength > 5"
             class="flex-center gap-1 px-1 bg-accent-3/80 rounded-full text-sm md:px-4 hover:bg-accent-3/40 py-2 duration-200"
             @click="$emit('changeGameMode')">
             <svg

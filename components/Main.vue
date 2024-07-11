@@ -109,6 +109,7 @@ const nudge = (isOn: boolean) => {
         store.setToast({
             msg: 'Your turn',
             type: 'info',
+            duration: 1000,
         })
         nudgeInterval.value = setInterval(() => {
             playSound('nudge')
