@@ -41,7 +41,7 @@ function updateDynamicViewportHeight() {
 
 onMounted(() => {
     // const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-    if (isMobile.value) {
+    if (isMobile.value && process.client) {
         window.visualViewport.addEventListener('resize', () => {
             updateDynamicViewportHeight()
             console.log('visualViewport:', visualViewport.height)
@@ -50,6 +50,8 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    window.removeEventListener('resize', updateDynamicViewportHeight)
+    if(process.client){
+        window.removeEventListener('resize', updateDynamicViewportHeight)
+    }
 }),
 </script>
