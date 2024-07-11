@@ -60,6 +60,7 @@
 definePageMeta({
     layout: 'scrollable',
 })
+const store = useStore()
 
 // const { Email } = useEmailer()
 // dotenv.config()
@@ -71,17 +72,26 @@ const senderEmail = ref('')
 const message = ref('')
 const subject = ref('')
 
-function sendEmail() {
-    console.log('sending email:')
-    alert('email server in development')
-    // Email.send({
-    //     Host: 'smtp.gmail.com',
-    //     Username: 'bnk989@gmail.com',
-    //     Password: apiKey,
-    //     To: 'bnk989@gmail.com',
-    //     From: senderEmail.value || 'no-email@nothing.com',
-    //     Subject: subject.value || 'no-subject',
-    //     Body: message.value || 'no-message',
-    // }).then((message) => alert(message))
+async function sendEmail() {
+    if (senderEmail.value && message.value && subject.value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(senderEmail.value)) {
+            alert('Please enter a valid email address')
+            return
+        }
+        const res = await $fetch('/api/automation/contact', {
+            method: 'POST',
+            body: {
+                senderEmail: senderEmail.value,
+                message: message.value,
+                subject: subject.value,
+            },
+        })
+        if (res) {
+            store.setToast({ msg: 'Email sent', type: 'success' })
+        } else {
+            store.setToast({ msg: 'Something went wrong', type: 'error' })
+        }
+    }
 }
 </script>
