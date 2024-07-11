@@ -3,6 +3,9 @@ export default {
     content: [],
     theme: {
         extend: {
+            height: {
+                chat_dvh: 'var(--chat-dvh)',
+            },
             colors: {
                 accent: {
                     1: 'hsl(var(--color-accent1) / <alpha-value>)',

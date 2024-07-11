@@ -13,6 +13,7 @@
 
 @layer base {
     :root {
+        --chat-dvh: 100dvh;
         --color-bkg: 200deg 2% 81%;
         --color-bkg-dark: 200deg 2% 65%;
         --color-content: 217deg 32% 17%;

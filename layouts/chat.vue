@@ -1,6 +1,6 @@
 <template>
     <main
-        class="text-content flex flex-col h-dvh bg-bkg px-0 md:px-0"
+        class="text-content flex flex-col min-h-dvh h-chat_dvh bg-bkg px-0 md:px-0"
         :dir="isRtl ? 'rtl' : 'ltr'">
         <Header v-show="!isMobile" />
         <div
@@ -32,4 +32,24 @@ const isMobile = computed(() => {
         document.body.clientWidth
     return width < 768
 })
+// only run on client and on mobile
+function updateDynamicViewportHeight() {
+    const dvh = window.visualViewport.height
+    document.documentElement.style.setProperty('--chat-dvh', `${dvh}px`)
+    console.log('dvh:', document.documentElement.style.getPropertyValue('--chat-dvh'))
+}
+
+onMounted(() => {
+    // const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    if (isMobile.value) {
+        window.visualViewport.addEventListener('resize', () => {
+            updateDynamicViewportHeight()
+            console.log('visualViewport:', visualViewport.height)
+        })
+    }
+})
+
+onUnmounted(() => {
+    window.removeEventListener('resize', updateDynamicViewportHeight)
+}),
 </script>
