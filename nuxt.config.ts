@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
     routeRules: {
         '/': { ssr: true },
-        '/game/**': { ssr: false },
+        // '/game/**': { ssr: false },
       },
     css: ['~/assets/css/main.css'],
     app: {
