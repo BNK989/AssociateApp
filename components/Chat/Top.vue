@@ -1,5 +1,5 @@
 <template>
-    <section class="min-h-14 flex items-center justify-between mt-1 mx-2 md:mx-4">
+    <section class="h-14 flex items-center justify-between mt-1 mx-2 md:mx-4">
         <div class="flex-center gap-1 min-w-fit">
             <button class="w-min sm:hidden">
                 <NuxtLink :to="localPath('/')">

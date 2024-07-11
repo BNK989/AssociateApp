@@ -1,6 +1,5 @@
 <template>
-    <section
-        class="border-accent-3/40 min-h-8 shadow-2xl shadow-content/20 sm:shadow-none">
+    <section class="border-accent-3/40 h-8 shadow-2xl shadow-content/20 sm:shadow-none">
         <form @submit.prevent="onHandleSubmit">
             <div class="relative">
                 <input
@@ -41,6 +40,11 @@ const relaxCheckEnabled = inject<Ref<boolean>>('relaxCheckEnabled')
 const isMyTurn = computed(() => {
     return user.value?.id === props.nextPlayerId
 })
+
+// const onFocus = () => {
+//     if (window.innerWidth > 640) return
+
+// }
 
 const placeholder = computed(() => {
     if (!isMyTurn.value && props.gameMode !== 'SOLVE') {
