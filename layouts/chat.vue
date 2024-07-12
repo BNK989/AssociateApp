@@ -1,14 +1,16 @@
 <template>
     <main
-        class="text-content flex flex-col h-chat_dvh bg-bkg px-0 md:px-0 overflow-x-hidden"
+        class="text-content flex flex-col h-dvh bg-bkg px-0 md:px-0 overflow-x-hidden"
         :dir="isRtl ? 'rtl' : 'ltr'">
-        <Header v-show="!isMobile" />
-        <div
-            class="flex flex-col h-full overflow-y-hidden overflow-x-hidden mx-auto md:mt-4 md:space-y-4 md:px-4 xs:px-8 sm:px-10 lg:px-16 md:py-4 md:w-4/5 w-full">
-            <pre class="fixed inset-0 z-50 h-min w-min">tempDvh: {{ tempDvh }}</pre>
-            <slot />
+        <div class="h-chat_dvh flex flex-col">
+            <Header v-show="!isMobile" />
+            <div
+                class="flex flex-col h-full overflow-y-hidden overflow-x-hidden mx-auto md:mt-4 md:space-y-4 md:px-4 xs:px-8 sm:px-10 lg:px-16 md:py-4 md:w-4/5 w-full">
+                <pre class="fixed inset-0 z-50 h-min w-min">tempDvh: {{ tempDvh }}</pre>
+                <slot />
+            </div>
+            <Footer class="hidden md:static" />
         </div>
-        <Footer class="hidden md:static" />
     </main>
 </template>
 
