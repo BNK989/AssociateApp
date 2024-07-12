@@ -61,14 +61,14 @@ const transFocus = async () => {
 }
 
 // **** watchers ****** //
-// watch(
-//     () => props.scrollTo,
-//     () => scrollToId(props.scrollTo),
-// )
-// watch(
-//     () => props.words.length,
-//     async () => await transFocus(),
-// )
+watch(
+    () => props.scrollTo,
+    () => scrollToId(props.scrollTo),
+)
+watch(
+    () => props.words.length,
+    async () => await transFocus(),
+)
 </script>
 
 <style scoped>
