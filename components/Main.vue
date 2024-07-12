@@ -1,7 +1,7 @@
 <template>
     <!-- <pre @click="playSound('nudge')">test</pre> -->
     <div
-        class="main flex-1 backdrop-blur-lg backdrop-saturate-150 md:border rounded md:border-accent-3/25 flex flex-col">
+        class="main overflow-y-scroll backdrop-blur-lg backdrop-saturate-150 md:border rounded md:border-accent-3/25 flex flex-col">
         <ChatTop
             :gameMode="gameMode"
             :wordLength="messages?.length || 0"
