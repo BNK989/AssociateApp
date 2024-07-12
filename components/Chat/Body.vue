@@ -12,7 +12,6 @@
                 :isMyTurn="nextPlayerId === storeUser.id"
                 :isSolve="gameMode === 'SOLVE'"
                 :isArrow="i === nextWordIdx && gameMode === 'SOLVE'" />
-
             <li ref="last" key="last"></li>
         </TransitionGroup>
     </section>
