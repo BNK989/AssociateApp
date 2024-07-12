@@ -1,6 +1,6 @@
 <template>
     <main
-        class="text-content flex flex-col h-dvh bg-bkg px-0 md:px-0 overflow-x-hidden"
+        class="text-content flex flex-col h-chat_dvh bg-bkg px-0 md:px-0 overflow-x-hidden"
         :dir="isRtl ? 'rtl' : 'ltr'">
         <Header v-show="!isMobile" />
         <div
@@ -39,6 +39,7 @@ const tempDvh = ref(0)
 function updateDynamicViewportHeight() {
     const dvh = window.visualViewport.height
     document.documentElement.style.setProperty('--chat-dvh', `${dvh}px`)
+    //@ts-ignore
     tempDvh.value = document.documentElement.style.getPropertyValue('--chat-dvh')
     console.log('dvh:', document.documentElement.style.getPropertyValue('--chat-dvh'))
 }
