@@ -31,14 +31,14 @@ const isMobile = computed(() => {
     return width < 768
 })
 
-const tempDvh = ref(0)
+// const tempDvh = ref(0)
 // only run on client and on mobile
 function updateDynamicViewportHeight() {
     const dvh = window.visualViewport.height
     document.documentElement.style.setProperty('--chat-dvh', `${dvh}px`)
     //@ts-ignore
-    tempDvh.value = document.documentElement.style.getPropertyValue('--chat-dvh')
-    console.log('dvh:', document.documentElement.style.getPropertyValue('--chat-dvh'))
+    // tempDvh.value = document.documentElement.style.getPropertyValue('--chat-dvh')
+    // console.log('dvh:', document.documentElement.style.getPropertyValue('--chat-dvh'))
 }
 
 onMounted(() => {
