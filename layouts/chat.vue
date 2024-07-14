@@ -46,7 +46,6 @@ onMounted(() => {
     if (isMobile.value && process.client) {
         window.visualViewport.addEventListener('resize', () => {
             updateDynamicViewportHeight()
-            console.log('visualViewport:', visualViewport.height)
         })
     }
 })

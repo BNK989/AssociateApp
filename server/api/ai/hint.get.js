@@ -33,9 +33,9 @@ async function run(word) {
     const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
     let prompt
     if (isHeb(word)) {
-        prompt = `I am playing a memory game, give me a short hint to the word '${word}' and make sure not to use it in your replay`
-    } else {
         prompt = `אני משחק משחק זיכרון, תן לי רמז קצר למילה '${word}' ושים לב לא להשתמש במילה בתשובתך`
+    } else {
+        prompt = `I am playing a memory game, give me a short hint to the word '${word}' and make sure not to use it in your replay`
     }
 
     const result = await model.generateContent(prompt)
