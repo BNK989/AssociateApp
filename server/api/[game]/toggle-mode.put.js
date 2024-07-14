@@ -9,6 +9,11 @@ export default defineEventHandler(async (e) => {
     } = await readBody(e)
     const game_id = +e.context.params.game
 
+    // console.log('gameMode:', gameMode)
+    // console.log('senderId:', senderId)
+    // console.log('resetConfirmChange:', resetConfirmChange)
+    // console.log('game_id:', game_id)
+
     const data = { GameMode: gameMode }
     if (resetConfirmChange) data.confirmChange = []
     if (!resetConfirmChange && senderId) data.confirmChange = { push: senderId }

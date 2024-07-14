@@ -51,18 +51,52 @@ const { randomWord } = useUtilities()
 const word = ref('')
 const inputField = ref(null)
 
-const showStarted = ref(props.wordLength > 0)
-onMounted(() => {
-    let timeout
-    if (!props.wordLength) {
-        if (timeout) clearTimeout(timeout)
-        timeout = setTimeout(() => {
-            showStarted.value = true
-        }, 5000)
-    } else {
-        showStarted.value = false
-    }
-})
+const timeout = ref(null)
+const showStarted = ref(false)
+
+watch(
+    () => props.wordLength,
+    (newVal) => {
+        if (timeout.value) clearTimeout(timeout.value)
+
+        if (newVal === 0) {
+            showStarted.value = false
+            timeout.value = setTimeout(() => {
+                showStarted.value = true
+            }, 5000)
+        } else {
+            showStarted.value = false
+        }
+    },
+    { immediate: true },
+)
+
+// onMounted(() => {
+//     let timeout
+//     if (props.wordLength === 0) {
+//         console.log('showStarted:', props.wordLength)
+//         if (timeout) clearTimeout(timeout)
+//         timeout = setTimeout(() => {
+//             showStarted.value = true
+//         }, 5000)
+//     } else {
+//         if (timeout) clearTimeout(timeout)
+//         showStarted.value = false
+//     }
+// })
+// const showStarted = computed(() => {
+//     let timeout
+//     if (props.wordLength === 0) {
+//         console.log('showStarted:', props.wordLength)
+//         if (timeout) clearTimeout(timeout)
+//         timeout = setTimeout(() => {
+//             return true
+//         }, 5000)
+//     } else {
+//         if (timeout) clearTimeout(timeout)
+//         return false
+//     }
+// })
 
 const isMyTurn = computed(() => {
     return user.value?.id === props.nextPlayerId

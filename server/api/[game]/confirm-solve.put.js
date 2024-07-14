@@ -5,6 +5,10 @@ export default defineEventHandler(async (e) => {
     const { senderId } = await readBody(e)
     const game_id = +e.context.params.game
 
+    // console.log('confirm solve')
+    // console.log('senderId:', senderId)
+    // console.log('game_id:', game_id)
+
     let res
 
     try {

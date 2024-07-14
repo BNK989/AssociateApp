@@ -58,7 +58,7 @@ const scrollToId = async (wordId) => {
 
 const transFocus = async () => {
     await nextTick()
-    last.value?.scrollIntoView({ behavior: 'smooth' })
+    last.value?.scrollIntoView({ behavior: 'smooth', block: 'end' })
 }
 
 // **** watchers ****** //
