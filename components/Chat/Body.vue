@@ -32,6 +32,7 @@ const props = defineProps({
 
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
+
 const last = ref(null)
 const nextWordIdx = computed(() => props.words!.length - props.guessedCount! - 2)
 //@ts-ignore

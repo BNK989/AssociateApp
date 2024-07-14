@@ -43,9 +43,11 @@ export const useUtilities = () => {
       }
 
       function generateName() {
-
         return `${capitalize(adjectives[Math.floor(Math.random() * adjectives.length)])} ${capitalize(nouns[Math.floor(Math.random() * nouns.length)])}`
+      }
 
+      function randomWord() {
+        return nouns[Math.floor(Math.random() * nouns.length)]
       }
 
 
@@ -55,5 +57,6 @@ export const useUtilities = () => {
         generateRandomString,
         generateName,
         debounce,
+        randomWord
     }
 }

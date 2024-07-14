@@ -1,5 +1,13 @@
 <template>
     <section class="border-accent-3/40 shadow-2xl shadow-content/20 sm:shadow-none">
+        <div
+            v-if="showStarted"
+            class="fixed inset-16 flex-center flex-col gap-3 h-min p-4 border border-accent-2/20 bg-accent-2/10 rounded">
+            <h2>Stuck?</h2>
+            <button class="py-2 px-4 bg-accent-2/60 rounded" @click="getRandomStartWord">
+                Start with a random word
+            </button>
+        </div>
         <form @submit.prevent="onHandleSubmit">
             <div class="relative">
                 <input
@@ -25,26 +33,47 @@
 </template>
 
 <script lang="ts" setup>
-const { t, locale } = useI18n()
 const props = defineProps({
     gameMode: String,
     nextPlayerId: String,
+    wordLength: Number,
 })
-const store = useStore()
-const { user } = storeToRefs(store)
-const word = ref('')
-const inputField = ref(null)
 const emit = defineEmits(['handleSubmit'])
 const relaxCheckEnabled = inject<Ref<boolean>>('relaxCheckEnabled')
+
+const { t, locale } = useI18n()
+
+const store = useStore()
+const { user } = storeToRefs(store)
+
+const { randomWord } = useUtilities()
+
+const word = ref('')
+const inputField = ref(null)
+
+const showStarted = ref(props.wordLength > 0)
+onMounted(() => {
+    let timeout
+    if (!props.wordLength) {
+        if (timeout) clearTimeout(timeout)
+        timeout = setTimeout(() => {
+            showStarted.value = true
+        }, 5000)
+    } else {
+        showStarted.value = false
+    }
+})
 
 const isMyTurn = computed(() => {
     return user.value?.id === props.nextPlayerId
 })
 
-// const onFocus = () => {
-//     if (window.innerWidth > 640) return
-
-// }
+const getRandomStartWord = () => {
+    const word = randomWord()
+    emit('handleSubmit', word)
+    store.setToast({ msg: `you sent the word: ${word}`, type: 'success', duration: 5000 })
+    showStarted.value = false
+}
 
 const placeholder = computed(() => {
     if (!isMyTurn.value && props.gameMode !== 'SOLVE') {
@@ -81,6 +110,7 @@ const onHandleSubmit = () => {
             duration: 2000,
         })
     }
+    if (showStarted.value) showStarted.value = false
     emit('handleSubmit', word.value)
     word.value = ''
     nextTick(() => {

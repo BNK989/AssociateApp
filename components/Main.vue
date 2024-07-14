@@ -22,6 +22,7 @@
         <ChatBottom
             :gameMode="gameMode"
             :nextPlayerId="nextTurnId"
+            :wordLength="messages?.length || 0"
             @handleSubmit="handleSubmit" />
     </div>
 </template>
