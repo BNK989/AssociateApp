@@ -126,15 +126,15 @@ const {
     onResponseError({ response }) {
         console.error('there fetching allGames', response)
     },
-    onResponse() {
-        nextTick(() => {
-            gsap.from('ul.ChatPreview > li', {
-                scale: 0,
-                duration: 0.6,
-                stagger: 0.15,
-            })
-        })
-    },
+    // onResponse() {
+    //     nextTick(() => {
+    //         gsap.from('ul.ChatPreview > li', {
+    //             scale: 0,
+    //             duration: 0.6,
+    //             stagger: 0.15,
+    //         })
+    //     })
+    // },
 })
 
 const showNonActiveGames = ref('')
@@ -147,19 +147,6 @@ const activeGames = computed(
 const isNonActiveGames = computed(
     () => allGames.value?.filter((g) => g.status !== 'ACTIVE') || [],
 )
-
-// onMounted(() => {
-//     gsap.fromTo(
-//         '.ChatPreview',
-//         {
-//             scale: 0,
-//             duration: 2,
-//         },
-//         {
-//             scale: 1,
-//         },
-//     )
-// })
 
 watch(
     () => showNonActiveGames.value,
@@ -286,5 +273,16 @@ async function handleActionClick(action: string): Promise<void> {
 .v-enter-from,
 .v-leave-to {
     opacity: 0;
+}
+
+ul.ChatPreview > li {
+    opacity: 1;
+    transition: all 1s ease;
+
+    @starting-style {
+        scale: 0;
+        opacity: 0;
+        transform-origin: 'left';
+    }
 }
 </style>
