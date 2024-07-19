@@ -126,15 +126,6 @@ const {
     onResponseError({ response }) {
         console.error('there fetching allGames', response)
     },
-    // onResponse() {
-    //     nextTick(() => {
-    //         gsap.from('ul.ChatPreview > li', {
-    //             scale: 0,
-    //             duration: 0.6,
-    //             stagger: 0.15,
-    //         })
-    //     })
-    // },
 })
 
 const showNonActiveGames = ref('')
