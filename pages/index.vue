@@ -1,8 +1,8 @@
 <template>
     <div class="p-2 md:p-4">
-        <h1 class="text-right text-3xl font-bold ltr:text-left">
+        <!-- <h1 class="text-right text-3xl font-bold ltr:text-left">
             {{ $t('Welcome') }}
-        </h1>
+        </h1> -->
         <!-- Logged OUT -->
         <div v-if="!storeUser">
             <NuxtLink :to="localPath('/profile/login?signup=true')">
@@ -29,7 +29,7 @@
             </div>
             <h2 class="my-2 text-2xl">{{ $t('Active_Games') }}</h2>
             <Transition v-if="activeGames.length > 0 || pending">
-                <ul class="ChatPreview flex w-full flex-wrap gap-4">
+                <ul class="ChatPreview flex gap-4 overflow-x-auto rounded md:gap-8">
                     <ChatPreview
                         v-for="game in activeGames"
                         @contextmenu.prevent="showContextMenu($event, game.id, game.status)"
