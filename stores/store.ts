@@ -34,7 +34,7 @@ export const useStore = defineStore('store', {
         setUser(user: User | null) {
             this.user = user
             if (user) {
-                this.totalInvites = user.receivedInvites.length
+                this.totalInvites = user?.receivedInvites?.length
             }
         },
         setToast(toast: Toast) {

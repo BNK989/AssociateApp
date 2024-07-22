@@ -4,15 +4,17 @@
             {{ $t('Welcome') }}
         </h1> -->
         <!-- Logged OUT -->
-        <div v-if="!storeUser">
+        <div
+            v-if="!storeUser"
+            class="flex flex-wrap items-center justify-center gap-2 md:justify-start">
             <NuxtLink :to="localPath('/profile/login?signup=true')">
-                <button class="my-4 w-full rounded-full bg-accent-3 px-3 py-2 md:w-2/5">
+                <button class="my-2 text-nowrap rounded-full bg-accent-3 px-12 py-2">
                     {{ $t('Signup_to_play') }}
                 </button>
             </NuxtLink>
             <button
                 @click="createNewTempGame"
-                class="my-4 w-full rounded-full border-2 border-accent-3 px-3 py-2 md:w-2/5">
+                class="my-2 text-nowrap rounded-full border-2 border-accent-3 px-12 py-2">
                 Start a test game
             </button>
         </div>

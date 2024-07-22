@@ -56,7 +56,7 @@ watch(
         } else {
             allGames = storeUser.value?.games
         }
-        myGames.value = allGames.join(',')
+        myGames.value = allGames?.join(',') ?? []
         getGamesUpdate()
     },
 )
@@ -100,7 +100,7 @@ const getGamesUpdate = () => {
                 event: 'INSERT',
                 schema: 'public',
                 table: 'Invites',
-                filter: `inviteeId=eq.${storeUser.value.id}`,
+                filter: `inviteeId=eq.${storeUser.value?.id}`,
             },
             (payload) => {
                 const { id: InviteId, gameId, inviterId } = payload.new.id
