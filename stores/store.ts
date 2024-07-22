@@ -17,14 +17,13 @@ export const useStore = defineStore('store', {
         user: null,
         toast: null,
         game: null,
-        totalInvites: 0
+        totalInvites: 0,
     }),
     getters: {
-        playersEmails: (state) => state.game?.players.map(p => p.email),
-        inviteesEmails: (state) => state.game?.invites.map(i => i.email),
+        playersEmails: (state) => state.game?.players.map((p) => p.email),
+        inviteesEmails: (state) => state.game?.invites.map((i) => i.email),
         userPref: (state) => state.user?.preferences,
         activeGameScore: (state) => state.game?.score,
-
     },
 
     actions: {
@@ -49,6 +48,5 @@ export const useStore = defineStore('store', {
         incrementTotalInvites() {
             this.totalInvites++
         },
-       
     },
 })

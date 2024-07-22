@@ -1,10 +1,10 @@
 <template>
     <button
-        class="py-3 px-6 border rounded-md shadow-xl shadow-accent-3/15"
+        class="rounded-md border px-6 py-3 shadow-xl shadow-accent-3/15"
         :class="
             title === 'Share Game'
-                ? 'bg-accent-3/80 border-accent-3'
-                : 'bg-accent-2/40 border-accent-2'
+                ? 'border-accent-3 bg-accent-3/80'
+                : 'border-accent-2 bg-accent-2/40'
         "
         @click="share">
         {{ title || 'Share Game' }}
@@ -26,8 +26,7 @@ const props = defineProps({
 const store = useStore()
 
 const link = computed(() => {
-    const origin =
-        window.location.origin || 'https://associate-app-5sli.vercel.app'
+    const origin = window.location.origin || 'https://associate-app-5sli.vercel.app'
     if (props.gameId) {
         return `${origin}/game/join-${props.gameId}`
     } else {

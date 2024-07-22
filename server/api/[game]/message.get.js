@@ -8,7 +8,6 @@ export default defineEventHandler(async (e) => {
     let res
 
     try {
-
         res = await prisma.game.findUnique({
             where: {
                 id: gameId,
@@ -19,12 +18,9 @@ export default defineEventHandler(async (e) => {
         })
 
         if (!res) throw new Error(`game id: ${gameId} not found`)
-
-
     } catch (err) {
         console.error('there was an error', err)
     }
 
     return res.messages
-
 })

@@ -21,11 +21,9 @@ const upsertAndLoadUser = async (email, name, avatar) => {
 onMounted(async () => {
     try {
         // Wait for the Supabase session to be established
-        const { data: userData, error: userError } =
-            await supabase.auth.getUser()
+        const { data: userData, error: userError } = await supabase.auth.getUser()
 
-        if (userError)
-            throw new Error(`Error fetching user data: ${userError.message}`)
+        if (userError) throw new Error(`Error fetching user data: ${userError.message}`)
         if (!userData || !userData.user)
             throw new Error('No user data found after login.')
 

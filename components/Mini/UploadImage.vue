@@ -7,11 +7,11 @@
     <div
         v-if="isModalOpen"
         @click="isModalOpen = false"
-        class="fixed flex-center inset-0 w-full h-full bg-bkg_dark/30">
-        <div class="relative w-2/4 h-2/3 bg-bkg rounded-lg">
+        class="flex-center fixed inset-0 h-full w-full bg-bkg_dark/30">
+        <div class="relative h-2/3 w-2/4 rounded-lg bg-bkg">
             <label
                 @click="triggerFileInput"
-                class="absolute w-[90%] h-[90%] inset-0 m-auto flex-center rounded-lg border-2 border-dashed border-bkg_dark/30 cursor-pointer">
+                class="flex-center absolute inset-0 m-auto h-[90%] w-[90%] cursor-pointer rounded-lg border-2 border-dashed border-bkg_dark/30">
                 upload
                 <span class="sr-only">upload avatar</span>
                 <input

@@ -1,7 +1,7 @@
 <template>
     <NuxtImg
         v-if="user?.avatar"
-        :class="`w-10 h-10 rounded-full ${errLoadingImg ? 'hidden' : ''} ${
+        :class="`h-10 w-10 rounded-full ${errLoadingImg ? 'hidden' : ''} ${
             props.class ? props.class : ''
         }`"
         :src="user?.avatar"
@@ -9,12 +9,7 @@
         @error="handleErr" />
     <span v-if="errLoadingImg" class="rounded-full text-bkg_dark/30">
         <svg height="40" width="40" xmlns="http://www.w3.org/2000/svg">
-            <circle
-                cx="20"
-                cy="20"
-                r="18"
-                fill="currentColor"
-                stroke="currentColor" />
+            <circle cx="20" cy="20" r="18" fill="currentColor" stroke="currentColor" />
             <text
                 x="20"
                 y="20"

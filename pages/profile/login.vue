@@ -1,31 +1,29 @@
 <template>
     <section>
-        <div
-            class="flex flex-col items-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-            <div class="flex w-full justify-center items-center mb-2">
+        <div class="mx-auto flex flex-col items-center px-6 py-8 md:h-screen lg:py-0">
+            <div class="mb-2 flex w-full items-center justify-center">
                 <img
-                    class="size-12 mr-2"
+                    class="mr-2 size-12"
                     src="../../assets/img/Associate-logo.png"
                     alt="logo" />
                 <h4
-                    class="flex items-center text-4xl font-semibold bg-gradient-to-l from-accent-1/80 to-accent-2/80 bg-clip-text text-transparent">
+                    class="flex items-center bg-gradient-to-l from-accent-1/80 to-accent-2/80 bg-clip-text text-4xl font-semibold text-transparent">
                     Associate
                 </h4>
             </div>
             <div
-                class="w-full rounded-lg shadow-xl shadow-accent-2/10 md:mt-0 sm:max-w-md xl:p-0 border border-accent-2/60">
-                <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                class="w-full rounded-lg border border-accent-2/60 shadow-xl shadow-accent-2/10 sm:max-w-md md:mt-0 xl:p-0">
+                <div class="space-y-4 p-6 sm:p-8 md:space-y-6">
                     <h1
                         class="text-xl font-bold leading-tight tracking-tight md:text-2xl">
                         Sign in to your account
                     </h1>
-                    <div
-                        class="my-4 flex items-center gap-2 whitespace-nowrap flex-wrap">
+                    <div class="my-4 flex flex-wrap items-center gap-2 whitespace-nowrap">
                         <button
                             @click="googleLogin"
-                            class="border border-gray-600 rounded px-4 py-2 flex justify-center items-center w-full cursor-pointer">
+                            class="flex w-full cursor-pointer items-center justify-center rounded border border-gray-600 px-4 py-2">
                             <svg
-                                class="w-5 h-5 mr-2 -ml-1"
+                                class="-ml-1 mr-2 h-5 w-5"
                                 viewBox="0 0 21 20"
                                 fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -56,13 +54,9 @@
                             Log in with Google
                         </button>
                     </div>
-                    <form
-                        class="space-y-4 md:space-y-6"
-                        @submit.prevent="signupSignin">
+                    <form class="space-y-4 md:space-y-6" @submit.prevent="signupSignin">
                         <div v-if="isSignup">
-                            <label
-                                for="userName"
-                                class="block mb-2 text-sm font-medium"
+                            <label for="userName" class="mb-2 block text-sm font-medium"
                                 >User name</label
                             >
                             <input
@@ -71,13 +65,11 @@
                                 v-model="userName"
                                 id="userName"
                                 placeholder="John Wick"
-                                class="border bg-bkg border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-bkg p-2.5 sm:text-sm"
                                 :required="isSignup" />
                         </div>
                         <div>
-                            <label
-                                for="email"
-                                class="block mb-2 text-sm font-medium"
+                            <label for="email" class="mb-2 block text-sm font-medium"
                                 >Your email</label
                             >
                             <input
@@ -85,14 +77,12 @@
                                 name="email"
                                 v-model="email"
                                 id="email"
-                                class="bg-bkg border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-bkg p-2.5 sm:text-sm"
                                 placeholder="name@company.com"
                                 required="true" />
                         </div>
                         <div>
-                            <label
-                                for="password"
-                                class="block mb-2 text-sm font-medium"
+                            <label for="password" class="mb-2 block text-sm font-medium"
                                 >Password</label
                             >
                             <input
@@ -101,13 +91,13 @@
                                 v-model="pw"
                                 id="password"
                                 placeholder="••••••••"
-                                class="border bg-bkg border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-bkg p-2.5 sm:text-sm"
                                 required="true" />
                         </div>
                         <div v-if="isSignup">
                             <label
                                 for="confirm_password"
-                                class="block mb-2 text-sm font-medium"
+                                class="mb-2 block text-sm font-medium"
                                 >Confirm Password</label
                             >
                             <input
@@ -116,17 +106,17 @@
                                 v-model="confirmPw"
                                 id="confirm_password"
                                 placeholder="••••••••"
-                                class="border bg-bkg border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-bkg p-2.5 sm:text-sm"
                                 :required="isSignup" />
                         </div>
                         <div class="flex items-center justify-between">
                             <div class="flex items-start">
-                                <div class="flex items-center h-5">
+                                <div class="flex h-5 items-center">
                                     <input
                                         id="remember"
                                         aria-describedby="remember"
                                         type="checkbox"
-                                        class="w-4 h-4 border border-gray-300 rounded focus:ring-3 focus:ring-primary-300"
+                                        class="focus:ring-3 focus:ring-primary-300 h-4 w-4 rounded border border-gray-300"
                                         checked
                                         required="false" />
                                 </div>
@@ -136,28 +126,22 @@
                             </div>
                             <a
                                 href="#"
-                                class="text-sm font-medium text-primary-600 hover:underline"
+                                class="text-primary-600 text-sm font-medium hover:underline"
                                 >Forgot password?</a
                             >
                         </div>
                         <button
                             type="submit"
-                            class="w-full text-white bg-accent-2/50 hover:bg-accent-2/75 duration-300 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                            class="focus:ring-primary-300 w-full rounded-lg bg-accent-2/50 px-5 py-2.5 text-center text-sm font-medium text-white duration-300 hover:bg-accent-2/75 focus:outline-none focus:ring-4">
                             Sign {{ isSignup ? 'up' : 'in' }}
                         </button>
-                        <p
-                            v-if="successMsg"
-                            class="font-light text-green-500 capitalize">
+                        <p v-if="successMsg" class="font-light capitalize text-green-500">
                             {{ successMsg }}
                         </p>
-                        <p
-                            v-if="errMsg"
-                            class="font-light text-red-500 capitalize">
+                        <p v-if="errMsg" class="font-light capitalize text-red-500">
                             {{ errMsg }}
                         </p>
-                        <button
-                            @click="isSignup = !isSignup"
-                            class="text-sm font-light">
+                        <button @click="isSignup = !isSignup" class="text-sm font-light">
                             {{ switchText }} Sign {{ isSignup ? 'in' : 'up' }}
                         </button>
                     </form>
@@ -183,9 +167,7 @@ const confirmPw = ref('')
 const successMsg = ref('')
 const errMsg = ref('')
 const switchText = computed(() => {
-    return isSignup.value
-        ? 'Already have an account?'
-        : 'Don’t have an account yet?'
+    return isSignup.value ? 'Already have an account?' : 'Don’t have an account yet?'
 })
 
 const googleLogin = async () => {
@@ -201,7 +183,7 @@ const googleLogin = async () => {
     } catch (err) {
         console.error('there was an error at login', err)
     }
-    }
+}
 
 const signupSignin = () => {
     successMsg.value = ''
@@ -211,8 +193,7 @@ const signupSignin = () => {
 
 const signup = async () => {
     try {
-        if (pw.value !== confirmPw.value)
-            throw new Error('passwords do not match')
+        if (pw.value !== confirmPw.value) throw new Error('passwords do not match')
         const { data, error } = await supabase.auth.signUp({
             email: email.value,
             password: pw.value,

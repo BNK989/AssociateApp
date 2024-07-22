@@ -3,7 +3,7 @@ export default defineNuxtConfig({
     routeRules: {
         '/': { ssr: true },
         '/game/**': { ssr: false },
-      },
+    },
     css: ['~/assets/css/main.css'],
     app: {
         head: {
@@ -24,10 +24,15 @@ export default defineNuxtConfig({
     },
 
     devtools: { enabled: true },
-    modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', // {
-    '@nuxtjs/supabase', //   autoImports: ['defineStore', 'acceptHMRUpdate']
-    '@vueuse/nuxt', // },
-    '@pinia/nuxt', '@nuxt/image', '@nuxtjs/i18n'],
+    modules: [
+        '@nuxtjs/tailwindcss',
+        '@nuxtjs/color-mode', // {
+        '@nuxtjs/supabase', //   autoImports: ['defineStore', 'acceptHMRUpdate']
+        '@vueuse/nuxt', // },
+        '@pinia/nuxt',
+        '@nuxt/image',
+        '@nuxtjs/i18n',
+    ],
     supabase: {
         // Options
         redirect: false,
@@ -66,5 +71,4 @@ export default defineNuxtConfig({
             },
         ],
     },
-
 })

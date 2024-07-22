@@ -5,7 +5,7 @@
         <div v-else class="flex-center flex-col gap-6">
             <h2 class="text-3xl">No pending invites</h2>
             <NuxtLink :to="localPath('/profile/login')">
-                <button class="py-4 px-10 bg-accent-2/40">Back</button>
+                <button class="bg-accent-2/40 px-10 py-4">Back</button>
             </NuxtLink>
         </div>
     </div>

@@ -1,13 +1,13 @@
 <template>
-    <li class="flex items-center ms-2 gap-1" :id="'w-' + w.id">
+    <li class="ms-2 flex items-center gap-1" :id="'w-' + w.id">
         <SvgCheckMark v-if="w.isResolved" />
         <NuxtImg
             :src="w.user?.avatar"
-            class="size-8 rounded-full me-1"
+            class="me-1 size-8 rounded-full"
             alt="Rounded avatar" />
         <!-- @contextmenu.prevent="showContextMenu($event, w.id)" -->
         <div
-            class="px-3 pt-1 pb-2 bg-blue-300 bg-opacity-10 w-min whitespace-nowrap select-none">
+            class="w-min select-none whitespace-nowrap bg-blue-300 bg-opacity-10 px-3 pb-2 pt-1">
             <div class="flex items-center gap-2">
                 <MiniEncrypter :t="stringToShow" />
             </div>

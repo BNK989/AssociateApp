@@ -2,14 +2,15 @@
     <!-- <div
         role="status"
         class="w-48 rounded shadow animate-pulse md:p-0"> -->
-    <div class="grid grid-cols-2 p-2 w-[45%] md:w-48 h-40 mb-4 bg-bkg_dark rounded-md animate-pulse">
-        <div class="h-8 bg-accent-3/20 rounded-full w-full"></div>
-        <div class="h-4 justify-self-end bg-accent-3/20 rounded-full w-1/2 "></div>
-        <div class="h-3 bg-accent-3/20 rounded-full col-span-full w-3/4 "></div>
-        <div class="h-3 bg-accent-3/20 rounded-full col-span-full "></div>
-        <div class="flex gap-2 col-span-full">
-            <div class="h-4 self-end bg-accent-3/20 rounded-full w-14 "></div>
-            <div class="h-4 self-end bg-accent-3/20 rounded-full w-12 "></div>
+    <div
+        class="mb-4 grid h-40 w-[45%] animate-pulse grid-cols-2 rounded-md bg-bkg_dark p-2 md:w-48">
+        <div class="h-8 w-full rounded-full bg-accent-3/20"></div>
+        <div class="h-4 w-1/2 justify-self-end rounded-full bg-accent-3/20"></div>
+        <div class="col-span-full h-3 w-3/4 rounded-full bg-accent-3/20"></div>
+        <div class="col-span-full h-3 rounded-full bg-accent-3/20"></div>
+        <div class="col-span-full flex gap-2">
+            <div class="h-4 w-14 self-end rounded-full bg-accent-3/20"></div>
+            <div class="h-4 w-12 self-end rounded-full bg-accent-3/20"></div>
         </div>
     </div>
     <span class="sr-only">Loading...</span>

@@ -1,10 +1,11 @@
 <template>
-    <div class="flex-center flex-col gap-4 mx-2 my-auto">
-        <h2 class="my-4 text-3xl bg-gradient-to-r from-accent-3 to-accent-2 text-transparent bg-clip-text text-center">
+    <div class="flex-center mx-2 my-auto flex-col gap-4">
+        <h2
+            class="my-4 bg-gradient-to-r from-accent-3 to-accent-2 bg-clip-text text-center text-3xl text-transparent">
             You've been invited to join a game
         </h2>
         <button
-            class="py-3 px-6 text-2xl border-2 border-bkg_dark/30 bg-gradient-to-tr from-accent-2 to-accent-3 font-bold rounded shadow-xl shadow-accent-3/15 w-3/5 hover:bg-accent-3/50 duration-300"
+            class="w-3/5 rounded border-2 border-bkg_dark/30 bg-gradient-to-tr from-accent-2 to-accent-3 px-6 py-3 text-2xl font-bold shadow-xl shadow-accent-3/15 duration-300 hover:bg-accent-3/50"
             @click="joinGame">
             Join Now
         </button>
@@ -26,15 +27,12 @@ const joinGame = async () => {
     if (!storeUser.value)
         return store.setToast({ msg: 'Please login first', type: 'warn' })
     try {
-        const { error, success } = await $fetch(
-            `/api/${gameId}/add-user-by-link`,
-            {
-                method: 'PUT',
-                body: {
-                    user_id: storeUser.value?.id,
-                },
+        const { error, success } = await $fetch(`/api/${gameId}/add-user-by-link`, {
+            method: 'PUT',
+            body: {
+                user_id: storeUser.value?.id,
             },
-        )
+        })
 
         if (error) throw new Error(error)
         if (success) router.push(`/game/${gameId}`)
@@ -58,13 +56,10 @@ const upsertAndLoadUser = async (email, name, avatar) => {
 onMounted(async () => {
     if (!storeUser) {
         try {
-            const { data: userData, error: userError } =
-                await supabase.auth.getUser()
+            const { data: userData, error: userError } = await supabase.auth.getUser()
 
             if (userError)
-                throw new Error(
-                    `Error fetching user data: ${userError.message}`,
-                )
+                throw new Error(`Error fetching user data: ${userError.message}`)
             if (!userData || !userData.user)
                 throw new Error('No user data found after login.')
 

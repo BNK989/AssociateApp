@@ -2,14 +2,14 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (e) => {
-    const {userName} = getQuery(e)
+    const { userName } = getQuery(e)
 
     let res
 
     try {
         res = await prisma.users.findMany({
             where: {
-                userName: { 
+                userName: {
                     contains: userName,
                     mode: 'insensitive',
                 },

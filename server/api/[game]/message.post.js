@@ -22,11 +22,9 @@ export default defineEventHandler(async (e) => {
         })
 
         if (!res) throw new Error(`game id: ${gameId} not found`)
-
     } catch (err) {
         console.error('there was an error', err)
     }
 
     return res
-
 })

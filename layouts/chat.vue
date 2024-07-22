@@ -1,6 +1,6 @@
 <template>
     <main
-        class="text-content flex flex-col h-chat_dvh bg-bkg px-0 md:px-0 overflow-hidden"
+        class="flex h-chat_dvh flex-col overflow-hidden bg-bkg px-0 text-content md:px-0"
         :dir="isRtl ? 'rtl' : 'ltr'">
         <Header v-show="!isMobile" />
         <!-- <pre class="fixed inset-0 z-50 h-min w-min">tempDvh: {{ tempDvh }}</pre> -->

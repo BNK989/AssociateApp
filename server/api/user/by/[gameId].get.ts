@@ -30,5 +30,5 @@ export default defineEventHandler(async (e) => {
         console.error('there was an error', err)
     }
 
-    return res 
+    return res
 })

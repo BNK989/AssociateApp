@@ -1,6 +1,6 @@
 <template>
-    <section class="h-14 flex items-center justify-between mx-2 md:mx-4">
-        <div class="flex-center gap-1 min-w-fit">
+    <section class="mx-2 flex h-14 items-center justify-between md:mx-4">
+        <div class="flex-center min-w-fit gap-1">
             <button class="w-min sm:hidden">
                 <NuxtLink :to="localPath('/')">
                     <svg
@@ -19,7 +19,7 @@
             </button>
             <ChatPlayersAvatarts :TurnOrderByIds="TurnOrderByIds" />
             <button
-                class="bg-accent-3/80 rounded-full text-sm"
+                class="rounded-full bg-accent-3/80 text-sm"
                 title="Add player"
                 @click="showModal">
                 <!-- {{ $t('Game_Add_player') }} -->
@@ -37,7 +37,7 @@
                 </svg>
             </button>
         </div>
-        <div class="flex-center flex-col min-w-fit">
+        <div class="flex-center min-w-fit flex-col">
             <small> {{ $t('Game_Score') }}: </small>
             <MiniCounter :n="storeGame?.score" />
         </div>
@@ -45,7 +45,7 @@
         :class="wordLength > 5 ? 'bg-accent-3/20' : ''" -->
         <button
             v-if="gameMode === 'INPUT'"
-            class="flex-center gap-1 px-1 bg-accent-3/80 rounded-full text-sm md:px-4 hover:bg-accent-3/40 py-2 duration-200"
+            class="flex-center gap-1 rounded-full bg-accent-3/80 px-1 py-2 text-sm duration-200 hover:bg-accent-3/40 md:px-4"
             @click="$emit('changeGameMode')">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -64,10 +64,10 @@
         <button
             v-else
             @click="showGameMenu = !showGameMenu"
-            class="p-[2px] bg-accent-3/80 rounded-full text-sm md:px-4">
+            class="rounded-full bg-accent-3/80 p-[2px] text-sm md:px-4">
             <svg
                 :class="showGameMenu ? 'rotate-90' : ''"
-                class="duration-300 size-8"
+                class="size-8 duration-300"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -84,22 +84,22 @@
             <div
                 v-if="showGameMenu"
                 @click="showGameMenu = false"
-                class="flex-center bg-bkg-dark/20 z-40 fixed inset-0">
+                class="flex-center bg-bkg-dark/20 fixed inset-0 z-40">
                 <div
-                    class="flex-center gap-1 flex-col bg-bkg text-content rounded-md z-50 p-3 shadow-md shadow-content/15">
-                    <h3 class="tracking-wider text-2xl border-b border-accent-3 mb-4">
+                    class="flex-center z-50 flex-col gap-1 rounded-md bg-bkg p-3 text-content shadow-md shadow-content/15">
+                    <h3 class="mb-4 border-b border-accent-3 text-2xl tracking-wider">
                         Game Options
                     </h3>
                     <div v-if="gameMode === 'SOLVE'" class="flex-center flex-col gap-1">
                         <button
                             @click="$emit('toggleRelaxCheck')"
-                            class="flex-center gap-1 text-accent-2 hover:bg-bkg_dark/40 w-full py-2 duration-200">
+                            class="flex-center w-full gap-1 py-2 text-accent-2 duration-200 hover:bg-bkg_dark/40">
                             {{ relaxCheckEnabled ? 'Disable' : 'Enable' }} Relax Check
                             (allow spelling errors)
                         </button>
                         <button
                             @click="$emit('getHint')"
-                            class="flex-center gap-1 text-accent-2 hover:bg-bkg_dark/40 w-full py-2 duration-200">
+                            class="flex-center w-full gap-1 py-2 text-accent-2 duration-200 hover:bg-bkg_dark/40">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -116,7 +116,7 @@
                         </button>
                         <button
                             @click="$emit('revealWord')"
-                            class="flex-center gap-1 text-warn hover:bg-bkg_dark/40 w-full py-2 duration-200">
+                            class="flex-center w-full gap-1 py-2 text-warn duration-200 hover:bg-bkg_dark/40">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -139,7 +139,7 @@
     </section>
     <dialog
         ref="modal"
-        class="bg-bkg text-content backdrop:blur-2xl backdrop:bg-black/50 rounded">
+        class="rounded bg-bkg text-content backdrop:bg-black/50 backdrop:blur-2xl">
         <ModalAddUser @closeModal="modal.close()" />
     </dialog>
 </template>

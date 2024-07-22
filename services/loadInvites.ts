@@ -1,6 +1,6 @@
-export async function getInvites( id:string) {
+export async function getInvites(id: string) {
     try {
-        if(!id) throw new Error('No id provided')
+        if (!id) throw new Error('No id provided')
         const res = await $fetch(`/api/invite/${id}`)
         if (res) {
             return res

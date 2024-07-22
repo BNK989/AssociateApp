@@ -4,7 +4,6 @@ const prisma = new PrismaClient()
 export default defineEventHandler(async (e) => {
     const { email } = getQuery(e)
 
-
     let res
 
     try {
@@ -13,7 +12,7 @@ export default defineEventHandler(async (e) => {
                 email,
             },
             select: {
-                id: true
+                id: true,
             },
         })
 

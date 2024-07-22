@@ -1,42 +1,45 @@
 {
-  "name": "nuxt-app",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build": "prisma generate && nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "prisma generate && nuxt prepare"
-  },
-  "dependencies": {
-    "@bytescale/upload-widget-vue": "^4.14.0",
-    "@google/generative-ai": "^0.14.0",
-    "@nuxt/image": "^1.7.0",
-    "@nuxtjs/i18n": "^8.3.1",
-    "@pinia/nuxt": "^0.5.1",
-    "@prisma/client": "5.15.0",
-    "@supabase/supabase-js": "^2.43.5",
-    "@vueuse/core": "^10.11.0",
-    "@vueuse/nuxt": "^10.11.0",
-    "browser-image-compression": "^2.0.2",
-    "date-fns": "^3.6.0",
-    "dotenv": "^16.4.5",
-    "fastest-levenshtein": "^1.0.16",
-    "flowbite": "^2.3.0",
-    "gsap": "^3.12.5",
-    "lodash": "^4.17.21",
-    "nuxt": "^3.11.2",
-    "prisma": "^5.15.0",
-    "tailwindcss-rtl": "^0.9.0",
-    "vue": "^3.4.27",
-    "vue-confetti": "^2.3.0",
-    "vue-router": "^4.3.2"
-  },
-  "packageManager": "pnpm@9.2.0+sha512.98a80fd11c2e7096747762304106432b3ddc67dcf54b5a8c01c93f68a2cd5e05e6821849522a06fb76284d41a2660d5e334f2ee3bbf29183bf2e739b1dafa771",
-  "devDependencies": {
-    "@nuxtjs/color-mode": "^3.4.1",
-    "@nuxtjs/supabase": "^1.2.2",
-    "@nuxtjs/tailwindcss": "^6.12.0"
-  }
+    "name": "nuxt-app",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "prisma generate && nuxt build",
+        "dev": "nuxt dev",
+        "generate": "nuxt generate",
+        "preview": "nuxt preview",
+        "postinstall": "prisma generate && nuxt prepare",
+        "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,vue,css,scss,html,json,md}\""
+    },
+    "dependencies": {
+        "@bytescale/upload-widget-vue": "^4.14.0",
+        "@google/generative-ai": "^0.14.0",
+        "@nuxt/image": "^1.7.0",
+        "@nuxtjs/i18n": "^8.3.1",
+        "@pinia/nuxt": "^0.5.1",
+        "@prisma/client": "5.15.0",
+        "@supabase/supabase-js": "^2.43.5",
+        "@vueuse/core": "^10.11.0",
+        "@vueuse/nuxt": "^10.11.0",
+        "browser-image-compression": "^2.0.2",
+        "date-fns": "^3.6.0",
+        "dotenv": "^16.4.5",
+        "fastest-levenshtein": "^1.0.16",
+        "flowbite": "^2.3.0",
+        "gsap": "^3.12.5",
+        "lodash": "^4.17.21",
+        "nuxt": "^3.11.2",
+        "prisma": "^5.15.0",
+        "tailwindcss-rtl": "^0.9.0",
+        "vue": "^3.4.27",
+        "vue-confetti": "^2.3.0",
+        "vue-router": "^4.3.2"
+    },
+    "packageManager": "pnpm@9.2.0+sha512.98a80fd11c2e7096747762304106432b3ddc67dcf54b5a8c01c93f68a2cd5e05e6821849522a06fb76284d41a2660d5e334f2ee3bbf29183bf2e739b1dafa771",
+    "devDependencies": {
+        "@nuxtjs/color-mode": "^3.4.1",
+        "@nuxtjs/supabase": "^1.2.2",
+        "@nuxtjs/tailwindcss": "^6.12.0",
+        "prettier": "^3.3.3",
+        "prettier-plugin-tailwindcss": "^0.6.5"
+    }
 }

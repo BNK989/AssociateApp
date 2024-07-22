@@ -4,5 +4,5 @@ export default defineNuxtPlugin({
     async setup() {
         const { $api } = useNuxtApp()
         // await $api('/api/heartbeat')
-    }
+    },
 })

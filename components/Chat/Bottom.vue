@@ -2,9 +2,9 @@
     <section class="border-accent-3/40 shadow-2xl shadow-content/20 sm:shadow-none">
         <div
             v-if="showStarted"
-            class="fixed inset-16 flex-center flex-col gap-3 h-min p-4 border border-accent-2/20 bg-accent-2/10 rounded">
+            class="flex-center fixed inset-16 h-min flex-col gap-3 rounded border border-accent-2/20 bg-accent-2/10 p-4">
             <h2>Stuck?</h2>
-            <button class="py-2 px-4 bg-accent-2/60 rounded" @click="getRandomStartWord">
+            <button class="rounded bg-accent-2/60 px-4 py-2" @click="getRandomStartWord">
                 Start with a random word
             </button>
         </div>
@@ -14,7 +14,7 @@
                     type="text"
                     ref="inputField"
                     :class="true ? '' : ''"
-                    class="block w-full p-4 ps-4 text-sm bg-bkg md:border border-accent-3/40 rounded-t-lg focus:ring-accent-3/10 focus:border-accent-3/10 focus:outline-none"
+                    class="block w-full rounded-t-lg border-accent-3/40 bg-bkg p-4 ps-4 text-sm focus:border-accent-3/10 focus:outline-none focus:ring-accent-3/10 md:border"
                     :placeholder="placeholder"
                     v-model="word" />
                 <button
@@ -24,7 +24,7 @@
                             ? `bg-accent-1 ${!isMyTurn ? 'bg-opacity-40' : ''}`
                             : `bg-accent-3 ${!isMyTurn ? 'bg-opacity-40' : ''}`
                     "
-                    class="min-w-32 absolute end-2.5 bottom-2.5 hover:bg-accent-3/75 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">
+                    class="absolute bottom-2.5 end-2.5 min-w-32 rounded-lg px-4 py-2 text-sm font-medium hover:bg-accent-3/75 focus:outline-none focus:ring-4 focus:ring-blue-300">
                     {{ btnTxt }}
                 </button>
             </div>
@@ -124,8 +124,8 @@ const btnTxt = computed(() =>
     props.gameMode === 'INPUT'
         ? t('Game_Send_Btn')
         : !relaxCheckEnabled.value
-        ? t('Game_Guess_Btn')
-        : t('Game_Relax_Btn'),
+          ? t('Game_Guess_Btn')
+          : t('Game_Relax_Btn'),
 )
 
 const onHandleSubmit = () => {

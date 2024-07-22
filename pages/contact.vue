@@ -1,52 +1,52 @@
 <template>
     <section>
-        <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-center">
+        <div class="mx-auto max-w-screen-md px-4 py-8 lg:py-16">
+            <h2 class="mb-4 text-center text-4xl font-extrabold tracking-tight">
                 Contact Us
             </h2>
-            <p class="mb-8 lg:mb-16 font-light text-center sm:text-xl">
+            <p class="mb-8 text-center font-light sm:text-xl lg:mb-16">
                 Got a technical issue? Want to send feedback about a beta feature? Need
                 details about our Business plan? Let us know.
             </p>
             <form @submit.prevent="sendEmail" class="space-y-8">
                 <div>
-                    <label for="email" class="block mb-2 text-sm font-medium"
+                    <label for="email" class="mb-2 block text-sm font-medium"
                         >Your email</label
                     >
                     <input
                         v-model="senderEmail"
                         type="email"
                         id="email"
-                        class="shadow-sm bg-bkg border border-content/30 text-sm rounded-lg focus:ring-accent-3/30 focus:border-accent-3/30 block w-full p-2.5"
+                        class="block w-full rounded-lg border border-content/30 bg-bkg p-2.5 text-sm shadow-sm focus:border-accent-3/30 focus:ring-accent-3/30"
                         placeholder="You@gmail.com"
                         required />
                 </div>
                 <div>
-                    <label for="subject" class="block mb-2 text-sm font-medium"
+                    <label for="subject" class="mb-2 block text-sm font-medium"
                         >Subject</label
                     >
                     <input
                         v-model="subject"
                         type="text"
                         id="subject"
-                        class="block bg-bkg p-3 w-full text-sm rounded-lg border border-content/30 shadow-sm focus:ring-accent-3/30 focus:border-accent-3/30"
+                        class="block w-full rounded-lg border border-content/30 bg-bkg p-3 text-sm shadow-sm focus:border-accent-3/30 focus:ring-accent-3/30"
                         placeholder="Let us know how we can help you"
                         required />
                 </div>
                 <div class="sm:col-span-2">
-                    <label for="message" class="block mb-2 text-sm font-medium"
+                    <label for="message" class="mb-2 block text-sm font-medium"
                         >Your message</label
                     >
                     <textarea
                         v-model="message"
                         id="message"
                         rows="6"
-                        class="block p-2.5 w-full text-sm bg-bkg rounded-lg shadow-sm border border-content/30 focus:ring-accent-3/30 focus:border-accent-3/30"
+                        class="block w-full rounded-lg border border-content/30 bg-bkg p-2.5 text-sm shadow-sm focus:border-accent-3/30 focus:ring-accent-3/30"
                         placeholder="Leave a comment..."></textarea>
                 </div>
                 <button
                     type="submit"
-                    class="py-3 px-5 text-sm bg-accent-3/80 hover:bg-accent-3/60 duration-300 font-medium text-center rounded-lg bg-primary-700 sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300">
+                    class="bg-primary-700 hover:bg-primary-800 focus:ring-primary-300 rounded-lg bg-accent-3/80 px-5 py-3 text-center text-sm font-medium duration-300 hover:bg-accent-3/60 focus:outline-none focus:ring-4 sm:w-fit">
                     Send message
                 </button>
             </form>

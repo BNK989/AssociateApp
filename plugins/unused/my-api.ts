@@ -3,14 +3,14 @@ export default defineNuxtPlugin({
     setup() {
         const api = $fetch.create({
             headers: {
-                'X-Some-Custom': '1'
-            }
+                'X-Some-Custom': '1',
+            },
         })
-        
+
         return {
             provide: {
-                api
-            }
+                api,
+            },
         }
-    }
+    },
 })

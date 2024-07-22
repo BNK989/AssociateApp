@@ -1,10 +1,10 @@
 export function sendNotification(text: string = 'Hello World') {
-    Notification.requestPermission().then(perm => {
+    Notification.requestPermission().then((perm) => {
         if (perm === 'granted') {
             const noti = new Notification(text, {
                 body: 'This is a notification',
                 icon: '../assets/img/Associate-logo.png',
-                data: { 'url': 'url' },
+                data: { url: 'url' },
                 tag: 'tag',
             })
 
@@ -13,7 +13,6 @@ export function sendNotification(text: string = 'Hello World') {
             })
         }
     })
-
 }
 
 export async function checkNotificationPermission() {

@@ -3,58 +3,58 @@
         <h2 class="text-3xl font-semibold">Preferences</h2>
         <form
             @submit.prevent="handleSubmit"
-            class="grid md:grid-cols-2 grid-rows-4 gap-x-20 gap-y-10 max-w-5xl mx-auto mt-4">
-            <div class="flex justify-between items-center">
+            class="mx-auto mt-4 grid max-w-5xl grid-rows-4 gap-x-20 gap-y-10 md:grid-cols-2">
+            <div class="flex items-center justify-between">
                 <label for="dark-mode">Language</label>
                 <select
                     v-model="pref.language"
-                    class="bg-bkg_dark/80 h-8 p-1 min-w-24 focus-visible:outline focus-visible:outline-bkg_dark">
+                    class="h-8 min-w-24 bg-bkg_dark/80 p-1 focus-visible:outline focus-visible:outline-bkg_dark">
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
                     <option value="he">Hebrew</option>
                     <option value="">Use system settings</option>
                 </select>
             </div>
-            <div class="flex justify-between items-center">
+            <div class="flex items-center justify-between">
                 <label for="dark-mode">Set Dark mode</label>
                 <select
                     v-model="pref.theme"
-                    class="bg-bkg_dark/80 h-8 p-1 min-w-24 focus-visible:outline focus-visible:outline-bkg_dark">
+                    class="h-8 min-w-24 bg-bkg_dark/80 p-1 focus-visible:outline focus-visible:outline-bkg_dark">
                     <option value="dark">Dark</option>
                     <option value="light">Light</option>
                     <option value="">Use system settings</option>
                 </select>
             </div>
-            <div class="flex justify-between items-center">
+            <div class="flex items-center justify-between">
                 <span class="font-medium">Play in game audio</span>
-                <label class="inline-flex items-center cursor-pointer">
-                    <input type="checkbox" v-model="pref.soundOn" class="sr-only peer" />
+                <label class="inline-flex cursor-pointer items-center">
+                    <input type="checkbox" v-model="pref.soundOn" class="peer sr-only" />
                     <div
-                        class="relative w-11 h-6 bg-bkg_dark/80 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent-3/50 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-content after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-content after:border-bkg_dark/50 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent-3/50"></div>
+                        class="peer relative h-6 w-11 rounded-full bg-bkg_dark/80 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-bkg_dark/50 after:bg-content after:transition-all after:content-[''] peer-checked:bg-accent-3/50 peer-checked:after:translate-x-full peer-checked:after:border-content peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent-3/50 rtl:peer-checked:after:-translate-x-full"></div>
                 </label>
             </div>
-            <div class="flex justify-between items-center">
+            <div class="flex items-center justify-between">
                 <span class="font-medium">Get Notifications</span>
-                <label class="inline-flex items-center cursor-pointer">
+                <label class="inline-flex cursor-pointer items-center">
                     <input
                         type="checkbox"
                         v-model="pref.allowNotifications"
                         value=""
-                        class="sr-only peer" />
+                        class="peer sr-only" />
                     <div
-                        class="relative w-11 h-6 bg-bkg_dark/80 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent-3/50 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-content after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-content after:border-bkg_dark/50 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent-3/50"></div>
+                        class="peer relative h-6 w-11 rounded-full bg-bkg_dark/80 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-bkg_dark/50 after:bg-content after:transition-all after:content-[''] peer-checked:bg-accent-3/50 peer-checked:after:translate-x-full peer-checked:after:border-content peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent-3/50 rtl:peer-checked:after:-translate-x-full"></div>
                 </label>
             </div>
-            <div class="flex justify-between items-center gap-4">
+            <div class="flex items-center justify-between gap-4">
                 <label for="userName">Update User name</label>
                 <input
-                    class="bg-bkg_dark/20 flex-1 h-12 px-2"
+                    class="h-12 flex-1 bg-bkg_dark/20 px-2"
                     type="text"
                     v-model="newUserName"
                     name="newUserName"
                     id="newUserName" />
             </div>
-            <div class="flex justify-start gap-6 items-center">
+            <div class="flex items-center justify-start gap-6">
                 <NuxtImg
                     :src="newAvatar.preview || user.avatar"
                     alt=""

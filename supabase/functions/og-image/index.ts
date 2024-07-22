@@ -3,10 +3,10 @@
 // This enables autocomplete, go to definition, etc.
 
 // Setup type definitions for built-in Supabase Runtime APIs
-import "https://esm.sh/@supabase/functions-js/src/edge-runtime.d.ts"
+import 'https://esm.sh/@supabase/functions-js/src/edge-runtime.d.ts'
 import handler from './handler.tsx'
 
-console.log("Hello from og image Functions!")
+console.log('Hello from og image Functions!')
 
 Deno.serve(handler)
 

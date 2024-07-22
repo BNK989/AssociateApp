@@ -1,20 +1,20 @@
 <template>
     <div
-        class="min-w-80 z-50 justify-center items-center rounded w-full h-modal md:h-full md:w-[40dvw]">
-        <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+        class="h-modal z-50 w-full min-w-80 items-center justify-center rounded md:h-full md:w-[40dvw]">
+        <div class="relative h-full w-full max-w-2xl p-4 md:h-auto">
             <!-- Modal content -->
-            <div class="relative p-4 rounded-lg shadow sm:p-5">
+            <div class="relative rounded-lg p-4 shadow sm:p-5">
                 <!-- Modal header -->
                 <div
-                    class="flex justify-between items-center pb-4 mb-4 rounded-t sm:mb-5">
+                    class="mb-4 flex items-center justify-between rounded-t pb-4 sm:mb-5">
                     <h3 class="text-lg font-semibold">Add Player</h3>
                     <button
                         @click="$emit('closeModal')"
                         type="button"
-                        class="bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                        class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm hover:bg-gray-200 hover:text-gray-900"
                         data-modal-toggle="defaultModal">
                         <svg
-                            class="w-5 h-5"
+                            class="h-5 w-5"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
@@ -28,64 +28,52 @@
                 </div>
                 <!-- Modal body -->
                 <div class="my-2">
-                    <label for="name" class="block mb-2 text-sm font-medium"
-                        >Name</label
-                    >
+                    <label for="name" class="mb-2 block text-sm font-medium">Name</label>
                     <input
                         @input="getPlayers()"
                         v-model="q"
                         type="text"
                         name="name"
                         id="name"
-                        class="bg-bkg border border-accent-2/40 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 placeholder:text-content/65"
+                        class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-accent-2/40 bg-bkg p-2.5 text-sm placeholder:text-content/65"
                         placeholder="Type player name" />
                 </div>
                 <section>
                     <div
-                        class="grid gap-4 mb-4 md:border border-accent-2/40 py-4 rounded min-h-96">
-                        <ul
-                            class="flex flex-col gap-4 md:divide-y divide-accent-2/40">
+                        class="mb-4 grid min-h-96 gap-4 rounded border-accent-2/40 py-4 md:border">
+                        <ul class="flex flex-col gap-4 divide-accent-2/40 md:divide-y">
                             <!-- <pre>{{ players }}</pre> -->
                             <li
                                 v-for="p in players"
-                                class="flex justify-between items-center p-2 box-border odd:bg-accent-2/10 odd:md:bg-accent-2/0 even:bg-accent-2/5 even:md:bg-accent-2/0 md:mx-3 rounded">
+                                class="box-border flex items-center justify-between rounded p-2 odd:bg-accent-2/10 even:bg-accent-2/5 md:mx-3 odd:md:bg-accent-2/0 even:md:bg-accent-2/0">
                                 <span>{{ p.userName }}</span>
                                 <!-- <pre>{{ storeGame.Users }}</pre> -->
 
-                                <button v-if="!store?.playersEmails">
-                                    Add
-                                </button>
+                                <button v-if="!store?.playersEmails">Add</button>
                                 <button
                                     v-else
                                     @click="invitePlayerToGame($event, p.id)"
-                                    class="px-3 py-1 text-sm bg-accent-2/40 rounded-full"
+                                    class="rounded-full bg-accent-2/40 px-3 py-1 text-sm"
                                     :class="{
-                                        'bg-accent-2/15':
-                                            store?.playersEmails.includes(
-                                                p.email,
-                                            ),
+                                        'bg-accent-2/15': store?.playersEmails.includes(
+                                            p.email,
+                                        ),
                                     }"
-                                    :disabled="
-                                        store?.playersEmails.includes(p.email)
-                                    ">
+                                    :disabled="store?.playersEmails.includes(p.email)">
                                     {{
                                         store?.playersEmails?.includes(p?.email)
                                             ? 'Added'
-                                            : store?.inviteesEmails?.includes(
-                                                  p?.email,
-                                              )
-                                            ? 'Invite Sent'
-                                            : 'Add'
+                                            : store?.inviteesEmails?.includes(p?.email)
+                                              ? 'Invite Sent'
+                                              : 'Add'
                                     }}
                                 </button>
                             </li>
                         </ul>
                     </div>
                 </section>
-                <div class="w-full flex justify-center items-center">
-                    <MiniShare
-                        title="Share an invite"
-                        :gameId="storeGame?.id" />
+                <div class="flex w-full items-center justify-center">
+                    <MiniShare title="Share an invite" :gameId="storeGame?.id" />
                 </div>
             </div>
         </div>
@@ -116,9 +104,7 @@ const getPlayers = async () => {
         //@ts-ignore
         qPlayers.filter((p) => p.email !== storeUser.value?.email)
         //@ts-ignore
-        players.value = qPlayers.filter(
-            (p) => p.email !== storeUser.value?.email,
-        )
+        players.value = qPlayers.filter((p) => p.email !== storeUser.value?.email)
     } else {
         console.error('storeUser not loaded')
         players.value = qPlayers

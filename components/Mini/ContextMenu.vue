@@ -1,15 +1,15 @@
 <template>
     <div
-        class="fixed z-40 inset-0 w-dvw h-dvh bg-bkg_dark/10"
+        class="fixed inset-0 z-40 h-dvh w-dvw bg-bkg_dark/10"
         @contextmenu.prevent="emitAction('closeContextMenu', 'closeContextMenu')"
         @click="emitAction('closeContextMenu', 'closeContextMenu')">
         <div
-            class="absolute h-fit z-50 context-menu bg-bkg min-w-36 border border-bkg_dark/50"
+            class="context-menu absolute z-50 h-fit min-w-36 border border-bkg_dark/50 bg-bkg"
             :style="{ top: y + 'px', left: x + 'px' }">
             <div
                 v-for="action in actions"
                 :key="action.action"
-                class="p-2 cursor-pointer hover:bg-accent-3/30"
+                class="cursor-pointer p-2 hover:bg-accent-3/30"
                 @click="emitAction(action.action)">
                 <span v-if="action.icon">{{ action.icon }}</span>
                 {{ action.label }}

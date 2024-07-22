@@ -1,12 +1,12 @@
 <template>
     <div class="p-2 md:p-4">
-        <h1 class="text-3xl font-bold text-right ltr:text-left">
+        <h1 class="text-right text-3xl font-bold ltr:text-left">
             {{ $t('Welcome') }}
         </h1>
         <!-- Logged OUT -->
         <div v-if="!storeUser">
             <NuxtLink :to="localPath('/profile/login?signup=true')">
-                <button class="py-2 px-3 my-4 rounded-full w-full md:w-2/5 bg-accent-3">
+                <button class="my-4 w-full rounded-full bg-accent-3 px-3 py-2 md:w-2/5">
                     {{ $t('Signup_to_play') }}
                 </button>
             </NuxtLink>
@@ -15,16 +15,16 @@
             <button
                 v-if="storeUser"
                 @click="createNewGame"
-                class="py-2 px-3 my-4 rounded-full w-full md:w-2/5 bg-accent-3">
+                class="my-4 w-full rounded-full bg-accent-3 px-3 py-2 md:w-2/5">
                 {{ $t('Start_New_Game_Btn') }}
             </button>
 
             <div v-if="storeUser?.receivedInvites?.length > 0">
                 <PendingInvites />
             </div>
-            <h2 class="text-2xl my-2">{{ $t('Active_Games') }}</h2>
+            <h2 class="my-2 text-2xl">{{ $t('Active_Games') }}</h2>
             <Transition v-if="activeGames.length > 0 || pending">
-                <ul class="ChatPreview flex gap-4 flex-wrap w-full">
+                <ul class="ChatPreview flex w-full flex-wrap gap-4">
                     <ChatPreview
                         v-for="game in activeGames"
                         @contextmenu.prevent="
@@ -35,26 +35,26 @@
                         :userEmail="storeUser?.email" />
                 </ul>
             </Transition>
-            <ul v-else class="flex gap-4 flex-wrap w-full my-2">
+            <ul v-else class="my-2 flex w-full flex-wrap gap-4">
                 <SkeletonCard v-for="c in 4" />
             </ul>
             <!-- END OF ACTIVE GAME -->
             <div v-if="isNonActiveGames.length > 0">
                 <button
                     v-if="!showNonActiveGames"
-                    class="py-2 px-6 my-4 rounded-full w-full md:w-fit border border-accent-3 text-content/80"
+                    class="my-4 w-full rounded-full border border-accent-3 px-6 py-2 text-content/80 md:w-fit"
                     @click.once="showNonActiveGames = 'FINISHED'">
                     Show Non Active Games
                 </button>
 
                 <div
                     v-if="showNonActiveGames"
-                    class="my-4 text-sm font-medium text-center text-content/75 border-b border-content/50">
-                    <ul class="flex flex-wrap -mb-px border-b-2 border-accent-3/60">
+                    class="my-4 border-b border-content/50 text-center text-sm font-medium text-content/75">
+                    <ul class="-mb-px flex flex-wrap border-b-2 border-accent-3/60">
                         <li v-for="c in nonActiveGamesCategory" :key="c" class="me-2">
                             <button
                                 @click="showNonActiveGames = c.toUpperCase()"
-                                class="inline-block capitalize p-4 border-accent-3/90 rounded-t-lg"
+                                class="inline-block rounded-t-lg border-accent-3/90 p-4 capitalize"
                                 :class="
                                     showNonActiveGames === c.toUpperCase()
                                         ? 'border-b-2 bg-bkg_dark'
@@ -65,7 +65,7 @@
                         </li>
                     </ul>
                     <div v-if="showNonActiveGames">
-                        <ul class="grid gap-4 my-4 grid-cols-2 md:grid-cols-4">
+                        <ul class="my-4 grid grid-cols-2 gap-4 md:grid-cols-4">
                             <ChatPreview
                                 v-for="game in nonActiveGames"
                                 @contextmenu.prevent="

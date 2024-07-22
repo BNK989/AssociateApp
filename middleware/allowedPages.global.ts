@@ -1,10 +1,9 @@
-import { getSupabaseSessionToken } from '@/utils/auth';
+import { getSupabaseSessionToken } from '@/utils/auth'
 // import { PrismaClient } from '@prisma/client'
 // const prisma = new PrismaClient()
 
-
 export default defineNuxtRouteMiddleware(async (to, from) => {
-    if(!process.client) return
+    if (!process.client) return
     // console.log('from:', from.path)
     // console.log('to:', to.path)
     // console.log('Session Token:', getSupabaseSessionToken())
@@ -32,4 +31,3 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 //       },
 //     },
 //   });
-  

@@ -1,15 +1,15 @@
 <template>
     <header>
-        <nav class="border-gray-200 px-4 lg:px-6 py-1.5 shadow">
+        <nav class="border-gray-200 px-4 py-1.5 shadow lg:px-6">
             <div
-                class="relative flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+                class="relative mx-auto flex max-w-screen-xl flex-wrap items-center justify-between">
                 <NuxtLink :to="localPath('/')" class="flex items-center">
                     <img
                         src="../assets/img/Associate-logo.png"
                         class="mr-3 size-10 sm:h-9"
                         alt="Associate Logo" />
                     <span
-                        class="self-center text-xl font-semibold whitespace-nowrap bg-gradient-to-l from-accent-1 to-accent-2 bg-clip-text text-transparent"
+                        class="self-center whitespace-nowrap bg-gradient-to-l from-accent-1 to-accent-2 bg-clip-text text-xl font-semibold text-transparent"
                         >Associate</span
                     >
                 </NuxtLink>
@@ -17,7 +17,7 @@
                     <button
                         @click="showUserMenu = false"
                         type="button"
-                        class="burger-menu inline-flex items-center p-2 ml-1 text-sm rounded-lg lg:hidden hover:bg-content/5 focus:outline-none focus:ring-2 focus:ring-content/5"
+                        class="burger-menu ml-1 inline-flex items-center rounded-lg p-2 text-sm hover:bg-content/5 focus:outline-none focus:ring-2 focus:ring-content/5 lg:hidden"
                         popovertarget="mobile-menu-2">
                         <span class="sr-only">Open main menu</span>
                         <svg
@@ -31,7 +31,7 @@
                                 clip-rule="evenodd"></path>
                         </svg>
                         <svg
-                            class="btn-close size-6 hidden"
+                            class="btn-close hidden size-6"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
@@ -44,18 +44,18 @@
                 </div>
                 <div
                     popover
-                    class="md:flex md:flex-1 fixed h-max overflow-visible inset-none m-0 top-12 md:top-0 shadow-lg text-content md:shadow-none shadow-accent-2/10 md:relative md:bg-opacity-0 md:mx-4 z-10 bg-bkg border-t md:border-none border-content/10 w-full lg:w-auto lg:order-1"
+                    class="inset-none fixed top-12 z-10 m-0 h-max w-full overflow-visible border-t border-content/10 bg-bkg text-content shadow-lg shadow-accent-2/10 md:relative md:top-0 md:mx-4 md:flex md:flex-1 md:border-none md:bg-opacity-0 md:shadow-none lg:order-1 lg:w-auto"
                     id="mobile-menu-2">
                     <ul
-                        class="w-full flex flex-col md:items-center mt-4 font-medium lg:flex-row lg:mt-0 justify-between">
+                        class="mt-4 flex w-full flex-col justify-between font-medium md:items-center lg:mt-0 lg:flex-row">
                         <li>
                             <ul
-                                class="flex flex-col gap-4 md:items-center my-4 md:my-0 font-medium lg:flex-row lg:mt-0 justify-between">
+                                class="my-4 flex flex-col justify-between gap-4 font-medium md:my-0 md:items-center lg:mt-0 lg:flex-row">
                                 <li v-for="link in menu" class="relative">
                                     <NuxtLink
                                         @click="hideThePopover"
                                         :to="localPath(link.url)"
-                                        class="block py-2 pr-4 pl-3 rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0"
+                                        class="bg-primary-700 lg:text-primary-700 block rounded py-2 pl-3 pr-4 lg:bg-transparent lg:p-0"
                                         aria-current="page"
                                         >{{
                                             $t(`Menu_${link.name.replaceAll(' ', '_')}`)
@@ -63,7 +63,7 @@
                                     >
                                     <span
                                         v-if="link.name === 'Invites' && totalInvites > 0"
-                                        class="invite-badge absolute size-5 w-fit px-1 flex-center bg-accent-1/90 shadow-lg shadow-content/25 rounded-full -top-3 left-16 md:left-10 text-sm"
+                                        class="invite-badge flex-center absolute -top-3 left-16 size-5 w-fit rounded-full bg-accent-1/90 px-1 text-sm shadow-lg shadow-content/25 md:left-10"
                                         >{{
                                             totalInvites > 9 ? '9+' : totalInvites
                                         }}</span
@@ -76,7 +76,7 @@
                                 <li>
                                     <select
                                         v-model="selectedLocale"
-                                        class="bg-bkg ms-2 me-4 min-w-24 focus-visible:outline focus-visible:outline-bkg_dark">
+                                        class="me-4 ms-2 min-w-24 bg-bkg focus-visible:outline focus-visible:outline-bkg_dark">
                                         <option
                                             v-for="l in locales"
                                             :key="l.code"
@@ -87,7 +87,7 @@
                                 </li>
                                 <li>
                                     <button
-                                        class="m-4 md: my-0 hover:bg-content/10 p-2 rounded"
+                                        class="md: m-4 my-0 rounded p-2 hover:bg-content/10"
                                         @click="toggleTheme">
                                         <SvgDarkMode :isDark="isDark" />
                                     </button>
@@ -96,24 +96,24 @@
                             <div
                                 @click="hideThePopover"
                                 v-if="!user"
-                                class="flex items-center justify-evenly gap-2 bg-blue-200 bg-opacity-20 my-2 md:bg-opacity-0 md:my-0">
+                                class="my-2 flex items-center justify-evenly gap-2 bg-blue-200 bg-opacity-20 md:my-0 md:bg-opacity-0">
                                 <NuxtLink
                                     :to="localPath('/profile/login')"
-                                    class="hover:bg-content/10 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+                                    class="mr-2 rounded-lg px-4 py-2 text-sm font-medium hover:bg-content/10 focus:outline-none focus:ring-4 focus:ring-gray-300 lg:px-5 lg:py-2.5"
                                     >{{ $t('Login') }}</NuxtLink
                                 >
                                 <NuxtLink
                                     :to="localPath('/profile/login?signup=true')"
-                                    class="hover:bg-content/10 bg-primary-700 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+                                    class="bg-primary-700 focus:ring-primary-300 mr-2 rounded-lg px-4 py-2 text-sm font-medium hover:bg-content/10 focus:outline-none focus:ring-4 lg:px-5 lg:py-2.5"
                                     >{{ $t('Signup') }}</NuxtLink
                                 >
                             </div>
                             <div
                                 v-else
-                                class="relative flex-center min-h-14 md:min-h-10 gap-3 px-3 bg-blue-200 bg-opacity-20 my-2 py-2 md:py-0 md:bg-opacity-0 md:my-0">
+                                class="flex-center relative my-2 min-h-14 gap-3 bg-blue-200 bg-opacity-20 px-3 py-2 md:my-0 md:min-h-10 md:bg-opacity-0 md:py-0">
                                 <button @click="showUserMenu = !showUserMenu">
                                     <div
-                                        class="border-2 p-[2px] rounded-full border-y-accent-3 border-x-accent-1 rotate-45">
+                                        class="rotate-45 rounded-full border-2 border-x-accent-1 border-y-accent-3 p-[2px]">
                                         <UserAvatar
                                             :user="storeUser"
                                             class="-rotate-45" />
@@ -126,11 +126,11 @@
                                     <div
                                         v-if="showUserMenu"
                                         @click="hideThePopover"
-                                        class="absolute top-12 bg-bkg shadow-xl shadow-bkg_dark/40 rounded h-fit w-fit divide-y divide-accent-3/50">
+                                        class="absolute top-12 h-fit w-fit divide-y divide-accent-3/50 rounded bg-bkg shadow-xl shadow-bkg_dark/40">
                                         <div class="px-4 py-3 text-sm">
                                             <div>{{ storeUser?.userName }}</div>
                                             <div
-                                                class="font-medium truncate text-content/50">
+                                                class="truncate font-medium text-content/50">
                                                 {{ storeUser?.email }}
                                             </div>
                                         </div>
@@ -269,6 +269,7 @@ const logout = async () => {
         }
         storeUser.value = null
         showUserMenu.value = false
+        hideThePopover()
         router.push({ path: '/' })
     } catch (err) {
         console.error('There was an error during sign out:', err)
