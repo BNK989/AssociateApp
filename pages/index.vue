@@ -10,6 +10,11 @@
                     {{ $t('Signup_to_play') }}
                 </button>
             </NuxtLink>
+            <button
+                @click="createNewTempGame"
+                class="my-4 w-full rounded-full border-2 border-accent-3 px-3 py-2 md:w-2/5">
+                Start a test game
+            </button>
         </div>
         <div v-else>
             <button
@@ -27,9 +32,7 @@
                 <ul class="ChatPreview flex w-full flex-wrap gap-4">
                     <ChatPreview
                         v-for="game in activeGames"
-                        @contextmenu.prevent="
-                            showContextMenu($event, game.id, game.status)
-                        "
+                        @contextmenu.prevent="showContextMenu($event, game.id, game.status)"
                         :key="game.id"
                         :game="game"
                         :userEmail="storeUser?.email" />
@@ -98,7 +101,6 @@
 import type { SkeletonCard } from '#build/components'
 import type { Game } from '~/types/game'
 import PendingInvites from '~/components/Invites/PendingInvites.vue'
-import gsap from 'gsap'
 
 definePageMeta({
     layout: 'scrollable',
@@ -132,9 +134,7 @@ const showNonActiveGames = ref('')
 const nonActiveGames = ref([])
 const nonActiveGamesCategory = ref(['finished', 'archived', 'deleted'])
 
-const activeGames = computed(
-    () => allGames.value?.filter((g) => g.status === 'ACTIVE') || [],
-)
+const activeGames = computed(() => allGames.value?.filter((g) => g.status === 'ACTIVE') || [])
 const isNonActiveGames = computed(
     () => allGames.value?.filter((g) => g.status !== 'ACTIVE') || [],
 )
@@ -171,6 +171,28 @@ const createNewGame = async () => {
         })
         if (!newGame) throw new Error('game not created')
         router.push(`/game/${newGame.id}#newGame`)
+    } catch (err) {
+        console.error('there was an error', err)
+    }
+}
+
+const createNewTempGame = async () => {
+    if (storeUser.value?.id)
+        return store.setToast({ msg: 'You are logged in already', type: 'warn' })
+    const title = generateName()
+    if (!title) return
+
+    try {
+        const newGame = await $fetch('/api/create-game', {
+            method: 'POST',
+            body: {
+                title,
+            },
+        })
+        if (!newGame) throw new Error('game not created')
+        //TODO: load temp user
+
+        router.push(`/game/${newGame.id}?temp=true&email=${newGame.tempEmail}#newGame`)
     } catch (err) {
         console.error('there was an error', err)
     }

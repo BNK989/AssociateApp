@@ -24,8 +24,7 @@ const { user: storeUser } = storeToRefs(store)
 const gameId = route?.params?.gameid
 
 const joinGame = async () => {
-    if (!storeUser.value)
-        return store.setToast({ msg: 'Please login first', type: 'warn' })
+    if (!storeUser.value) return store.setToast({ msg: 'Please login first', type: 'warn' })
     try {
         const { error, success } = await $fetch(`/api/${gameId}/add-user-by-link`, {
             method: 'PUT',
@@ -58,10 +57,9 @@ onMounted(async () => {
         try {
             const { data: userData, error: userError } = await supabase.auth.getUser()
 
-            if (userError)
-                throw new Error(`Error fetching user data: ${userError.message}`)
-            if (!userData || !userData.user)
-                throw new Error('No user data found after login.')
+            if (userError) throw new Error(`Error fetching user data: ${userError.message}`)
+            // if (!userData || !userData.user)
+            //     throw new Error('No user data found after login.')
 
             const user = userData.user
             const userEmail = user.email

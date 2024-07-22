@@ -16,7 +16,16 @@ export default defineEventHandler(async (e) => {
                     },
                 },
             },
-            include: {
+            select: {
+                id: true,
+                createdAt: true,
+                title: true,
+                score: true,
+                updatedAt: true,
+                nextTurn: true,
+                GameMode: true,
+                status: true,
+                totalWords: true,
                 Users: {
                     select: {
                         user: {

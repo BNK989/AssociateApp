@@ -24,6 +24,7 @@ export const useStore = defineStore('store', {
         inviteesEmails: (state) => state.game?.invites.map((i) => i.email),
         userPref: (state) => state.user?.preferences,
         activeGameScore: (state) => state.game?.score,
+        isTempUser: (state) => state.user?.isTemp,
     },
 
     actions: {

@@ -24,8 +24,7 @@ onMounted(async () => {
         const { data: userData, error: userError } = await supabase.auth.getUser()
 
         if (userError) throw new Error(`Error fetching user data: ${userError.message}`)
-        if (!userData || !userData.user)
-            throw new Error('No user data found after login.')
+        if (!userData || !userData.user) throw new Error('No user data found after login.')
 
         const user = userData.user
         const userEmail = user.email
@@ -34,7 +33,7 @@ onMounted(async () => {
         const temp = await upsertAndLoadUser(userEmail, full_name, avatar_url)
     } catch (err) {
         console.error('There was an error at login:', err)
-        store.setToast({ msg: 'There was an error at login', type: 'error' })
+        store.setToast({ msg: 'There was an error at login, ' + err, type: 'error' })
         router.push('/profile/login')
     }
 })

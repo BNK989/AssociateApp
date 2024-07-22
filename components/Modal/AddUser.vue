@@ -1,12 +1,12 @@
 <template>
     <div
-        class="h-modal z-50 w-full min-w-80 items-center justify-center rounded md:h-full md:w-[40dvw]">
-        <div class="relative h-full w-full max-w-2xl p-4 md:h-auto">
+        class="h-modal z-50 w-full min-w-80 items-center justify-center overflow-hidden rounded md:h-full md:w-[40dvw]">
+        <div class="relative h-full w-full max-w-2xl overflow-hidden p-4 md:h-auto">
             <!-- Modal content -->
-            <div class="relative rounded-lg p-4 shadow sm:p-5">
+            <div class="relative overflow-hidden rounded-lg p-4 shadow sm:p-5">
                 <!-- Modal header -->
                 <div
-                    class="mb-4 flex items-center justify-between rounded-t pb-4 sm:mb-5">
+                    class="mb-4 flex items-center justify-between overflow-hidden rounded-t pb-4 sm:mb-5">
                     <h3 class="text-lg font-semibold">Add Player</h3>
                     <button
                         @click="$emit('closeModal')"
@@ -40,7 +40,7 @@
                 </div>
                 <section>
                     <div
-                        class="mb-4 grid min-h-96 gap-4 rounded border-accent-2/40 py-4 md:border">
+                        class="mb-4 grid h-[45dvh] gap-4 overflow-y-auto rounded border-accent-2/40 py-4 md:border">
                         <ul class="flex flex-col gap-4 divide-accent-2/40 md:divide-y">
                             <!-- <pre>{{ players }}</pre> -->
                             <li

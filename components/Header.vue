@@ -64,9 +64,7 @@
                                     <span
                                         v-if="link.name === 'Invites' && totalInvites > 0"
                                         class="invite-badge flex-center absolute -top-3 left-16 size-5 w-fit rounded-full bg-accent-1/90 px-1 text-sm shadow-lg shadow-content/25 md:left-10"
-                                        >{{
-                                            totalInvites > 9 ? '9+' : totalInvites
-                                        }}</span
+                                        >{{ totalInvites > 9 ? '9+' : totalInvites }}</span
                                     >
                                 </li>
                             </ul>
@@ -114,9 +112,7 @@
                                 <button @click="showUserMenu = !showUserMenu">
                                     <div
                                         class="rotate-45 rounded-full border-2 border-x-accent-1 border-y-accent-3 p-[2px]">
-                                        <UserAvatar
-                                            :user="storeUser"
-                                            class="-rotate-45" />
+                                        <UserAvatar :user="storeUser" class="-rotate-45" />
                                     </div>
                                 </button>
 
@@ -129,8 +125,7 @@
                                         class="absolute top-12 h-fit w-fit divide-y divide-accent-3/50 rounded bg-bkg shadow-xl shadow-bkg_dark/40">
                                         <div class="px-4 py-3 text-sm">
                                             <div>{{ storeUser?.userName }}</div>
-                                            <div
-                                                class="truncate font-medium text-content/50">
+                                            <div class="truncate font-medium text-content/50">
                                                 {{ storeUser?.email }}
                                             </div>
                                         </div>
@@ -270,7 +265,7 @@ const logout = async () => {
         storeUser.value = null
         showUserMenu.value = false
         hideThePopover()
-        router.push({ path: '/' })
+        window.location.reload()
     } catch (err) {
         console.error('There was an error during sign out:', err)
     }

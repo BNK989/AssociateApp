@@ -94,8 +94,8 @@
                         <button
                             @click="$emit('toggleRelaxCheck')"
                             class="flex-center w-full gap-1 py-2 text-accent-2 duration-200 hover:bg-bkg_dark/40">
-                            {{ relaxCheckEnabled ? 'Disable' : 'Enable' }} Relax Check
-                            (allow spelling errors)
+                            {{ relaxCheckEnabled ? 'Disable' : 'Enable' }} Relax Check (allow
+                            spelling errors)
                         </button>
                         <button
                             @click="$emit('getHint')"
@@ -139,7 +139,7 @@
     </section>
     <dialog
         ref="modal"
-        class="rounded bg-bkg text-content backdrop:bg-black/50 backdrop:blur-2xl">
+        class="overflow-hidden rounded bg-bkg text-content backdrop:bg-black/50 backdrop:blur-2xl">
         <ModalAddUser @closeModal="modal.close()" />
     </dialog>
 </template>

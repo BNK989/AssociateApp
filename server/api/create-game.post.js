@@ -1,45 +1,45 @@
+import { v4 as randomUUID } from 'uuid'
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (e) => {
     const { title, user_id } = await readBody(e)
-    // const bla = await getHeaders(e)
-    // const blaObj = JSON.parse(bla.cookie)
-    // console.log('blaObj:', blaObj)
-
-    // console.log('creating game', title, user_id)
 
     let res
+    const tempEmail = title.replace(' ', '-').toLowerCase() + '@temp.app'
+    const randomUuid = randomUUID()
 
     try {
-        // const authHeader = e.req.headers.authorization //NEW
-        // const token = authHeader ? authHeader.split(' ')[1] : null //NEW
         res = await prisma.games.create({
             data: {
                 title,
                 Users: {
                     create: [
                         {
-                            user: { connect: { id: user_id } },
+                            user: {
+                                connectOrCreate: {
+                                    where: {
+                                        id: user_id ?? randomUuid,
+                                    },
+                                    create: {
+                                        id: randomUuid,
+                                        userName: title,
+                                        email: tempEmail,
+                                        avatar: 'avatar',
+                                        isTemp: true,
+                                    },
+                                },
+                            },
                         },
                     ],
                 },
             },
-            // context: {
-            //     //NEW
-            //     headers: {
-            //         //NEW
-            //         Authorization: `Bearer ${token}`, //NEW
-            //     }, //NEW
-            // }, //NEW
         })
-
-        //try create if connect does not work
 
         if (!res) throw new Error(`game id: ${gameId} not found`)
     } catch (err) {
         console.error('there was an error', err)
     }
 
-    return res
+    return { ...res, tempEmail }
 })

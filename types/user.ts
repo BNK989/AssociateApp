@@ -7,6 +7,7 @@ export interface User {
     authinticator?: string
     preferences?: Preferences
     receivedInvites: MiniUser[]
+    isTemp: boolean
 }
 
 export type MiniUser = {
