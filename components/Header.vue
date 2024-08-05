@@ -50,7 +50,7 @@
                         class="mt-4 flex w-full flex-col justify-between font-medium md:items-center lg:mt-0 lg:flex-row">
                         <li>
                             <ul
-                                class="my-4 flex flex-col justify-between gap-4 font-medium md:my-0 md:items-center lg:mt-0 lg:flex-row">
+                                class="mb-4 flex flex-col justify-between gap-4 font-medium md:my-0 md:items-center lg:mt-0 lg:flex-row">
                                 <li v-for="link in menu" class="relative">
                                     <NuxtLink
                                         @click="hideThePopover"
@@ -286,18 +286,41 @@ watch(
 </script>
 
 <style>
-:has(:popover-open) .burger-menu svg:first-of-type {
+#mobile-menu-2 {
+    /* closing state */
+    transition:
+        display 1s ease,
+        translate 1s ease,
+        opacity 1s ease;
+    transition-behavior: allow-discrete;
+    translate: 0 -80px;
+    opacity: 0;
+
+    &:popover-open {
+        /* default state */
+        translate: 0;
+        opacity: 1;
+
+        @starting-style {
+            /* opening state */
+            translate: 0 -60px;
+            opacity: 0;
+        }
+    }
+}
+
+/* :has(:popover-open) .burger-menu svg:first-of-type {
     display: none;
 }
 
 :has(:popover-open) .burger-menu svg:last-of-type {
     display: block;
-}
-@media (max-width: 1024px) {
+} */
+/* @media (max-width: 1024px) {
     [popover] {
         animation: slide-in 0.6s ease;
     }
-}
+} */
 
 .pop-enter-active {
     animation: pop-in 0.5s;
@@ -317,7 +340,7 @@ watch(
     }
 }
 
-@keyframes slide-in {
+/* @keyframes slide-in {
     0% {
         transform: translateY(-400px);
         opacity: 0;
@@ -333,5 +356,5 @@ watch(
     100% {
         transform: translateY(0);
     }
-}
+} */
 </style>
