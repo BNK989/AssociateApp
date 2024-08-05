@@ -286,25 +286,27 @@ watch(
 </script>
 
 <style>
-#mobile-menu-2 {
-    /* closing state */
-    transition:
-        display 1s ease,
-        translate 1s ease,
-        opacity 1s ease;
-    transition-behavior: allow-discrete;
-    translate: 0 -80px;
-    opacity: 0;
+@media (width < 768px) {
+    #mobile-menu-2 {
+        /* closing state */
+        transition:
+            display 1s ease,
+            translate 1s ease,
+            opacity 1s ease;
+        transition-behavior: allow-discrete;
+        translate: 0 -80px;
+        opacity: 0;
 
-    &:popover-open {
-        /* default state */
-        translate: 0;
-        opacity: 1;
+        &:popover-open {
+            /* default state */
+            translate: 0;
+            opacity: 1;
 
-        @starting-style {
-            /* opening state */
-            translate: 0 -60px;
-            opacity: 0;
+            @starting-style {
+                /* opening state */
+                translate: 0 -60px;
+                opacity: 0;
+            }
         }
     }
 }
