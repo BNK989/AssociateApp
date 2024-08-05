@@ -139,7 +139,7 @@
     </section>
     <dialog
         ref="modal"
-        class="overflow-hidden rounded bg-bkg text-content backdrop:bg-black/50 backdrop:blur-2xl">
+        class="add-user overflow-hidden rounded bg-bkg text-content backdrop:bg-black/50 backdrop:blur-2xl">
         <ModalAddUser @closeModal="modal.close()" />
     </dialog>
 </template>
@@ -155,6 +155,7 @@ const props = defineProps({
 const emit = defineEmits(['changeGameMode', 'getHint', 'revealWord', 'toggleRelaxCheck'])
 
 const route = useRoute()
+const router = useRouter()
 const localPath = useLocalePath()
 
 const store = useStore()
@@ -166,6 +167,7 @@ const showGameMenu = ref(false)
 onMounted(() => {
     if (route.hash === '#newGame') {
         showModal()
+        router.replace({ hash: '' })
     }
 })
 
@@ -175,6 +177,29 @@ const showModal = () => {
 </script>
 
 <style scoped>
+dialog.add-user {
+    /* closing state */
+    transition:
+        display 0.8s ease,
+        scale 0.5s ease,
+        translate 0.5s ease;
+    transition-behavior: allow-discrete;
+    scale: 0;
+    translate: -80px -300px;
+
+    &[open] {
+        /* default state */
+        translate: 0;
+        scale: 1;
+
+        @starting-style {
+            /* opening state */
+            translate: -60px -60px;
+            scale: 0;
+        }
+    }
+}
+
 .top-pop-enter-active,
 .top-pop-leave-active {
     transition: all 0.6s ease;
