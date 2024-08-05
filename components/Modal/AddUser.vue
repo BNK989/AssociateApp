@@ -30,7 +30,7 @@
                 <div class="my-2">
                     <label for="name" class="mb-2 block text-sm font-medium">Name</label>
                     <input
-                        @input="getPlayers()"
+                        @input="debouncedFn()"
                         v-model="q"
                         type="text"
                         name="name"
@@ -83,7 +83,6 @@
 <script lang="ts" setup>
 const store = useStore()
 const { user: storeUser, game: storeGame } = storeToRefs(store)
-// const { debounce } = useUtilities()
 defineEmits(['closeModal'])
 
 const players = ref([])
@@ -92,8 +91,6 @@ const q = ref('')
 onMounted(() => {
     getPlayers()
 })
-
-// TODO: ADD DEBOUNCE TO GET PLAYERS
 
 const getPlayers = async () => {
     const qPlayers = await $fetch(
@@ -110,6 +107,8 @@ const getPlayers = async () => {
         players.value = qPlayers
     }
 }
+
+const debouncedFn = useDebounceFn(getPlayers, 500, { maxWait: 5000 })
 
 const invitePlayerToGame = async (ev: MouseEvent, id: number) => {
     const target = ev.target as HTMLElement
