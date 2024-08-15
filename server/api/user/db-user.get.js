@@ -3,7 +3,7 @@ const prisma = new PrismaClient()
 
 export default defineEventHandler(async (e) => {
     const { email } = getQuery(e)
-    if (!email) return console.warn('No email provided at db-user.get')
+    if (email === 'undefined') return console.warn('No email provided at db-user.get')
 
     let res
     let reducedRes
