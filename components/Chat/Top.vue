@@ -184,7 +184,7 @@ const showGameMenu = ref(false)
 const showChatTour = ref(false)
 
 onMounted(() => {
-    if (storeUser.value.games.length >= 1) {
+    if (storeUser.value.games.length <= 1) {
         showChatTour.value = true
     } else if (route.hash === '#newGame') {
         showModal()
