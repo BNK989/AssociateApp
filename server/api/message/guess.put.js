@@ -6,9 +6,16 @@ const supabaseKey = process.env.SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 export default defineEventHandler(async (e) => {
     const body = await readBody(e)
-    const { wordId: world_id, guess, gameId } = body
+    const { wordId: world_id, guess, gameId, user_id } = body
 
-    const { data, error } = await supabase.rpc('resolve_message', { world_id, guess })
+    console.log('user_id:', user_id)
+
+    // const { data, error } = await supabase.rpc('resolve_message', { world_id, guess })
+    const { data, error } = await supabase.rpc('resolve_message_b', {
+        world_id,
+        guess,
+        user_id,
+    })
 
     if (error) {
         return { success: false, error: error.message }

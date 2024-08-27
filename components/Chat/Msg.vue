@@ -1,13 +1,12 @@
 <template>
     <li class="ms-2 flex items-center gap-1" :id="'w-' + w.id">
         <SvgCheckMark v-if="w.isResolved" />
-        <NuxtImg
-            :src="w.user?.avatar"
-            class="me-1 size-8 rounded-full"
-            alt="Rounded avatar" />
+        <NuxtImg :src="w.user?.avatar" class="me-1 size-8 rounded-full" alt="Rounded avatar" />
         <!-- @contextmenu.prevent="showContextMenu($event, w.id)" -->
         <div
-            class="w-min select-none whitespace-nowrap bg-blue-300 bg-opacity-10 px-3 pb-2 pt-1">
+            ref="msgRef"
+            @click="flashEffect"
+            class="w-min select-none whitespace-nowrap bg-accent-3/10 px-3 pb-2 pt-1 duration-700">
             <div class="flex items-center gap-2">
                 <MiniEncrypter :t="stringToShow" />
             </div>
@@ -59,6 +58,12 @@ const props = defineProps({
         required: true,
     },
 })
+const msgRef = ref<HTMLDivElement | null>(null)
+
+function flashEffect() {
+    msgRef.value.classList.replace('bg-accent-3/10', 'bg-accent-3/45')
+    setTimeout(() => msgRef.value.classList.replace('bg-accent-3/45', 'bg-accent-3/10'), 1000)
+}
 
 const stringToShow = computed(() => {
     let text: string
@@ -67,6 +72,8 @@ const stringToShow = computed(() => {
     } else {
         text = props.isMyTurn || props.isSolve ? props.w.content : props.w.cipher
     }
+    if (!text.includes('::')) flashEffect()
+
     return text
 })
 const store = useStore()

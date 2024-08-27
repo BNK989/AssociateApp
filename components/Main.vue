@@ -224,6 +224,7 @@ async function guessWord(word: string) {
         guess: word,
         wordId: nextWordToGuess.value.id,
         gameId,
+        user_id: storeUser.value.id,
     }
     let apiRoute = '/api/message/guess'
 
