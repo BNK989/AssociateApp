@@ -14,7 +14,7 @@
                 x="20"
                 y="20"
                 fill="white"
-                :font-size="initials.length * 0.3 + 'em'"
+                :font-size="initials.length * 0.5 + 'em'"
                 text-anchor="middle"
                 dominant-baseline="middle"
                 dy="0.1em">
