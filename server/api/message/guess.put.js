@@ -8,10 +8,8 @@ export default defineEventHandler(async (e) => {
     const body = await readBody(e)
     const { wordId: world_id, guess, gameId, user_id } = body
 
-    console.log('user_id:', user_id)
-
     // const { data, error } = await supabase.rpc('resolve_message', { world_id, guess })
-    const { data, error } = await supabase.rpc('resolve_message_b', {
+    const { data, error } = await supabase.rpc('resolve_message', {
         world_id,
         guess,
         user_id,
