@@ -2,11 +2,14 @@
     <li class="ms-2 flex items-center gap-1" :id="'w-' + w.id">
         <SvgCheckMark v-if="w.isResolved" />
         <NuxtImg :src="w.user?.avatar" class="me-1 size-8 rounded-full" alt="Rounded avatar" />
-        <!-- @contextmenu.prevent="showContextMenu($event, w.id)" -->
         <div
             ref="msgRef"
             @click="flashEffect"
-            class="w-min select-none whitespace-nowrap bg-accent-3/10 px-3 pb-2 pt-1 duration-700">
+            @contextmenu.prevent="showContextMenu($event, w.id)"
+            :class="[
+                'w-min select-none whitespace-nowrap px-3 pb-2 pt-1 duration-700',
+                bgClass
+            ]">
             <div class="flex items-center gap-2">
                 <MiniEncrypter :t="stringToShow" />
             </div>
@@ -15,19 +18,20 @@
         <div v-if="isArrow" id="lastGuess">
             <SvgArrowRight class="rotate-180 animate-pulse" />
         </div>
-        <!-- <Transition>
+        <Transition>
             <MiniContextMenu
                 v-if="showMenu"
                 :actions="contextMenuActions"
                 @action-clicked="handleActionClick"
                 :x="menuX"
                 :y="menuY" />
-        </Transition> -->
+        </Transition>
     </li>
 </template>
 
 <script lang="ts" setup>
 import type { Word } from '@/types/word'
+
 const props = defineProps({
     w: {
         type: Object as PropType<Word>,
@@ -58,16 +62,18 @@ const props = defineProps({
         required: true,
     },
 })
+
 const msgRef = ref<HTMLDivElement | null>(null)
-const shouldFlash = ref(false)
+const isHighlighted = ref(false)
+
+// Use reactive class instead of direct DOM manipulation
+const bgClass = computed(() => isHighlighted.value ? 'bg-accent-3/45' : 'bg-accent-3/10')
 
 function flashEffect() {
     if (!msgRef.value) return
-    msgRef.value.classList.replace('bg-accent-3/10', 'bg-accent-3/45')
+    isHighlighted.value = true
     setTimeout(() => {
-        if (msgRef.value) {
-            msgRef.value.classList.replace('bg-accent-3/45', 'bg-accent-3/10')
-        }
+        isHighlighted.value = false
     }, 1000)
 }
 
@@ -79,82 +85,72 @@ const stringToShow = computed(() => {
         text = props.isMyTurn || props.isSolve ? props.w.content : props.w.cipher
     }
     
-    // Set shouldFlash if text doesn't include '::'
+    // Queue flash effect for next tick if needed
     if (!text.includes('::')) {
-        shouldFlash.value = true
+        nextTick(() => flashEffect())
     }
     return text
-})
-
-// Watch shouldFlash and trigger flash effect when component is mounted
-watch(shouldFlash, (newVal) => {
-    if (newVal && msgRef.value) {
-        flashEffect()
-        shouldFlash.value = false
-    }
 })
 
 const store = useStore()
 
 // **** CONTEXT MENU ****
-// const showMenu = ref(false)
-// const menuX = ref(0)
-// const menuY = ref(0)
-// const targetRow = ref({})
-// const contextMenuActions = computed(() => {
-//     if (props.w.isResolved) {
-//         return [{ label: 'Delete', action: 'delete' }]
-//     } else {
-//         return [
-//             // { label: 'Delete', action: 'delete' },
+const showMenu = ref(false)
+const menuX = ref(0)
+const menuY = ref(0)
+const targetRow = ref<any>({})
 
-//             {
-//                 label: 'Request a hint',
-//                 action: 'getHint',
-//                 icon: '💡',
-//             },
-//             {
-//                 label: 'Reveal solution (500 point)',
-//                 action: 'reveal',
-//                 icon: '🔒',
-//             },
-//         ]
-//     }
-// })
+const contextMenuActions = computed(() => {
+    if (props.w.isResolved) {
+        return [{ label: 'Delete', action: 'delete' }]
+    } else {
+        return [
+            {
+                label: 'Request a hint',
+                action: 'getHint',
+                icon: '💡',
+            },
+            {
+                label: 'Reveal solution (500 point)',
+                action: 'reveal',
+                icon: '🔒',
+            },
+        ]
+    }
+})
 
-// const showContextMenu = (event, item) => {
-//     if (props.w.isResolved) return
-//     showMenu.value = true
-//     targetRow.value = item
-//     menuX.value = event.layerX
-//     menuY.value = event.layerY
-// }
-// const closeContextMenu = () => {
-//     showMenu.value = false
-// }
+const showContextMenu = (event: MouseEvent, item: any) => {
+    if (props.w.isResolved) return
+    showMenu.value = true
+    targetRow.value = item
+    menuX.value = event.layerX
+    menuY.value = event.layerY
+}
 
-// async function handleActionClick(action: string): Promise<void> {
-//     let res
-//     if (action === 'closeContextMenu') {
-//         closeContextMenu()
-//     } else if (action === 'getHint') {
-//         getHint(targetRow.value)
-//     } else if (action === 'reveal') {
-//         reveal(targetRow.value)
-//     }
-// }
-// **** CONTEXT MENU END ****
+const closeContextMenu = () => {
+    showMenu.value = false
+}
 
-// const getHint = async (wordId) => {
-//     const hint = await $fetch(`/api/ai/hint?msg_id=${wordId}`)
-//     store.setToast({ msg: hint, type: 'info', duration: 10000 })
-// }
+async function handleActionClick(action: string): Promise<void> {
+    if (action === 'closeContextMenu') {
+        closeContextMenu()
+    } else if (action === 'getHint') {
+        await getHint(targetRow.value)
+    } else if (action === 'reveal') {
+        await reveal(targetRow.value)
+    }
+}
 
-// const reveal = async (wordId) => {
-//     const res = await $fetch(`/api/message/reveal?msg_id=${wordId}`, {
-//         method: 'PUT',
-//     })
-// }
+const getHint = async (wordId: string) => {
+    const hint = await $fetch<string>(`/api/ai/hint?msg_id=${wordId}`)
+    store.setToast({ msg: hint, type: 'info', duration: 10000 })
+}
+
+const reveal = async (wordId: string) => {
+    await $fetch(`/api/message/reveal?msg_id=${wordId}`, {
+        method: 'PUT',
+    })
+}
 </script>
 
 <style>
