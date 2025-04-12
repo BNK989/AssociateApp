@@ -59,10 +59,16 @@ const props = defineProps({
     },
 })
 const msgRef = ref<HTMLDivElement | null>(null)
+const shouldFlash = ref(false)
 
 function flashEffect() {
+    if (!msgRef.value) return
     msgRef.value.classList.replace('bg-accent-3/10', 'bg-accent-3/45')
-    setTimeout(() => msgRef.value.classList.replace('bg-accent-3/45', 'bg-accent-3/10'), 1000)
+    setTimeout(() => {
+        if (msgRef.value) {
+            msgRef.value.classList.replace('bg-accent-3/45', 'bg-accent-3/10')
+        }
+    }, 1000)
 }
 
 const stringToShow = computed(() => {
@@ -72,10 +78,22 @@ const stringToShow = computed(() => {
     } else {
         text = props.isMyTurn || props.isSolve ? props.w.content : props.w.cipher
     }
-    if (!text.includes('::')) flashEffect()
-
+    
+    // Set shouldFlash if text doesn't include '::'
+    if (!text.includes('::')) {
+        shouldFlash.value = true
+    }
     return text
 })
+
+// Watch shouldFlash and trigger flash effect when component is mounted
+watch(shouldFlash, (newVal) => {
+    if (newVal && msgRef.value) {
+        flashEffect()
+        shouldFlash.value = false
+    }
+})
+
 const store = useStore()
 
 // **** CONTEXT MENU ****

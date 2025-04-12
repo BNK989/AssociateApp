@@ -112,7 +112,7 @@
                                 <button @click="showUserMenu = !showUserMenu">
                                     <div
                                         class="rotate-45 rounded-full border-2 border-x-accent-1 border-y-accent-3 p-[2px]">
-                                        <UserAvatar :user="storeUser" class="-rotate-45" />
+                                        <UserAvatar v-if="storeUser" :user="storeUser" class="-rotate-45" />
                                     </div>
                                 </button>
 

@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '../../utils/prisma'
 
 export default defineEventHandler(async (e) => {
     const { inviteId, status } = await readBody(e)
@@ -13,14 +12,14 @@ export default defineEventHandler(async (e) => {
                 id: +inviteId,
             },
             data: {
-                status: status,
+                status,
             },
             select: {
                 gameId: true,
                 inviteeId: true,
             },
         })
-        if (status === 'DECLINED') return { success: true, status: status }
+        if (status === 'DECLINED') return { success: true, status }
 
         if (!res && res?.gameId) {
             throw new Error('error updating invite status')
@@ -33,7 +32,7 @@ export default defineEventHandler(async (e) => {
             })
         }
         if (!gameRes) throw new Error('error adding user to game')
-        else return { success: true, status: status, gameId: res.gameId }
+        else return { success: true, status, gameId: res.gameId }
     } catch (err) {
         console.error('there was an error', err)
         await prisma.invites.update({

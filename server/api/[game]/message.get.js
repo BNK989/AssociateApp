@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
-// const client = useSupabaseClient()
+import { prisma } from '../../utils/prisma'
 
 export default defineEventHandler(async (e) => {
     const gameId = +e.context.params.game

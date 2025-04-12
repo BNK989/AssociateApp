@@ -33,7 +33,7 @@ import type { Game } from '@/types/game'
 
 const route = useRoute()
 const { generateRandomString } = useUtilities()
-const gameId = route.params.gameid
+const gameId = route.params.game_id
 const game: Game | any = ref({})
 const gameMode = computed(() => game.value.GameMode)
 const feedback = ref('')
@@ -120,21 +120,30 @@ const nudge = (isOn: boolean) => {
 
 const loadMessages = async () => {
     try {
-        const data = await $fetch(`/api/message/${gameId}`)
+        const data = await $fetch<Word[]>(`/api/message/${gameId}`)
         if (!data) throw new Error('could not load messages')
-
-        //@ts-ignore
         messages.value = data
+        // Update global game state with latest message count
+        if (game.value && messages.value.length > 0) {
+            game.value.totalWords = messages.value.filter((m) => !m.isResolved).length - 1
+        }
     } catch (err) {
         console.error('there was an error', err)
     }
 }
+
 const loadGame = async () => {
     try {
         // @ts-ignore
         const data = (await $fetch(`/api/${gameId}/full-game`)) as Game
         if (!data) throw new Error('could not load messages')
         game.value = data
+
+        // Force message refresh when game mode changes
+        if (game.value.GameMode === 'SOLVE' || game.value.GameMode === 'SOLVE_PENDING') {
+            await loadMessages()
+        }
+
         if (
             game.value.GameMode === 'SOLVE_PENDING' &&
             !game.value.confirmChange.includes(storeUser.value.id)

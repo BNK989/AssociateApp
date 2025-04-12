@@ -1,18 +1,8 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '../../utils/prisma'
 
 export default defineEventHandler(async (e) => {
-    const {
-        gameMode = null,
-        senderId = null,
-        resetConfirmChange = false,
-    } = await readBody(e)
+    const { gameMode = null, senderId = null, resetConfirmChange = false } = await readBody(e)
     const game_id = +e.context.params.game
-
-    // console.log('gameMode:', gameMode)
-    // console.log('senderId:', senderId)
-    // console.log('resetConfirmChange:', resetConfirmChange)
-    // console.log('game_id:', game_id)
 
     const data = { GameMode: gameMode }
     if (resetConfirmChange) data.confirmChange = []
@@ -37,7 +27,7 @@ export default defineEventHandler(async (e) => {
             data,
         })
 
-        if (!res) throw new Error(`game id: ${gameId} not found`)
+        if (!res) throw new Error(`game id: ${game_id} not found`)
     } catch (err) {
         console.error('there was an error', err)
     }

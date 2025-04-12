@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '../../utils/prisma'
 
 export default defineEventHandler(async (e) => {
     const { email } = getQuery(e)
@@ -11,9 +10,7 @@ export default defineEventHandler(async (e) => {
     try {
         if (!email) throw new Error('No email provided at db-user.get')
         res = await prisma.users.findUnique({
-            where: {
-                email,
-            },
+            where: { email },
             include: {
                 Games: {
                     select: {
@@ -44,13 +41,13 @@ export default defineEventHandler(async (e) => {
         if (!res) throw new Error(`user with email ${email} not found`)
         reducedRes = {
             ...res,
-            games: res.Games.map((g) => g.game.id),
-            receivedInvites: res.receivedInvites.map((i) => i.inviter),
+            games: res.Games.map((g) => g.game),
+            invites: res.receivedInvites.map((i) => ({
+                from: i.inviter,
+            })),
         }
-
         delete reducedRes.Games
-        delete reducedRes.createdAt
-        delete reducedRes.lastLoginAt
+        delete reducedRes.receivedInvites
     } catch (err) {
         console.error('there was an error', err)
     }

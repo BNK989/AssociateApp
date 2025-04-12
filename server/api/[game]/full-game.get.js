@@ -1,15 +1,17 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
-// const client = useSupabaseClient()
+import { prisma } from '../../utils/prisma'
 
 export default defineEventHandler(async (e) => {
-    const gameId = +e.context.params.game
+    const gameId = parseInt(e.context.params.game_id || e.context.params.game)
 
-    let res
-    let cleanRes
+    if (!gameId || isNaN(gameId)) {
+        throw createError({
+            statusCode: 400,
+            message: 'Invalid game ID provided',
+        })
+    }
 
     try {
-        res = await prisma.games.findUnique({
+        const res = await prisma.games.findUnique({
             where: {
                 id: gameId,
             },
@@ -44,17 +46,26 @@ export default defineEventHandler(async (e) => {
             },
         })
 
-        if (!res) throw new Error(`game id: ${gameId} not found`)
+        if (!res) {
+            throw createError({
+                statusCode: 404,
+                message: `Game with id: ${gameId} not found`,
+            })
+        }
 
-        cleanRes = {
+        const cleanRes = {
             ...res,
             players: res.Users.map((u) => u.user),
             invites: res.invites.map((i) => i.invitee),
         }
         delete cleanRes.Users
-    } catch (err) {
-        console.error('there was an error', err)
-    }
 
-    return cleanRes
+        return cleanRes
+    } catch (err) {
+        console.error('Error fetching game:', err)
+        throw createError({
+            statusCode: err.statusCode || 500,
+            message: err.message || 'Internal server error while fetching game',
+        })
+    }
 })

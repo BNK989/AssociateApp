@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '../../utils/prisma'
 
 export default defineEventHandler(async (e) => {
     const gameId = +e.context.params.game
@@ -22,6 +21,11 @@ export default defineEventHandler(async (e) => {
                 cipher: true,
                 isResolved: true,
                 senderId: true,
+                Game: {
+                    select: {
+                        GameMode: true,
+                    },
+                },
             },
         })
 
@@ -32,13 +36,16 @@ export default defineEventHandler(async (e) => {
 
     refinedRes = res.map((msg, i) => {
         const isLast = i === res.length - 1
+        const isInputMode = msg.Game.GameMode === 'INPUT'
         return {
             id: msg.id,
             createdAt: msg.createdAt,
-            content: msg.isResolved || isLast ? msg.content : '',
+            content: msg.content,
             cipher: msg.cipher,
             isResolved: msg.isResolved,
             senderId: msg.senderId,
+            isLast,
+            isOpen: !isLast && !isInputMode,
         }
     })
 

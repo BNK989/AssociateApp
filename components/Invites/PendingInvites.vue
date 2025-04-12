@@ -8,8 +8,6 @@
                         <th scope="col" class="px-2 py-1" colspan="3">
                             <h2 class="my-2 text-xl">{{ $t('Pending_Invites') }}</h2>
                         </th>
-                        <!-- <th scope="col" class="px-6 py-3">At</th>
-                        <th scope="col" class="px-6 py-3">Action</th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -56,43 +54,53 @@
 </template>
 
 <script lang="ts" setup>
-import { getInvites } from '@/services/loadInvites'
 import { relativeTime } from '@/services/dateTime'
 const store = useStore()
-const { user } = storeToRefs(store)
 const router = useRouter()
 
-const allInvites = ref([])
-const pendingInvites = computed(() => {
-    if (allInvites?.value?.length < 1 || !allInvites?.value) return []
-    return allInvites?.value.filter((invite) => invite.status === 'PENDING')
-})
-//@ts-ignore
-allInvites.value = await getInvites(user.value?.id)
+interface Invite {
+    id: number
+    status: string
+    createdAt: string
+    inviter: {
+        userName: string
+        avatar?: string
+    }
+}
 
-const respondToInvite = async (inviteId, status) => {
-    const res = await $fetch('/api/invite/approve', {
+interface InviteResponse {
+    success: boolean
+    status: 'ACCEPTED' | 'DECLINED'
+    gameId?: number
+}
+
+// Props
+const props = defineProps<{
+    invites: Invite[]
+}>()
+
+// Computed
+const pendingInvites = computed(() => {
+    if (!props.invites?.length) return []
+    return props.invites.filter((invite) => invite.status === 'PENDING')
+})
+
+// Methods
+const respondToInvite = async (inviteId: number, status: 'ACCEPTED' | 'DECLINED') => {
+    const res = await $fetch<InviteResponse>('/api/invite/approve', {
         method: 'PUT',
         body: { inviteId, status },
     })
     if (res && res.success) {
-        //@ts-ignore
         if (res.status === 'DECLINED') {
             return store.setToast({ msg: 'Invitation rejected', type: 'warn' })
         }
         store.setToast({ msg: 'Game joined', type: 'success' })
-        //@ts-ignore
-        await router.push(`/game/${res.gameId}`)
+        if (res.gameId) {
+            await router.push(`/game/${res.gameId}`)
+        }
     } else {
         store.setToast({ msg: 'Something went wrong', type: 'error' })
     }
 }
-
-watch(
-    () => user.value?.receivedInvites?.length,
-    async () => {
-        //@ts-ignore
-        invites.value = await getInvites(user.value?.id)
-    },
-)
 </script>

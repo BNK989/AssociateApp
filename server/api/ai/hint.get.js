@@ -1,14 +1,12 @@
 import dotenv from 'dotenv'
 import { GoogleGenerativeAI } from '@google/generative-ai'
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '../../utils/prisma'
 
 dotenv.config()
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY)
 
 export default defineEventHandler(async (e) => {
-    // const word = e.context.params.word
     const { msg_id } = getQuery(e)
     let res
 

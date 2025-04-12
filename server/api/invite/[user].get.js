@@ -1,12 +1,14 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '../../utils/prisma'
 
 export default defineEventHandler(async (e) => {
     const user = e.context.params.user
 
-    if (!user) throw new Error('Missing user at request')
-    let res
+    if (!user) {
+        console.warn('No user provided to [user].get.js')
+        return []
+    }
 
+    let res
     try {
         res = await prisma.invites.findMany({
             where: {
@@ -21,9 +23,10 @@ export default defineEventHandler(async (e) => {
                 },
             },
         })
-        if (!res) throw new Error(`unable to send message: ${content}`)
+        if (!res) return []
     } catch (err) {
-        console.error('there was an error', err)
+        console.error('Error in [user].get.js:', err)
+        return []
     }
 
     return res

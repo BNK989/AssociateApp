@@ -1,6 +1,5 @@
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../../utils/prisma'
 import { levTest } from '@/services/levenshtein'
-const prisma = new PrismaClient()
 
 export default defineEventHandler(async (e) => {
     const { wordId, guess, gameId } = await readBody(e)
@@ -13,7 +12,6 @@ export default defineEventHandler(async (e) => {
                 isResolved: false,
             },
             data: {
-                // MAKE SURE TO UPDATE SCHEMA BEFORE ENABLING THIS
                 resolveAttempts: {
                     increment: 1,
                 },
@@ -33,54 +31,45 @@ export default defineEventHandler(async (e) => {
         // GUESS IS SUCCESSFUL
         return correctGuess(wordId)
     } else {
-        // GUESS IS NOT SUCCESSFUL
-        // throw new Error(`Unable to relax-guess word: ${guess}`)
-        return { success: false, error: 'word too far from original' }
+        // RECORD FAILED ATTEMPT
+        return { success: false }
     }
 })
 
-async function correctGuess(id) {
+async function correctGuess(wordId) {
     try {
         const res = await prisma.messages.update({
             where: {
-                id: +id,
+                id: +wordId,
             },
             data: {
                 isResolved: true,
-                Game: {
-                    update: {
-                        score: {
-                            increment: 50,
-                        },
-                        totalWords: {
-                            decrement: 1,
-                        },
-                    },
-                },
             },
             select: {
                 gameId: true,
-                Game: {
-                    select: {
-                        totalWords: true,
-                    },
+            },
+        })
+
+        if (!res) throw new Error(`message id: ${wordId} not found`)
+
+        // Update game score and decrement totalWords
+        await prisma.games.update({
+            where: {
+                id: res.gameId,
+            },
+            data: {
+                score: {
+                    increment: 1000,
+                },
+                totalWords: {
+                    decrement: 1,
                 },
             },
         })
-        if (res.Game.totalWords === 0) {
-            await $fetch(`/api/${res.gameId}/finish-game`, {
-                method: 'PUT',
-            })
-        }
 
-        // If the update operation does not throw, it means the record was found and updated
-        return {
-            success: true,
-            data: res.Game.totalWords,
-        }
+        return { success: true }
     } catch (err) {
-        // If the update operation throws an error, catch it and handle it here
         console.error('There was an error', err)
-        return { success: false, error: err.message }
+        throw new Error(`Unable to update message status`)
     }
 }

@@ -1,6 +1,5 @@
 import { v4 as randomUUID } from 'uuid'
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '../utils/prisma'
 
 export default defineEventHandler(async (e) => {
     const { title, user_id } = await readBody(e)
@@ -36,7 +35,7 @@ export default defineEventHandler(async (e) => {
             },
         })
 
-        if (!res) throw new Error(`game id: ${gameId} not found`)
+        if (!res) throw new Error(`Failed to create game: ${title}`)
     } catch (err) {
         console.error('there was an error', err)
     }

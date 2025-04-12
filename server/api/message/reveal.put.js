@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '../../utils/prisma'
 
 export default defineEventHandler(async (e) => {
     const { msg_id } = getQuery(e)
@@ -43,6 +42,5 @@ export default defineEventHandler(async (e) => {
         console.error('there was an error getting the message id: ' + msg_id, err)
         return { success: false, error: err.message }
     }
-
     return { success: true, data: res?.data }
 })

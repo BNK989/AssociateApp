@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '../../utils/prisma'
 import { test } from '@/services/checkGame'
 
 export default defineEventHandler(async (e) => {

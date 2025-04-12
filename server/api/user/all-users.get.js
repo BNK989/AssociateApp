@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '../../utils/prisma'
 
 export default defineEventHandler(async (e) => {
     const { userName } = getQuery(e)
@@ -16,7 +15,7 @@ export default defineEventHandler(async (e) => {
             },
         })
 
-        if (!res) throw new Error(`game id: ${gameId} not found`)
+        if (!res) throw new Error(`No users found matching: ${userName}`)
     } catch (err) {
         console.error('there was an error', err)
     }

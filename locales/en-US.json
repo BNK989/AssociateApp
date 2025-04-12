@@ -12,6 +12,7 @@
     "Logout": "Logout",
     "Login": "Login",
     "SignUp": "Sign Up",
+    "Signup": "Sign Up",
     "Footer_All_rights": "All Rights Reserved.",
     "Game_Switch_Guess": "Start Guessing",
     "Input": "Input",
@@ -29,7 +30,7 @@
     "Placeholder_Not_your_turnA": "It's",
     "Placeholder_Not_your_turnB": "'s turn",
     "Game_Score": "Score",
-    "Signup_to_play": "Signup to play",
+    "Signup_to_play": "Log in To play",
     "Non_Active_Games": "Non Active Games",
     "Active_Games": "Active Games"
 }

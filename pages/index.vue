@@ -103,6 +103,7 @@
 import type { SkeletonCard } from '#build/components'
 import type { Game } from '~/types/game'
 import PendingInvites from '~/components/Invites/PendingInvites.vue'
+import type { User } from '~/types/user'
 
 definePageMeta({
     layout: 'scrollable',
@@ -114,45 +115,56 @@ const { user: storeUser } = storeToRefs(store)
 const localPath = useLocalePath()
 const router = useRouter()
 
-const { generateName } = useUtilities()
-
-const {
-    data: allGames,
-    pending,
-    refresh,
-    clear,
-} = await useFetch<Game[]>('/api/all-games', {
-    query: {
-        user_id: storeUser.value?.id,
-    },
-    lazy: true,
-    server: false,
-    onResponseError({ response }) {
-        console.error('there fetching allGames', response)
-    },
-})
-
 const showNonActiveGames = ref('')
 const nonActiveGames = ref([])
 const nonActiveGamesCategory = ref(['finished', 'archived', 'deleted'])
+const pending = ref(false)
+// const allGames = ref([])
 
-const activeGames = computed(() => allGames.value?.filter((g) => g.status === 'ACTIVE') || [])
-const isNonActiveGames = computed(
-    () => allGames.value?.filter((g) => g.status !== 'ACTIVE') || [],
+const { generateName } = useUtilities()
+
+// TODO: close this into a function, and call
+// that function from watch when user changes
+const {
+    data: allGamesResponse,
+    refresh,
+} = useFetch<{ data: Game[] }>('/api/all-games', {
+    query: computed(() => ({
+        user_id: storeUser.value?.id,
+    })),
+    default: () => ({ data: [] }),
+    lazy: true,
+    server: false,
+    immediate: false,
+    onResponseError({ response }) {
+        console.error('Error fetching allGames:', response)
+    },
+})
+
+const allGames = computed(() => allGamesResponse.value?.data || [])
+
+// Single watcher for user changes
+watch(
+    () => storeUser.value?.id,
+    (newId) => {
+        if (newId && typeof storeUser.value === 'object') {
+            refresh()
+        } else {
+            allGamesResponse.value = null
+        }
+    },
+    { immediate: true },
 )
+
+const activeGames = computed(() => allGames.value.filter((g) => g.status === 'ACTIVE'))
+const isNonActiveGames = computed(() => allGames.value.filter((g) => g.status !== 'ACTIVE'))
 
 watch(
     () => showNonActiveGames.value,
     () => {
-        nonActiveGames.value = allGames.value?.filter(
+        nonActiveGames.value = allGames.value.filter(
             (g) => g.status === showNonActiveGames.value,
         )
-    },
-)
-watch(
-    () => storeUser.value?.id,
-    () => {
-        storeUser.value ? refresh() : clear()
     },
 )
 

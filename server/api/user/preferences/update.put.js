@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '../../../utils/prisma'
 
 export default defineEventHandler(async (e) => {
     const { id, userName, pref } = await readBody(e)
@@ -8,12 +7,10 @@ export default defineEventHandler(async (e) => {
 
     try {
         res = await prisma.users.update({
-            where: {
-                id,
-            },
+            where: { id },
             data: {
                 preferences: pref,
-                userName: userName,
+                userName,
             },
             select: {
                 email: true,

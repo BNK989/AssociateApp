@@ -171,17 +171,30 @@ const switchText = computed(() => {
 })
 
 const googleLogin = async () => {
+    console.log('Starting Google login...')
+    errMsg.value = ''
     try {
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
                 redirectTo: `${window.location.origin}/profile/callback`,
-                // redirectTo: `https://associate-app-5sli.vercel.app/profile/callback111`,
+                queryParams: {
+                    access_type: 'offline',
+                    prompt: 'consent',
+                },
             },
         })
-        if (error) throw new Error(`OAuth sign-in error: ${error.message}`)
-    } catch (err) {
-        console.error('there was an error at login', err)
+        
+        if (error) throw error
+        
+        if (!data) {
+            throw new Error('No data received from Google login')
+        }
+        
+        console.log('Google login initiated successfully')
+    } catch (err: any) {
+        console.error('Error during Google login:', err)
+        errMsg.value = err.message || 'Failed to login with Google'
     }
 }
 

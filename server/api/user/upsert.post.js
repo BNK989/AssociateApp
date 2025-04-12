@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '../../utils/prisma'
 
 export default defineEventHandler(async (e) => {
     const basePref = {
@@ -14,12 +13,12 @@ export default defineEventHandler(async (e) => {
 
     try {
         const user = await prisma.users.upsert({
-            where: { email: email },
+            where: { email },
             update: { score: { increment: 1 } },
             create: {
-                email: email,
+                email,
                 userName: name,
-                avatar: avatar,
+                avatar,
                 preferences: basePref,
             },
         })

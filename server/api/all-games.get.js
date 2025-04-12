@@ -1,12 +1,15 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '../utils/prisma'
 
 export default defineEventHandler(async (e) => {
     const { user_id } = getQuery(e)
-    // console.log('prisma.params:', prisma)
+
+    // Always return an array, even if empty
+    if (!user_id) {
+        console.warn('No user_id provided to all-games.get.js')
+        return { data: [] }
+    }
 
     let res
-
     try {
         res = await prisma.games.findMany({
             where: {
@@ -43,14 +46,13 @@ export default defineEventHandler(async (e) => {
                 },
             },
             orderBy: {
-                updatedAt: 'desc', // Sort by updatedAt in descending order
+                updatedAt: 'desc',
             },
         })
 
-        if (!res) throw new Error(`game id: ${gameId} not found`)
+        return { data: res || [] }
     } catch (err) {
-        console.error('there was an error', err)
+        console.error('Error in all-games.get.js:', err)
+        return { data: [] }
     }
-
-    return res
 })

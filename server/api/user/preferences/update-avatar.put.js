@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '../../../utils/prisma'
 
 export default defineEventHandler(async (e) => {
     const { id, avatar } = await readBody(e)
@@ -8,19 +7,15 @@ export default defineEventHandler(async (e) => {
 
     try {
         res = await prisma.users.update({
-            where: {
-                id,
-            },
-            data: {
-                avatar,
-            },
+            where: { id },
+            data: { avatar },
             select: {
                 email: true,
                 id: true,
             },
         })
 
-        if (!res) throw new Error(`game id: ${gameId} not found`)
+        if (!res) throw new Error(`user id: ${id} not found`)
     } catch (err) {
         console.error('there was an error', err)
     }

@@ -1,17 +1,15 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '../../../utils/prisma'
 
 export default defineEventHandler(async (e) => {
     let res
     const { gameId } = await e.context.params
 
     try {
-        if (!gameId) return console.log('10no game id', gameId)
+        if (!gameId) return console.log('No game id provided:', gameId)
         res = await prisma.users.findMany({
             where: {
                 Games: {
                     some: {
-                        // GameId: +gameId,
                         GameId: {
                             equals: +gameId || 999,
                         },
@@ -25,7 +23,7 @@ export default defineEventHandler(async (e) => {
             },
         })
 
-        if (!res) throw new Error(`game id: ${gameId} not found`)
+        if (!res) throw new Error(`No users found for game: ${gameId}`)
     } catch (err) {
         console.error('there was an error', err)
     }

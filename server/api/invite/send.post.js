@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '../../utils/prisma'
 
 export default defineEventHandler(async (e) => {
     const body = await readBody(e)
@@ -17,7 +16,7 @@ export default defineEventHandler(async (e) => {
                 alias,
             },
         })
-        if (!res) throw new Error(`unable to send message: ${content}`)
+        if (!res) throw new Error(`unable to create invite`)
     } catch (err) {
         console.error('there was an error', err)
     }
