@@ -27,7 +27,7 @@
             </button>
 
             <div v-if="storeUser?.receivedInvites?.length > 0">
-                <PendingInvites />
+                <PendingInvites :invites="formattedInvites" />
             </div>
             <h2 class="my-2 text-2xl">{{ $t('Active_Games') }}</h2>
             <Transition v-if="activeGames.length > 0 || pending">
@@ -100,7 +100,6 @@
 </template>
 
 <script lang="ts" setup>
-import type { SkeletonCard } from '#build/components'
 import type { Game } from '~/types/game'
 import PendingInvites from '~/components/Invites/PendingInvites.vue'
 import type { User } from '~/types/user'
@@ -111,6 +110,29 @@ definePageMeta({
 
 const store = useStore()
 const { user: storeUser } = storeToRefs(store)
+
+// Transform receivedInvites to match the Invite type
+const formattedInvites = computed(() =>
+    (storeUser.value?.receivedInvites || []).map((invite) => ({
+        id: Number(invite.id),
+        status: invite.status || 'PENDING',
+        createdAt: invite.createdAt,
+        inviter: {
+            userName: invite.userName,
+            avatar: invite.avatar,
+            inviter: invite.inviter,
+            status: invite.status || 'PENDING',
+            createdAt: invite.createdAt,
+        },
+    })),
+)
+
+// Ensure receivedInvites is always an array
+watchEffect(() => {
+    if (storeUser.value && !Array.isArray(storeUser.value.receivedInvites)) {
+        storeUser.value.receivedInvites = []
+    }
+})
 
 const localPath = useLocalePath()
 const router = useRouter()
@@ -125,10 +147,7 @@ const { generateName } = useUtilities()
 
 // TODO: close this into a function, and call
 // that function from watch when user changes
-const {
-    data: allGamesResponse,
-    refresh,
-} = useFetch<{ data: Game[] }>('/api/all-games', {
+const { data: allGamesResponse, refresh } = useFetch<{ data: Game[] }>('/api/all-games', {
     query: computed(() => ({
         user_id: storeUser.value?.id,
     })),

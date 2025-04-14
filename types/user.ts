@@ -11,10 +11,13 @@ export interface User {
 }
 
 export type MiniUser = {
+    inviter: string
+    createdAt: string
+    status: string
     id?: string
     email?: string
-    avatar: string
     userName: string
+    avatar?: string  // Made avatar optional to match the actual data structure
 }
 
 type Preferences = {

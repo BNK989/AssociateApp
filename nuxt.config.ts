@@ -1,10 +1,31 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
+import unheadResolverPlugin from './plugins/vite/unhead-resolver';
+import prismaMockPlugin from './plugins/vite/prisma-resolver';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 export default defineNuxtConfig({
   vite: {
+    plugins: [
+      unheadResolverPlugin(),
+      prismaMockPlugin()
+    ],
     resolve: {
       alias: {
-        'punycode': 'punycode/'
+        'punycode': 'punycode/',
+        '@unhead/vue/client': resolve(__dirname, './shims/unhead-vue-client.ts'),
+        '@unhead/vue/plugins': resolve(__dirname, './shims/unhead-vue-plugins.ts'),
+        '@unhead/vue/server': resolve(__dirname, './shims/unhead-vue-server.ts'),
+        '@unhead/vue/utils': resolve(__dirname, './shims/unhead-vue-utils.ts')
       }
+    },
+    ssr: {
+      noExternal: ['@unhead/vue', 'unhead']
+    },
+    optimizeDeps: {
+      include: ['@unhead/vue']
     }
   },
   routeRules: {
@@ -83,5 +104,13 @@ export default defineNuxtConfig({
       ],
   },
 
-  compatibilityDate: '2025-02-06',
+  nitro: {
+    compatibilityDate: '2025-04-12',
+    moduleSideEffects: ['@prisma/client'],
+    externals: {
+      // Exclude Prisma completely from the build
+      inline: ['@unhead/vue', 'unhead'],
+      external: ['@prisma/client', '.prisma/client', '.prisma']
+    }
+  },
 })

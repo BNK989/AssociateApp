@@ -29,9 +29,7 @@
                             }}</small>
                         </td>
                         <td class="h-full">
-                            <div
-                                class="flex-center h-full rounded-md shadow-sm"
-                                role="group">
+                            <div class="flex-center h-full rounded-md shadow-sm" role="group">
                                 <button
                                     type="button"
                                     @click="respondToInvite(invite.id, 'ACCEPTED')"
@@ -65,6 +63,9 @@ interface Invite {
     inviter: {
         userName: string
         avatar?: string
+        inviter: string // Added to match MiniUser type
+        status: string // Added to match MiniUser type
+        createdAt: string // Added to match MiniUser type
     }
 }
 
@@ -74,10 +75,15 @@ interface InviteResponse {
     gameId?: number
 }
 
-// Props
-const props = defineProps<{
-    invites: Invite[]
-}>()
+// Props with type validation
+const props = withDefaults(
+    defineProps<{
+        invites: Invite[]
+    }>(),
+    {
+        invites: () => [],
+    },
+)
 
 // Computed
 const pendingInvites = computed(() => {
